@@ -12,19 +12,13 @@
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                    <view key="view" contentMode="scaleToFill" verticalHuggingPriority="200" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="d5j-by-1mb">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="Gb3-gA-ITJ">
-                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="3" id="RWC-9A-83k">
-                                <rect key="frame" x="16" y="6.5" width="528" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </slider>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="uYH-4b-mnI"/>
                     </navigationItem>
                 </viewController>
