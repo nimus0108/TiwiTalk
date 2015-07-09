@@ -1457,14 +1457,23 @@ a {
     text-decoration: none; }
 
 nav.navbar {
+  position: fixed;
+  top: 0;
+  lefT: 0;
+  right: 0;
   background-color: none;
-  color: #fff; }
+  color: #fff;
+  margin: 0;
+  padding: 0; }
   nav.navbar .container .brand {
     float: left; }
     nav.navbar .container .brand h1.nav-text {
       display: inline-block;
       font-size: 24px;
       color: #fff; }
+    nav.navbar .container .brand .logo {
+      width: 25px;
+      height: 25px; }
   nav.navbar .container .content {
     float: right; }
     nav.navbar .container .content ul {
@@ -1475,16 +1484,46 @@ nav.navbar {
         font-size: 18px; }
         nav.navbar .container .content ul li.nav-text a {
           color: #fff;
-          padding: 15px 0; }
+          padding: 55px 0; }
   nav.navbar.scrolled {
     background-color: #fff;
     color: #000; }
+    nav.navbar.scrolled li.nav-text a {
+      color: #000;
+      padding: 15px 0; }
 
 section.hero {
   width: 100%;
   max-width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  background: url(../images/background-updated.jpg) no-repeat center right scroll;
+  background-size: cover; }
+  section.hero .container {
+    position: relative;
+    top: 30%;
+    text-align: left;
+    margin: 0 auto;
+    padding: 0; }
+    section.hero .container h1.title {
+      font-size: 96px;
+      margin: 0;
+      padding: 0;
+      color: #fff; }
+    section.hero .container h2.subtitle {
+      font-size: 24px;
+      margin: 2px 5px;
+      color: #fff;
+      opacity: 0.75; }
+  section.hero button.learn-more {
+    width: auto;
+    max-width: 300px;
+    height: auto;
+    margin: 7% 0 0 5px;
+    padding: 7px 35px;
+    background: #777;
+    color: #fff;
+    border: 0; }
 
 /*# sourceMappingURL=styles.css.map */

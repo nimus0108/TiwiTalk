@@ -13,6 +13,14 @@
 	font-weight: bold;
 }
 
+@mixin vertical-align {
+	position: relative;
+	top: 30%;
+	// -webkit-transform: translateY(-50%);
+	// -ms-transform: translateY(-50%);
+	// transform: translateY(-50%);
+}
+
 * {
 	font-family: 'Campton';
 	font-weight: normal;	
@@ -66,8 +74,14 @@ a {
 	}
 }
 nav.navbar {
+	position: fixed;
+	top: 0;
+	lefT: 0;
+	right: 0;
 	background-color: none;
 	color: $color-white3;
+	margin: 0;
+	padding: 0;
 	
 	.container {
 		.brand {
@@ -77,6 +91,11 @@ nav.navbar {
 				display: inline-block;
 				font-size: 24px;
 				color: $color-white3;
+			}
+			
+			.logo {
+				width: 25px;
+				height: 25px;
 			}
 		}
 		
@@ -93,7 +112,7 @@ nav.navbar {
 					
 					a {
 						color: $color-white3;
-						padding: 15px 0;	
+						padding: 55px 0;	
 					}
 				}
 			}
@@ -103,6 +122,13 @@ nav.navbar {
 	&.scrolled {
 		background-color: $color-white0;
 		color: $color-black3;
+		
+		li.nav-text {
+			a {
+				color: $color-black3;
+				padding: 15px 0;	
+			}
+		}
 	}
 }
 
@@ -112,4 +138,38 @@ section.hero {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	background: url(../images/background-updated.jpg) no-repeat center right scroll;
+	background-size: cover;
+	
+	.container {
+		@include vertical-align;
+		text-align: left;
+		margin: 0 auto;
+		padding: 0;
+		
+		h1.title {
+			font-size: 96px;
+			margin: 0;
+			padding: 0;
+			color: $color-white1;
+		}
+		
+		h2.subtitle {
+			font-size: 24px;
+			margin: 2px 5px;
+			color: $color-white3;
+			opacity: 0.75;
+		}
+	}
+	
+	button.learn-more {
+		width: auto;
+		max-width: 300px;
+		height: auto;
+		margin: 7% 0 0 5px;
+		padding: 7px 35px;
+		background: $color-gray3;
+		color: $color-white3;
+		border: 0;
+	}
 }
