@@ -45,6 +45,34 @@
   }
 }
 
+.container-small {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  
+  // sm
+  @media screen and (min-width: 720px) {
+      width: 500px;
+  }
+  
+  // md
+  @media screen and (min-width: 960px) {
+      width: 735px;
+  }
+  
+  // lg
+  @media screen and (min-width: 1200px) {
+      width: 970px;
+  }
+  
+  // xl
+  @media screen and (min-width: 1440px) {
+      width: 1200px;
+  }
+}
+
 .container-full {
   margin-left: auto;
   margin-right: auto;

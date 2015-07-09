@@ -35,6 +35,25 @@
     .container {
       width: 1400px; } }
 
+.container-small {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px; }
+  @media screen and (min-width: 720px) {
+    .container-small {
+      width: 500px; } }
+  @media screen and (min-width: 960px) {
+    .container-small {
+      width: 735px; } }
+  @media screen and (min-width: 1200px) {
+    .container-small {
+      width: 970px; } }
+  @media screen and (min-width: 1440px) {
+    .container-small {
+      width: 1200px; } }
+
 .container-full {
   margin-left: auto;
   margin-right: auto;
@@ -1551,14 +1570,29 @@ section.about {
 
 section.f-features {
   width: 100%;
-  height: 70%;
-  background: url(../images/futuristic-fast-free.jpg) no-repeat center center scroll;
+  height: 90%;
+  background: url(../images/futuristic.jpg) no-repeat center center scroll;
   background-size: cover; }
-  section.f-features .container {
+  section.f-features .container-small {
     position: relative;
-    top: 30%; }
-    section.f-features .container h1.header {
+    top: 20%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%); }
+    section.f-features .container-small h1.header {
       font-size: 54px;
-      color: #fff; }
+      color: #fff;
+      margin: 20% 0 5px 0; }
+    section.f-features .container-small .col-md-6-12:nth-child(2) img.mockup {
+      position: relative;
+      left: 50%;
+      margin-left: -150px;
+      width: 300px; }
+    section.f-features .container-small p {
+      color: #fff;
+      opacity: 0.8;
+      line-height: 2;
+      font-size: 24px;
+      margin: 0; }
 
 /*# sourceMappingURL=styles.css.map */

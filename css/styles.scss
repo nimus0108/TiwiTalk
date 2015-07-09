@@ -204,17 +204,38 @@ section.about {
 
 section.f-features {
 	width: 100%;
-	height: 70%;
-	background: url(../images/futuristic-fast-free.jpg) no-repeat center center scroll;
+	height: 90%;
+	background: url(../images/futuristic.jpg) no-repeat center center scroll;
 	background-size: cover;
 	
-	.container {
+	.container-small {
 		position: relative;
-		top: 30%;
+		top: 20%;
+		-webkit-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		transform: translateY(-50%);
 		
-		h1.header {
+		h1.header {	
 			font-size: 54px;
 			color: $color-white1;
+			margin: 20% 0 5px 0;
+		}
+		
+		.col-md-6-12:nth-child(2) {
+			img.mockup {
+				position: relative;
+				left: 50%;
+				margin-left: -150px;
+				width: 300px;
+			}
+		}
+		
+		p {
+			color: $color-white3;
+			opacity: 0.8;
+			line-height: 2;
+			font-size: 24px;
+			margin: 0;
 		}
 	}
 }
