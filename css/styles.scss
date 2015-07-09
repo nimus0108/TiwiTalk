@@ -182,7 +182,7 @@ section.about {
 	height: auto;
 	margin: 0;
 	padding: 60px 0;
-	background-color: $color-white3;
+	background-color: $color-white1;
 	text-align: center;
 	
 	h1.title {
@@ -232,7 +232,6 @@ section.f-features {
 		
 		p {
 			color: $color-white3;
-			opacity: 0.8;
 			line-height: 2;
 			font-size: 24px;
 			margin: 0;
@@ -266,7 +265,6 @@ section.everyone {
 		
 		p {
 			color: $color-white3;
-			opacity: 0.8;
 			line-height: 2;
 			font-size: 24px;
 			margin: 0 0 0 auto;
@@ -279,7 +277,7 @@ section.subscribe {
 	height: auto;
 	margin: 0;
 	padding: 60px 0;
-	background-color: $color-white3;
+	background-color: $color-white1;
 	text-align: center;
 	
 	h1.title {
@@ -289,12 +287,49 @@ section.subscribe {
 	}
 	
 	p {
-		width: 100%;
-		max-width: 720px;
 		font-size: 24px;
 		line-height: 1.7;
 		margin: -15px auto 0 auto;
 		color: $color-black3;
-		opacity: 0.8;
+		opacity: 0.7;
+	}
+	
+	.email-form {
+		display: inline;
+	    width: 345px;
+		padding: 7px 14px;
+	
+	    font-size: 18px;
+	    background-color: $color-white3;
+		color: $color-black4;
+	
+	    border: 2px solid $color-white4;
+	    border-radius: 3px;
+	    outline: 0;
+	}
+	
+	.button-sub {
+		display: inline;
+    
+	    padding: 7px 14px;
+	    font-size: 18px;
+	
+	    background-color: $color-green1;
+	    color: $color-white2;
+	    opacity: 0.9;
+	
+	    border: 2px solid $color-green1;
+	    border-radius: 3px;
+	    outline: 0;
+	
+	    -webkit-transition: all 150ms ease-in;
+	    -moz-transition: all 150ms ease-in;
+	    -ms-transition: all 150ms ease-in;
+	    -o-transition: all 150ms ease-in;
+	    transition: all 150ms ease-in;
+	
+	    &:hover {
+	        background-color: $color-green2;
+	    }
 	}
 }

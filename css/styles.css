@@ -1481,7 +1481,7 @@ nav.navbar {
   lefT: 0;
   right: 0;
   background-color: none;
-  color: #fff;
+  color: #dfdfdf;
   margin: 0;
   padding: 0; }
   nav.navbar .container .brand {
@@ -1491,7 +1491,7 @@ nav.navbar {
       display: inline-block;
       font-size: 36px;
       margin-left: 5px;
-      color: #fff; }
+      color: #dfdfdf; }
     nav.navbar .container .brand .logo {
       width: 25px;
       height: 25px; }
@@ -1504,7 +1504,7 @@ nav.navbar {
         margin: 0 15px;
         font-size: 24px; }
         nav.navbar .container .content ul li.nav-text a {
-          color: #fff;
+          color: #dfdfdf;
           padding: 15px 0;
           line-height: 5; }
   nav.navbar.scrolled {
@@ -1532,11 +1532,11 @@ section.hero {
       font-size: 96px;
       margin: 0;
       padding: 0;
-      color: #fff; }
+      color: #f7f7f7; }
     section.hero .container h2.subtitle {
       font-size: 24px;
       margin: 2px 5px;
-      color: #fff;
+      color: #dfdfdf;
       opacity: 0.75; }
   section.hero button.learn-more {
     width: auto;
@@ -1545,7 +1545,7 @@ section.hero {
     margin: 7% 0 0 5px;
     padding: 7px 35px;
     background: #777;
-    color: #fff;
+    color: #dfdfdf;
     border: 0; }
 
 section.about {
@@ -1553,7 +1553,7 @@ section.about {
   height: auto;
   margin: 0;
   padding: 60px 0;
-  background-color: #fff;
+  background-color: #f7f7f7;
   text-align: center; }
   section.about h1.title {
     font-size: 54px;
@@ -1581,7 +1581,7 @@ section.f-features {
     transform: translateY(-50%); }
     section.f-features .container-small h1.header {
       font-size: 54px;
-      color: #fff;
+      color: #f7f7f7;
       margin: 20% 0 5px 0; }
     section.f-features .container-small .col-md-6-12:nth-child(2) img.mockup {
       position: relative;
@@ -1589,8 +1589,7 @@ section.f-features {
       margin-left: -150px;
       width: 300px; }
     section.f-features .container-small p {
-      color: #fff;
-      opacity: 0.8;
+      color: #dfdfdf;
       line-height: 2;
       font-size: 24px;
       margin: 0; }
@@ -1610,12 +1609,11 @@ section.everyone {
       float: right; }
     section.everyone .container-small h1.header {
       font-size: 54px;
-      color: #fff;
+      color: #f7f7f7;
       margin: 20% 0 5px 0;
       text-align: right; }
     section.everyone .container-small p {
-      color: #fff;
-      opacity: 0.8;
+      color: #dfdfdf;
       line-height: 2;
       font-size: 24px;
       margin: 0 0 0 auto; }
@@ -1625,19 +1623,44 @@ section.subscribe {
   height: auto;
   margin: 0;
   padding: 60px 0;
-  background-color: #fff;
+  background-color: #f7f7f7;
   text-align: center; }
   section.subscribe h1.title {
     font-size: 54px;
     color: #000;
     margin: 0 auto; }
   section.subscribe p {
-    width: 100%;
-    max-width: 720px;
     font-size: 24px;
     line-height: 1.7;
     margin: -15px auto 0 auto;
     color: #000;
-    opacity: 0.8; }
+    opacity: 0.7; }
+  section.subscribe .email-form {
+    display: inline;
+    width: 345px;
+    padding: 7px 14px;
+    font-size: 18px;
+    background-color: #dfdfdf;
+    color: #000;
+    border: 2px solid #d5d5d5;
+    border-radius: 3px;
+    outline: 0; }
+  section.subscribe .button-sub {
+    display: inline;
+    padding: 7px 14px;
+    font-size: 18px;
+    background-color: #2ecc71;
+    color: #f4f4f4;
+    opacity: 0.9;
+    border: 2px solid #2ecc71;
+    border-radius: 3px;
+    outline: 0;
+    -webkit-transition: all 150ms ease-in;
+    -moz-transition: all 150ms ease-in;
+    -ms-transition: all 150ms ease-in;
+    -o-transition: all 150ms ease-in;
+    transition: all 150ms ease-in; }
+    section.subscribe .button-sub:hover {
+      background-color: #3edc81; }
 
 /*# sourceMappingURL=styles.css.map */
