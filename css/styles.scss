@@ -201,3 +201,20 @@ section.about {
 		opacity: 0.8;
 	}
 }
+
+section.f-features {
+	width: 100%;
+	height: 70%;
+	background: url(../images/futuristic-fast-free.jpg) no-repeat center center scroll;
+	background-size: cover;
+	
+	.container {
+		position: relative;
+		top: 30%;
+		
+		h1.header {
+			font-size: 54px;
+			color: $color-white1;
+		}
+	}
+}
