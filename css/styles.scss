@@ -1,6 +1,23 @@
 @import 'grid';
 @import 'colors';
 
+@font-face {
+	font-family: 'Campton';
+	src: url("../fonts/CamptonLight.otf") format("opentype");
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Campton';
+	src: url("../fonts/CamptonLight.otf") format("opentype");
+	font-weight: bold;
+}
+
+* {
+	font-family: 'Campton';
+	font-weight: normal;	
+}
+
 html {
 	width: 100%;
 	height: 100%;
@@ -14,4 +31,29 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: $color-white0;
+}
+
+
+h1 {
+	font-size: 48px;
+}
+
+h2 {
+	font-size: 36px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h4 {
+	font-size: 18px;
+}
+
+h5 {
+	font-size: 14px;
+}
+
+p {
+	font-size: 18px;
 }
