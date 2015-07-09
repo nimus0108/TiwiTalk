@@ -1466,10 +1466,12 @@ nav.navbar {
   margin: 0;
   padding: 0; }
   nav.navbar .container .brand {
-    float: left; }
+    float: left;
+    line-height: 3; }
     nav.navbar .container .brand h1.nav-text {
       display: inline-block;
-      font-size: 24px;
+      font-size: 36px;
+      margin-left: 5px;
       color: #fff; }
     nav.navbar .container .brand .logo {
       width: 25px;
@@ -1481,10 +1483,11 @@ nav.navbar {
       nav.navbar .container .content ul li.nav-text {
         display: inline-block;
         margin: 0 15px;
-        font-size: 18px; }
+        font-size: 24px; }
         nav.navbar .container .content ul li.nav-text a {
           color: #fff;
-          padding: 55px 0; }
+          padding: 15px 0;
+          line-height: 5; }
   nav.navbar.scrolled {
     background-color: #fff;
     color: #000; }
@@ -1498,7 +1501,7 @@ section.hero {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url(../images/background-updated.jpg) no-repeat center right scroll;
+  background: url(../images/background-ad1.jpg) no-repeat center right scroll;
   background-size: cover; }
   section.hero .container {
     position: relative;

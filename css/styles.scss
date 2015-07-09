@@ -86,10 +86,12 @@ nav.navbar {
 	.container {
 		.brand {
 			float: left;
+			line-height: 3;
 			
 			h1.nav-text {
 				display: inline-block;
-				font-size: 24px;
+				font-size: 36px;
+				margin-left: 5px;
 				color: $color-white3;
 			}
 			
@@ -108,11 +110,12 @@ nav.navbar {
 				li.nav-text {
 					display: inline-block;
 					margin: 0 15px;
-					font-size: 18px;
+					font-size: 24px;
 					
 					a {
 						color: $color-white3;
-						padding: 55px 0;	
+						padding: 15px 0;
+						line-height: 5;	
 					}
 				}
 			}
@@ -138,7 +141,7 @@ section.hero {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background: url(../images/background-updated.jpg) no-repeat center right scroll;
+	background: url(../images/background-ad1.jpg) no-repeat center right scroll;
 	background-size: cover;
 	
 	.container {
