@@ -1451,4 +1451,40 @@ h5 {
 p {
   font-size: 18px; }
 
+a {
+  text-decoration: none; }
+  a:hover, a:active {
+    text-decoration: none; }
+
+nav.navbar {
+  background-color: none;
+  color: #fff; }
+  nav.navbar .container .brand {
+    float: left; }
+    nav.navbar .container .brand h1.nav-text {
+      display: inline-block;
+      font-size: 24px;
+      color: #fff; }
+  nav.navbar .container .content {
+    float: right; }
+    nav.navbar .container .content ul {
+      list-style: none; }
+      nav.navbar .container .content ul li.nav-text {
+        display: inline-block;
+        margin: 0 15px;
+        font-size: 18px; }
+        nav.navbar .container .content ul li.nav-text a {
+          color: #fff;
+          padding: 15px 0; }
+  nav.navbar.scrolled {
+    background-color: #fff;
+    color: #000; }
+
+section.hero {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0; }
+
 /*# sourceMappingURL=styles.css.map */

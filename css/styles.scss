@@ -57,3 +57,59 @@ h5 {
 p {
 	font-size: 18px;
 }
+
+a {
+	text-decoration: none;
+	
+	&:hover, &:active {
+		text-decoration: none;
+	}
+}
+nav.navbar {
+	background-color: none;
+	color: $color-white3;
+	
+	.container {
+		.brand {
+			float: left;
+			
+			h1.nav-text {
+				display: inline-block;
+				font-size: 24px;
+				color: $color-white3;
+			}
+		}
+		
+		.content {
+			float: right;
+			
+			ul {
+				list-style: none;
+				
+				li.nav-text {
+					display: inline-block;
+					margin: 0 15px;
+					font-size: 18px;
+					
+					a {
+						color: $color-white3;
+						padding: 15px 0;	
+					}
+				}
+			}
+		}
+	}
+	
+	&.scrolled {
+		background-color: $color-white0;
+		color: $color-black3;
+	}
+}
+
+section.hero {
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
