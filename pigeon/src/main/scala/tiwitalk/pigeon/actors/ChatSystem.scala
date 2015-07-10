@@ -27,10 +27,12 @@ class ChatSystem(sentiment: Sentiment) extends Actor {
       context.watch(ref)
       stateChange(data.copy(users = newUsers))
     case m: UserMessage =>
-      sentiment.analyze(m.message) onComplete {
-        case util.Success(score) =>
-          println(s"'${m.message}' = $score")
-        case fail => println(fail)
+      if (sentiment.enabled) {
+        sentiment.analyze(m.message) onComplete {
+          case util.Success(score) =>
+            println(s"'${m.message}' = $score")
+          case fail => println(fail)
+        }
       }
       data.convos foreach (_.tell(m, sender()))
     case Disconnect =>
