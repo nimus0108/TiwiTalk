@@ -25,11 +25,8 @@ class ChatSystem extends Actor {
       val newUsers = data.users :+ ref
       context.watch(ref)
       stateChange(data.copy(users = newUsers))
-    case m: Message =>
-      val ref = sender()
-      getName(ref) foreach { name =>
-        data.convos foreach (_.tell(m, ref))
-      }
+    case m: UserMessage =>
+      data.convos foreach (_.tell(m, sender()))
     case Disconnect =>
       data.convos foreach (_ forward Disconnect)
     case j: JoinConversation =>
@@ -47,6 +44,16 @@ class ChatSystem extends Actor {
           }
       } 
       stateChange(data.copy(convos = data.convos :+ convActor))
+    case GetUserInfo(Some(id)) =>
+      val originalSender = sender()
+      getIds(data.users) foreach { kp =>
+        val refOpt = kp.collectFirst { case (ref, uid) if uid equals id => ref }
+        refOpt foreach { ref =>
+          (ref ? GetUserInfo(None)).mapTo[UserData] foreach { info =>
+            originalSender ! info
+          }
+        }
+      }
     case Terminated(ref) =>
       stateChange(data.copy(users = data.users.filterNot(_ != ref)))
   }

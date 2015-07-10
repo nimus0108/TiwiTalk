@@ -20,12 +20,17 @@ class UserActor(chat: ActorRef, initialData: UserData)
     case Disconnect =>
       chat ! Disconnect
       self ! PoisonPill
+    case r @ RoomJoined(cid) if totalDemand > 0 =>
+      onNext(r)
+      val newData = data.copy(conversations = data.conversations :+ cid)
+      context.become(handle(newData))
     case e: OutEvent if totalDemand > 0 => onNext(e)
-    case OnNext(GetUserInfo) if totalDemand > 0 =>
-      onNext(data)
+    case GetUserInfo(None) if totalDemand > 0 => sender() ! data
+    case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
+    case OnNext(m @ Message(msg, cid)) if data.conversations.contains(cid) =>
+      chat ! UserMessage(data.id, msg, cid)
     case OnNext(SetAvailability(value)) => setAvailability(value, data)
-    case OnNext(s) =>
-      chat ! s
+    case OnNext(s) => chat ! s
     case OnComplete => chat ! Disconnect
   }
 

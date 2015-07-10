@@ -15,10 +15,14 @@ class Conversation(id: UUID) extends Actor {
   def receive = status(Data(Seq.empty))
 
   def status(data: Data): Receive = {
-    case Message(msg, _id) if _id == id && data.users.contains(sender()) =>
-      getName(sender()) foreach { name =>
-        broadcast(data.users, Broadcast(s"[${id.toString}] $name: $msg"))
+    case Message(msg, _id) if _id == id =>
+      if (data.users contains sender()) {
+        getName(sender()) foreach { name =>
+          broadcast(data.users, Broadcast(s"[${id.toString}] $name: $msg"))
+        }
       }
+    case msg: UserMessage if msg.cid == id && data.users.contains(sender()) =>
+      broadcast(data.users, msg)
     case Disconnect if data.users contains sender() =>
       getName(sender()) foreach { name =>
         broadcast(data.users, Broadcast(s"$name disconnected."))
@@ -37,6 +41,7 @@ class Conversation(id: UUID) extends Actor {
       }
       stateChange(data.copy(users = newUsers))
     case GetRoomId => sender() ! id
+    case GetUsers => sender() ! data.users
     case shit =>
       println(s"[$id] uncaught: $shit")
   }
