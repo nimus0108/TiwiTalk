@@ -10,7 +10,7 @@ import akka.stream.actor.{ ActorPublisher, ActorSubscriber }
 import akka.stream.scaladsl._
 import java.util.UUID
 import scala.concurrent.Future._
-import upickle._
+import upickle.default.{ read, write }
 
 import actors.{ ChatSystem, UserActor }
 

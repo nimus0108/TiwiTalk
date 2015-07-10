@@ -10,7 +10,7 @@ import akka.stream._
 import java.net.URLEncoder.{ encode => urlEncode }
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import upickle._
+import upickle.default.read
 
 class Sentiment(implicit mat: ActorMaterializer, system: ActorSystem) {
 

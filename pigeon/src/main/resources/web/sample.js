@@ -25,20 +25,20 @@ function login(_name) {
     userInfo = null;
   };
   s.onmessage = function(event) {
-    var data = JSON.parse(event.data);
-    if (data[0] == "tiwitalk.pigeon.Chat.UserData") {
+    var data = new Message(JSON.parse(event.data));
+    if (data.$type == "tiwitalk.pigeon.Chat.UserData") {
       if (userInfo !== null) {
-        if (userInfo.id === data[1].id) {
-          userInfo = data[1];
+        if (userInfo.id === data.id) {
+          userInfo = data;
           console.info("User data updated", userInfo);
         } else {
-          console.info("Fetched user data", data[1]);
+          console.info("Fetched user data", data);
         }
       } else {
-        userInfo = data[1];
+        userInfo = data;
         console.info("User data initialized", userInfo);
       }
-      userCache[data[1].id] = data[1];
+      userCache[data.id] = data;
     } else if (userInfo !== null) {
       handleMessages(data);
     }
@@ -46,14 +46,14 @@ function login(_name) {
 }
 
 function handleMessages(data) {
-  if (data[0] == "tiwitalk.pigeon.Chat.Broadcast") {
-    console.log(data[1].message);
-  } else if (data[0] == "tiwitalk.pigeon.Chat.UserMessage") {
-    var uid = data[1].user;
+  if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+    console.log(data.message);
+  } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
+    var uid = data.user;
     var dispName = userCache[uid].name || uid;
-    console.log("[" + data[1].cid + "] " + dispName + ": " + data[1].message);
-  } else if (data[0] == "tiwitalk.pigeon.Chat.RoomJoined") {
-    lastConv = data[1].id;
+    console.log("[" + data.cid + "] " + dispName + ": " + data.message);
+  } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
+    lastConv = data.id;
     var convs = userInfo.conversations || [];
     convs.push(lastConv);
     console.log("Joined " + lastConv);
@@ -65,10 +65,8 @@ function handleMessages(data) {
 function send(msg, id) {
   var convId = id || lastConv;
   if (convId) {
-    var msg = ["tiwitalk.pigeon.Chat.Message", {
-      message: msg, room: convId
-    }];
-    s.send(JSON.stringify(msg))
+    var msg = new Message("Message", { message: msg, room: convId });
+    s.send(msg.toString())
   } else {
     console.warn("Specify conversation id");
   }
@@ -81,11 +79,21 @@ function startConversation(_ids) {
     var id = ids[i];
     if (!userCache[id]) getUserData(id);
   }
-  var msg = ["tiwitalk.pigeon.Chat.StartConversation", { "users": ids }]
-  s.send(JSON.stringify(msg))
+  var msg = new Message("StartConversation", { users: ids })
+  s.send(msg.toString())
 }
 
 function getUserData(id) {
   var idOpt = id ? [id] : [];
-  s.send(JSON.stringify(["tiwitalk.pigeon.Chat.GetUserInfo",{ id: idOpt }]));
+  s.send(JSON.stringify(new Message("GetUserInfo", { id: idOpt })));
 }
+
+function Message(typeOrData, dataToCopyOpt) {
+  var dataToCopy = dataToCopyOpt || typeOrData;
+  for (k in dataToCopy) this[k] = dataToCopy[k];
+  if (dataToCopyOpt !== undefined) {
+    this.$type = "tiwitalk.pigeon.Chat." + typeOrData;
+  }
+}
+
+Message.prototype.toString = function() { return JSON.stringify(this); }
