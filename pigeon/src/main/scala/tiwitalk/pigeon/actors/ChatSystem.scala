@@ -7,10 +7,11 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
+import tiwitalk.pigeon.Sentiment
 
 import ChatHelpers._
 
-class ChatSystem extends Actor {
+class ChatSystem(sentiment: Sentiment) extends Actor {
 
   import context.dispatcher
   implicit val timeout = Timeout(1.second)
@@ -26,6 +27,11 @@ class ChatSystem extends Actor {
       context.watch(ref)
       stateChange(data.copy(users = newUsers))
     case m: UserMessage =>
+      sentiment.analyze(m.message) onComplete {
+        case util.Success(score) =>
+          println(s"'${m.message}' = $score")
+        case fail => println(fail)
+      }
       data.convos foreach (_.tell(m, sender()))
     case Disconnect =>
       data.convos foreach (_ forward Disconnect)
@@ -64,4 +70,8 @@ class ChatSystem extends Actor {
     users: Seq[ActorRef] = Seq.empty,
     convos: Seq[ActorRef] = Seq.empty
   )
+}
+
+object ChatSystem {
+  def props(sentiment: Sentiment) = Props(new ChatSystem(sentiment))
 }

@@ -18,7 +18,8 @@ object PigeonServer extends App {
   val host = "0.0.0.0"
   val port = 9876
 
-  val chatSystem = system.actorOf(Props[ChatSystem], "chat")
+  val sentiment = new Sentiment
+  val chatSystem = system.actorOf(ChatSystem.props(sentiment), "chat")
   val routes = new Routes(chatSystem)
 
   val serverFuture = Http().bindAndHandle(routes.default, host, port)

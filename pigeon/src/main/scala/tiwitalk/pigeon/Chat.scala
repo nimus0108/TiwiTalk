@@ -19,7 +19,10 @@ object Chat {
   case class SetAvailability(value: Int) extends InEvent
 
   case class Broadcast(message: String) extends OutEvent
-  case class UserMessage(user: UUID, message: String, cid: UUID) extends OutEvent
+  case class UserMessage(
+    user: UUID,
+    message: String,
+    cid: UUID) extends OutEvent
   case class RoomJoined(id: UUID) extends OutEvent with ServerEvent
   case class UserData(
       id: UUID,
