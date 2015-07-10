@@ -1428,16 +1428,36 @@
     width: 100%;
     max-width: 100%; } }
 @font-face {
-  font-family: 'Campton';
-  src: url("../fonts/CamptonLight.otf") format("opentype");
-  font-weight: normal; }
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-UltraLight.otf") format("opentype");
+  font-weight: 200; }
 @font-face {
-  font-family: 'Campton';
-  src: url("../fonts/CamptonLight.otf") format("opentype");
-  font-weight: bold; }
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-Light.otf") format("opentype");
+  font-weight: 300; }
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-Regular.otf") format("opentype");
+  font-weight: 400; }
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-SemiBold.otf") format("opentype");
+  font-weight: 500; }
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-Bold.otf") format("opentype");
+  font-weight: 600; }
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-ExtraBold.otf") format("opentype");
+  font-weight: 700; }
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/Montserrat-Black.otf") format("opentype");
+  font-weight: 800; }
 * {
-  font-family: 'Campton';
-  font-weight: normal; }
+  font-family: 'Montserrat';
+  font-weight: 400; }
 
 html {
   width: 100%;
@@ -1452,106 +1472,38 @@ body {
   padding: 0;
   background-color: #fff; }
 
-h1 {
-  font-size: 48px; }
-
-h2 {
-  font-size: 36px; }
-
-h3 {
-  font-size: 24px; }
-
-h4 {
-  font-size: 18px; }
-
-h5 {
-  font-size: 14px; }
-
-p {
-  font-size: 18px; }
-
-a {
-  text-decoration: none; }
-  a:hover, a:active {
-    text-decoration: none; }
-
-nav.navbar {
-  position: fixed;
-  top: 0;
-  lefT: 0;
-  right: 0;
-  background-color: none;
-  color: #dfdfdf;
-  margin: 0;
-  padding: 0; }
-  nav.navbar .container .brand {
-    float: left;
-    line-height: 3; }
-    nav.navbar .container .brand h1.nav-text {
-      display: inline-block;
-      font-size: 36px;
-      margin-left: 5px;
-      color: #dfdfdf; }
-    nav.navbar .container .brand .logo {
-      width: 25px;
-      height: 25px; }
-  nav.navbar .container .content {
-    float: right; }
-    nav.navbar .container .content ul {
-      list-style: none; }
-      nav.navbar .container .content ul li.nav-text {
-        display: inline-block;
-        margin: 0 15px;
-        font-size: 24px; }
-        nav.navbar .container .content ul li.nav-text a {
-          color: #dfdfdf;
-          padding: 15px 0;
-          line-height: 5; }
-  nav.navbar.scrolled {
-    background-color: #fff;
-    color: #000; }
-    nav.navbar.scrolled li.nav-text a {
-      color: #000;
-      padding: 15px 0; }
-
 section.hero {
   width: 100%;
   max-width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url(../images/background-add.jpg) no-repeat center right scroll;
+  background: url(../images/background.jpg) no-repeat center 70% scroll;
   background-size: cover; }
-  section.hero .brand {
-    height: 120px; }
-    section.hero .brand h1.nav-text {
-      position: relative;
-      top: -25px;
-      left: 25px;
-      display: inline;
-      font-size: 108px;
-      margin: 0;
-      padding: 0;
-      color: #f7f7f7; }
-    section.hero .brand .logo {
-      width: 125px;
-      height: 125px;
-      line-height: 160px; }
   section.hero .container {
     position: relative;
-    top: 30%;
-    text-align: left;
-    margin: 0 auto;
-    padding: 0; }
+    top: 35%; }
+    section.hero .container .logo {
+      display: inline-block;
+      width: 150px;
+      height: 150px; }
     section.hero .container h1.title {
-      font-size: 48px;
-      margin: 30px 0;
-      padding: 0;
+      position: relative;
+      top: -32px;
+      left: 25px;
+      display: inline-block;
       color: #f7f7f7;
-      opacity: 0.9; }
-  section.hero form {
-    position: relative;
-    top: 50px; }
+      margin: 0;
+      padding: 0;
+      font-size: 108px;
+      font-weight: 300; }
+    section.hero .container h2.subtitle {
+      display: block;
+      color: #f4f4f4;
+      margin: 0 0 100px 0;
+      padding: 0;
+      font-size: 42px;
+      font-weight: 300; }
 
 .email-form {
   display: inline;

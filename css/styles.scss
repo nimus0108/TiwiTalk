@@ -2,15 +2,44 @@
 @import 'colors';
 
 @font-face {
-	font-family: 'Campton';
-	src: url("../fonts/CamptonLight.otf") format("opentype");
-	font-weight: normal;
+	font-family: 'Montserrat';
+	src: url("../fonts/Montserrat-UltraLight.otf") format("opentype");
+	font-weight: 200;
 }
 
 @font-face {
-	font-family: 'Campton';
-	src: url("../fonts/CamptonLight.otf") format("opentype");
-	font-weight: bold;
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Light.otf") format("opentype");
+        font-weight: 300;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Regular.otf") format("opentype");
+        font-weight: 400;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-SemiBold.otf") format("opentype");
+        font-weight: 500;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Bold.otf") format("opentype");
+        font-weight: 600;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-ExtraBold.otf") format("opentype");
+        font-weight: 700;
+}
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Black.otf") format("opentype");
+        font-weight: 800;
 }
 
 @mixin vertical-align {
@@ -22,8 +51,8 @@
 }
 
 * {
-	font-family: 'Campton';
-	font-weight: normal;	
+	font-family: 'Montserrat';
+	font-weight: 400;	
 }
 
 html {
@@ -41,153 +70,51 @@ body {
 	background-color: $color-white0;
 }
 
-
-h1 {
-	font-size: 48px;
-}
-
-h2 {
-	font-size: 36px;
-}
-
-h3 {
-	font-size: 24px;
-}
-
-h4 {
-	font-size: 18px;
-}
-
-h5 {
-	font-size: 14px;
-}
-
-p {
-	font-size: 18px;
-}
-
-a {
-	text-decoration: none;
-	
-	&:hover, &:active {
-		text-decoration: none;
-	}
-}
-nav.navbar {
-	position: fixed;
-	top: 0;
-	lefT: 0;
-	right: 0;
-	background-color: none;
-	color: $color-white3;
-	margin: 0;
-	padding: 0;
-	
-	.container {
-		.brand {
-			float: left;
-			line-height: 3;
-			
-			h1.nav-text {
-				display: inline-block;
-				font-size: 36px;
-				margin-left: 5px;
-				color: $color-white3;
-			}
-			
-			.logo {
-				width: 25px;
-				height: 25px;
-			}
-		}
-		
-		.content {
-			float: right;
-			
-			ul {
-				list-style: none;
-				
-				li.nav-text {
-					display: inline-block;
-					margin: 0 15px;
-					font-size: 24px;
-					
-					a {
-						color: $color-white3;
-						padding: 15px 0;
-						line-height: 5;	
-					}
-				}
-			}
-		}
-	}
-	
-	&.scrolled {
-		background-color: $color-white0;
-		color: $color-black3;
-		
-		li.nav-text {
-			a {
-				color: $color-black3;
-				padding: 15px 0;	
-			}
-		}
-	}
-}
-
 section.hero {
 	width: 100%;
 	max-width: 100%;
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background: url(../images/background-add.jpg) no-repeat center right scroll;
+	background: url(../images/background.jpg) no-repeat center 70% scroll;
 	background-size: cover;
-	
-	.brand {		
-		height: 120px;
-		
-		h1.nav-text {
-			position: relative;
-			top: -25px;
-			left: 25px;
-			display: inline;
-			font-size: 108px;
-			margin: 0;
-			padding: 0;
-			color: $color-white1;
-		}
+
+	.container {
+		position: relative;
+		top: 35%;
 		
 		.logo {
-			width: 125px;
-			height: 125px;
-			line-height: 160px;
+			display: inline-block;
+			width: 150px;
+			height: 150px;
 		}
-	}
-	
-	.container {
-		@include vertical-align;
-		text-align: left;
-		margin: 0 auto;
-		padding: 0;
 		
 		h1.title {
-			font-size: 48px;
-			margin: 30px 0;
-			padding: 0;
+			position: relative;
+			top: -32px;
+			left: 25px;
+			display: inline-block;
 			color: $color-white1;
-			opacity: 0.9;
+			margin: 0;
+			padding: 0;
+			font-size: 108px;
+			font-weight: 300;
 		}
-	}
-	
-	form {
-		position: relative;
-		top: 50px;
+
+		h2.subtitle {
+			display: block;
+			color: $color-white2;
+			margin: 0 0 100px 0;
+			padding: 0;
+			font-size: 42px;
+			font-weight: 300;
+		}
+			
 	}
 }
 
 .email-form {
-	display: inline;
+    display: inline;
     width: 345px;
     padding: 9px 14px 5px 14px;
 
