@@ -45,9 +45,6 @@
 @mixin vertical-align {
 	position: relative;
 	top: 30%;
-	// -webkit-transform: translateY(-50%);
-	// -ms-transform: translateY(-50%);
-	// transform: translateY(-50%);
 }
 
 * {
@@ -76,12 +73,14 @@ section.hero {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background: url(../images/background.jpg) no-repeat center 70% scroll;
+	background: url(../images/background.jpg) no-repeat;
+	background-position: 65% center;
 	background-size: cover;
 
 	.container {
 		position: relative;
-		top: 35%;
+		top: 30%;
+		max-width: 100%;
 		
 		.logo {
 			display: inline-block;
@@ -111,6 +110,30 @@ section.hero {
 		}
 			
 	}
+	
+	@media screen and (max-width: 820px) {
+		&{
+			background-position: 70% center;
+			background-size: auto 125%;
+				
+			.container {
+				top: 5%;
+			}
+		}
+
+		.logo {
+			width: 75px;
+			height: 75px;		
+		}
+
+		h1.title {
+			display: block;
+			top: 0;
+			left: 0;
+			text-align: center;
+			font-size: 42px;
+		}
+	}
 }
 
 .email-form {
@@ -126,6 +149,7 @@ section.hero {
     border-radius: 3px;
     outline: 0;
 }
+
 
 .button-sub {
 	display: inline-block;

@@ -1478,11 +1478,13 @@ section.hero {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url(../images/background.jpg) no-repeat center 70% scroll;
+  background: url(../images/background.jpg) no-repeat;
+  background-position: 65% center;
   background-size: cover; }
   section.hero .container {
     position: relative;
-    top: 35%; }
+    top: 30%;
+    max-width: 100%; }
     section.hero .container .logo {
       display: inline-block;
       width: 150px;
@@ -1504,6 +1506,21 @@ section.hero {
       padding: 0;
       font-size: 42px;
       font-weight: 300; }
+  @media screen and (max-width: 820px) {
+    section.hero {
+      background-position: 70% center;
+      background-size: auto 125%; }
+      section.hero .container {
+        top: 5%; }
+    section.hero .logo {
+      width: 75px;
+      height: 75px; }
+    section.hero h1.title {
+      display: block;
+      top: 0;
+      left: 0;
+      text-align: center;
+      font-size: 42px; } }
 
 .email-form {
   display: inline;
