@@ -144,6 +144,27 @@ section.hero {
 	background: url(../images/background-add.jpg) no-repeat center right scroll;
 	background-size: cover;
 	
+	.brand {		
+		height: 120px;
+		
+		h1.nav-text {
+			position: relative;
+			top: -25px;
+			left: 25px;
+			display: inline;
+			font-size: 108px;
+			margin: 0;
+			padding: 0;
+			color: $color-white1;
+		}
+		
+		.logo {
+			width: 125px;
+			height: 125px;
+			line-height: 160px;
+		}
+	}
+	
 	.container {
 		@include vertical-align;
 		text-align: left;
@@ -151,185 +172,55 @@ section.hero {
 		padding: 0;
 		
 		h1.title {
-			font-size: 96px;
-			margin: 0;
+			font-size: 48px;
+			margin: 30px 0;
 			padding: 0;
 			color: $color-white1;
-		}
-		
-		h2.subtitle {
-			font-size: 24px;
-			margin: 2px 5px;
-			color: $color-white3;
-			opacity: 0.75;
+			opacity: 0.9;
 		}
 	}
 	
-	button.learn-more {
-		width: auto;
-		max-width: 300px;
-		height: auto;
-		margin: 7% 0 0 5px;
-		padding: 7px 35px;
-		background: $color-gray3;
-		color: $color-white3;
-		border: 0;
-	}
-}
-
-section.about {
-	width: 100%;
-	height: auto;
-	margin: 0;
-	padding: 60px 0;
-	background-color: $color-white1;
-	text-align: center;
-	
-	h1.title {
-		font-size: 54px;
-		color: $color-black3;
-		margin: 0 auto;
-	}
-	
-	p {
-		width: 100%;
-		max-width: 720px;
-		font-size: 24px;
-		line-height: 1.7;
-		margin: -7px auto 0 auto;
-		color: $color-black3;
-		opacity: 0.8;
-	}
-}
-
-section.f-features {
-	width: 100%;
-	height: 90%;
-	background: url(../images/futuristic.jpg) no-repeat center center scroll;
-	background-size: cover;
-	
-	.container-small {
+	form {
 		position: relative;
-		top: 20%;
-		-webkit-transform: translateY(-50%);
-		-ms-transform: translateY(-50%);
-		transform: translateY(-50%);
-		
-		h1.header {	
-			font-size: 54px;
-			color: $color-white1;
-			margin: 20% 0 5px 0;
-		}
-		
-		.col-md-6-12:nth-child(2) {
-			img.mockup {
-				position: relative;
-				left: 50%;
-				margin-left: -150px;
-				width: 300px;
-			}
-		}
-		
-		p {
-			color: $color-white3;
-			line-height: 2;
-			font-size: 24px;
-			margin: 0;
-		}
+		top: 50px;
 	}
 }
 
-section.everyone {
-	width: 100%;
-	height: 90%;
-	background: url(../images/everyone.jpg) no-repeat center center scroll;
-	background-size: cover;
-	
-	.container-small {
-		position: relative;
-		top: 15%;
-		-webkit-transform: translateY(-50%);
-		-ms-transform: translateY(-50%);
-		transform: translateY(-50%);
-		
-		.col-md-6-12 {
-			float: right;
-		}
-		
-		h1.header {	
-			font-size: 54px;
-			color: $color-white1;
-			margin: 20% 0 5px 0;
-			text-align: right;
-		}
-		
-		p {
-			color: $color-white3;
-			line-height: 2;
-			font-size: 24px;
-			margin: 0 0 0 auto;
-		}
-	}
+.email-form {
+	display: inline;
+    width: 345px;
+    padding: 9px 14px 5px 14px;
+
+    font-size: 18px;
+    background-color: $color-white3;
+	color: $color-black4;
+
+    border: 2px solid $color-white4;
+    border-radius: 3px;
+    outline: 0;
 }
 
-section.subscribe {
-	width: 100%;
-	height: auto;
-	margin: 0;
-	padding: 60px 0;
-	background-color: $color-white1;
-	text-align: center;
+.button-sub {
+	display: inline-block;
+
+    padding: 9px 14px 5px 14px;
+    font-size: 18px;
 	
-	h1.title {
-		font-size: 54px;
-		color: $color-black3;
-		margin: 0 auto;
-	}
-	
-	p {
-		font-size: 24px;
-		line-height: 1.7;
-		margin: -15px auto 0 auto;
-		color: $color-black3;
-		opacity: 0.7;
-	}
-	
-	.email-form {
-		display: inline;
-	    width: 345px;
-		padding: 7px 14px;
-	
-	    font-size: 18px;
-	    background-color: $color-white3;
-		color: $color-black4;
-	
-	    border: 2px solid $color-white4;
-	    border-radius: 3px;
-	    outline: 0;
-	}
-	
-	.button-sub {
-		display: inline;
-    
-	    padding: 7px 14px;
-	    font-size: 18px;
-	
-	    background-color: $color-green1;
-	    color: $color-white2;
-	    opacity: 0.9;
-	
-	    border: 2px solid $color-green1;
-	    border-radius: 3px;
-	    outline: 0;
-	
-	    -webkit-transition: all 150ms ease-in;
-	    -moz-transition: all 150ms ease-in;
-	    -ms-transition: all 150ms ease-in;
-	    -o-transition: all 150ms ease-in;
-	    transition: all 150ms ease-in;
-	
-	    &:hover {
-	        background-color: $color-green2;
-	    }
-	}
+    background-color: $color-green1;
+    color: $color-white2;
+    opacity: 0.9;
+
+    border: 2px solid $color-green1;
+    border-radius: 3px;
+    outline: 0;
+
+    -webkit-transition: all 150ms ease-in;
+    -moz-transition: all 150ms ease-in;
+    -ms-transition: all 150ms ease-in;
+    -o-transition: all 150ms ease-in;
+    transition: all 150ms ease-in;
+
+    &:hover {
+        background-color: $color-green2;
+    }
 }
