@@ -20,9 +20,17 @@ lazy val pigeon = Project("pigeon", file("pigeon"))
       "com.typesafe.akka" %% "akka-http-experimental" % "1.0-RC4",
       "org.scalatest" %% "scalatest" % "2.2.4" % "test",
       "com.lihaoyi" %% "upickle" % "0.3.0"
-    )
+    ),
+    packageName in Docker := "pigeon",
+    maintainer in Docker := "Bryan Tan <bryan@tiwitalk.com",
+    dockerBaseImage := "java:8-jre",
+    dockerRepository := Some("tiwitalk"),
+    dockerUpdateLatest := true,
+    dockerEntrypoint in Docker := Seq("sh", "-c", "bin/pigeon"),
+    dockerExposedPorts := Seq(9876)
   )
   .settings(Revolver.settings: _*)
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
 
 scalacOptions in Global ++= Seq(
   "-deprecation",
