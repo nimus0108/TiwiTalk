@@ -1478,8 +1478,7 @@ section.hero {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url(../images/background.jpg) no-repeat;
-  background-position: 70% center;
+  background: url(../images/background.jpg) no-repeat center bottom scroll;
   background-size: cover; }
   section.hero .container {
     position: relative;
