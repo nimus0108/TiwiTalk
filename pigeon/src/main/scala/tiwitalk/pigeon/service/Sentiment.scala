@@ -1,5 +1,4 @@
-
-package tiwitalk.pigeon
+package tiwitalk.pigeon.service
 
 import akka.actor.{ Actor, ActorRef, ActorSystem }
 import akka.http.scaladsl.Http

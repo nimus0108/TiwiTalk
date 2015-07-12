@@ -8,6 +8,7 @@ import com.typesafe.config.ConfigFactory
 import scala.util.Success
 
 import actors.ChatSystem
+import service.Sentiment
 
 object PigeonServer extends App {
 

@@ -7,7 +7,7 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
-import tiwitalk.pigeon.Sentiment
+import tiwitalk.pigeon.service.Sentiment
 
 import ChatHelpers._
 
