@@ -19,7 +19,7 @@ lazy val pigeon = Project("pigeon", file("pigeon"))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http-experimental" % "1.0-RC4",
       "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-      "com.lihaoyi" %% "upickle" % "0.3.0"
+      "com.lihaoyi" %% "upickle" % "0.3.1"
     ),
     packageName in Docker := "pigeon",
     maintainer in Docker := "Bryan Tan <bryan@tiwitalk.com",
