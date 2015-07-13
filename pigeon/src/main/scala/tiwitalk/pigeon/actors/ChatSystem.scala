@@ -40,15 +40,13 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
     case d @ Disconnect(id) =>
       data.convos foreach (_ forward d)
       userService.removeRef(id)
-    case j: JoinConversation =>
-      data.convos foreach (_ forward j)
+    case i: InviteToConversation =>
+      data.convos foreach (_ forward i)
     case StartConversation(ids) =>
       val convId = UUID.randomUUID()
       val convActor = context.actorOf(Conversation.props(convId, userService))
-      val convFut = userService.fetchRefs(ids) map { kps =>
-        kps foreach (kp => convActor.tell(JoinConversation(convId), kp._2))
-      }
-      convFut map (_ => ConversationStarted(convId)) pipeTo sender
+      convActor ! JoinConversation(ids)
+      sender() ! ConversationStarted(convId)
       stateChange(data.copy(convos = data.convos :+ convActor))
     case GetUserInfo(Some(id)) =>
       val originalSender = sender()

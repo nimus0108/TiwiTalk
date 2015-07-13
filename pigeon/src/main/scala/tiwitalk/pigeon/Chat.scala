@@ -10,7 +10,6 @@ object Chat {
 
   case class Message(message: String, room: UUID) extends InEvent
   case class StartConversation(users: Seq[UUID]) extends InEvent
-  case class JoinConversation(id: UUID) extends InEvent
   case class InviteToConversation(id: UUID, users: Seq[UUID]) extends InEvent
   case class GetUserInfo(id: Option[UUID]) extends InEvent with ServerEvent
   case object GetAvailability extends InEvent with ServerEvent
@@ -21,6 +20,7 @@ object Chat {
     user: UUID,
     message: String,
     cid: UUID) extends OutEvent
+  case class RoomInvite(id: UUID) extends OutEvent
   case class RoomJoined(id: UUID) extends OutEvent with ServerEvent
   case class UserData(
       id: UUID,
@@ -35,6 +35,7 @@ object Chat {
   case object GetRoomId extends ServerEvent
   case object GetUsers extends ServerEvent
   case object GetConversations extends ServerEvent
+  case class JoinConversation(ids: Seq[UUID]) extends ServerEvent
   case class UpdateUserInfo(data: UserData) extends ServerEvent
   case class ConversationStarted(id: UUID) extends ServerEvent
 }

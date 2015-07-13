@@ -55,8 +55,8 @@ function handleMessages(data) {
     console.log("[" + data.cid + "] " + dispName + ": " + data.message);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     lastConv = data.id;
-    var convs = userInfo.conversations || [];
-    convs.push(lastConv);
+    if (!userInfo.conversations) userInfo.conversations = [];
+    userInfo.conversations.push(lastConv);
     console.log("Joined " + lastConv);
   } else {
     console.log("unknown: ", data);
@@ -81,6 +81,12 @@ function startConversation(_ids) {
     if (!userCache[id]) getUserData(id);
   }
   var msg = new Message("StartConversation", { users: ids })
+  s.send(msg.toString())
+}
+
+function inviteToConversation(users, convIdOpt) {
+  var convId = convIdOpt || lastConv;
+  var msg = new Message("InviteToConversation", { id: convId, users: users });
   s.send(msg.toString())
 }
 
