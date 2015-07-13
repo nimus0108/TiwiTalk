@@ -1,143 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>Messages - TiwiTalk</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/3.0.2/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <!-- Temporary font from google fonts  -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div class="intro container">
+        <h1>TiwiTalk</h1>
+        <!--
+        <script>
+            $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+            })
+        </script>
+         <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Log in</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sign up</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade" id="messages"></div>
+              <div role="tabpanel" class="tab-pane fade" id="settings"></div>
+            </div>
+          </div>
+        -->
         
-        <!-- Normalize -->
-        <link href="css/normalize.css" rel="stylesheet">
+        <section class="container">
+        <div class="login">
+              <h1>Log in</h1>
+              <form method="post" action="index.html">
+                <p><input type="text" name="login" value="" placeholder="Username or Email"></p>
+                <p><input type="password" name="password" value="" placeholder="Password"></p>
+                <p class="remember_me">
+                  <label>
+                    <input type="checkbox" name="remember_me" id="remember_me">
+                    Remember me on this computer
+                  </label>
+                </p>
+                <p class="submit"><input type="submit" name="commit" value="Login"></p>
+              </form>
+            </div>
 
-        <!-- Styles -->
-        <link href="css/styles.css" rel="stylesheet">
-	</head>
-	<body> 
-		<!-- Messages Preview -->
-		<div class="col-sm-5-12">
-			<div class="preview-column">
-				<div class="message-header">
-					<h1 class="new-message">New Message</h1>
-				</div>
-				<div class="message-preview active">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-				<div class="message-preview">
-					<div class="container-full">
-						<div class="col-xs-3-12">
-							<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/c0.0.160.160/p160x160/10407096_871147829586342_8382407180230990582_n.jpg?oh=26626ccb769efe633ca16c3c4b343891&oe=565B0575&__gda__=1448374373_b81d756390cf50df6c92912296403729" alt="" class="conversation-profile">
-						</div>
-						<div class="col-xs-9-12">
-							<h1 class="name">Eddy Zhong</h1>
-							<p class="preview">Don't worry man we'll beat MIT Launch, we'll make sure it happens</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>   
-		
-		<!-- Messages -->   
-		<div class="col-sm-7-12">
-			<div class="conversation-column">
-				<div class="message-header">
-					<h1 class="availability">Occupied</h1>
-					<div class="titles">
-						<h1 class="name">Eddy Zhong</h1>
-						<h2 class="status">Destroying MIT Launch</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!--
-		f scripts for now
-			
-		<div id="message-container"></div>
-		<script src="mithril.min.js"></script>
-		<script src="script.js"></script>
-		<scrip src="socket.js"t></script>-->
-	</body>
+            <div class="login-help">
+              <p>Forgot your password? <a href="index.html">Click here to reset it</a>.</p>
+            </div>
+          </section>
+        
+    </div>
+</body>
 </html>
