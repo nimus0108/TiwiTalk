@@ -35,4 +35,5 @@ object Chat {
   case object GetRoomId extends ServerEvent
   case object GetUsers extends ServerEvent
   case object GetConversations extends ServerEvent
+  case class UpdateUserInfo(data: UserData) extends ServerEvent
 }

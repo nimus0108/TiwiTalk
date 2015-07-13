@@ -7,11 +7,11 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
-import tiwitalk.pigeon.service.Sentiment
+import tiwitalk.pigeon.service.{ Sentiment, UserService }
 
 import ChatHelpers._
 
-class ChatSystem(sentiment: Sentiment) extends Actor {
+class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
 
   import context.dispatcher
   implicit val timeout = Timeout(1.second)
@@ -54,13 +54,8 @@ class ChatSystem(sentiment: Sentiment) extends Actor {
       stateChange(data.copy(convos = data.convos :+ convActor))
     case GetUserInfo(Some(id)) =>
       val originalSender = sender()
-      getIds(data.users) foreach { kp =>
-        val refOpt = kp.collectFirst { case (ref, uid) if uid equals id => ref }
-        refOpt foreach { ref =>
-          (ref ? GetUserInfo(None)).mapTo[UserData] foreach { info =>
-            originalSender ! info
-          }
-        }
+      userService.fetchUserInfo(id) foreach { infoOpt =>
+        infoOpt foreach (originalSender ! _)
       }
     case Terminated(ref) =>
       stateChange(data.copy(users = data.users.filterNot(_ != ref)))
@@ -75,5 +70,6 @@ class ChatSystem(sentiment: Sentiment) extends Actor {
 }
 
 object ChatSystem {
-  def props(sentiment: Sentiment) = Props(new ChatSystem(sentiment))
+  def props(sentiment: Sentiment, userService: UserService) =
+    Props(new ChatSystem(sentiment, userService))
 }

@@ -4,15 +4,22 @@ import akka.actor._
 import akka.stream.actor._
 import java.util.UUID
 import tiwitalk.pigeon.Chat._
+import tiwitalk.pigeon.service.UserService
 
 import ActorSubscriberMessage._
 
-class UserActor(chat: ActorRef, initialData: UserData)
+class UserActor(chat: ActorRef, initialData: UserData, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
+
+  override def preStart(): Unit = {
+    userService.updateUserInfo(initialData.id, initialData)
+  }
 
   def receive = handle(initialData)
 
   def handle(data: UserData): Receive = {
+    case UpdateUserInfo(newData) if data.id equals newData.id =>
+      context.become(handle(newData))
     case GetAvailability => sender ! data.availability
     case SetAvailability(value) => setAvailability(value, data)
     case GetUserId => sender ! data.id
@@ -23,7 +30,7 @@ class UserActor(chat: ActorRef, initialData: UserData)
     case r @ RoomJoined(cid) if totalDemand > 0 =>
       onNext(r)
       val newData = data.copy(conversations = data.conversations :+ cid)
-      context.become(handle(newData))
+      userService.updateUserInfo(data.id, newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
     case GetUserInfo(None) if totalDemand > 0 => sender() ! data
     case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
@@ -35,12 +42,12 @@ class UserActor(chat: ActorRef, initialData: UserData)
   }
 
   def setAvailability(value: Int, data: UserData) =
-    context.become(handle(data.copy(availability = value)))
+    userService.updateUserInfo(data.id, data.copy(availability = value))
 
   override def requestStrategy = new WatermarkRequestStrategy(50)
 }
 
 object UserActor {
-  def props(chat: ActorRef, id: UUID, name: String) =
-    Props(new UserActor(chat, UserData(id, name, 5)))
+  def props(chat: ActorRef, id: UUID, name: String, userService: UserService) =
+    Props(new UserActor(chat, UserData(id, name, 5), userService))
 }

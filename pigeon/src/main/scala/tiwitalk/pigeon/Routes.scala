@@ -13,9 +13,11 @@ import scala.concurrent.Future._
 import upickle.default.{ read, write }
 
 import actors.{ ChatSystem, UserActor }
+import service.UserService
 
-class Routes(chat: ActorRef)(implicit system: ActorSystem,
-    mat: ActorMaterializer, logging: LoggingAdapter) {
+class Routes(chat: ActorRef, userService: UserService)
+    (implicit system: ActorSystem, mat: ActorMaterializer,
+              logging: LoggingAdapter) {
 
   val default =
     logRequestResult("pigeon") {
@@ -31,10 +33,13 @@ class Routes(chat: ActorRef)(implicit system: ActorSystem,
     }
 
   def webSocketFlow(name: String): Flow[Message, Message, Unit] = {
-    val userActor = system.actorOf(UserActor.props(chat, UUID.randomUUID(),
-      name))
+    val userId = UUID.randomUUID()
+    val userActor = system.actorOf(UserActor.props(
+      chat, userId, name, userService))
     val userIn = Sink(ActorSubscriber[Chat.InEvent](userActor))
     val userOut = Source(ActorPublisher[Chat.OutEvent](userActor))
+
+    userService.subscribe(userActor, userId)
 
     Flow() { implicit b =>
       import FlowGraph.Implicits._
