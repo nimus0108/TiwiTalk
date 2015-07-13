@@ -26,6 +26,7 @@ function login(_name) {
   };
   s.onmessage = function(event) {
     var data = new Message(JSON.parse(event.data));
+    // console.debug("received msg", data);
     if (data.$type == "tiwitalk.pigeon.Chat.UserData") {
       if (userInfo !== null) {
         if (userInfo.id === data.id) {

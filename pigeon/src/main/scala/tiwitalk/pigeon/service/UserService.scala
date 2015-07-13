@@ -13,13 +13,30 @@ class UserService(implicit cache: ScalaCache, system: ActorSystem)
   import system.dispatcher
 
   def fetchUserInfo(id: UUID): Future[Option[UserData]] = {
-    get(id)
+    get("USER-" + id)
   }
 
-  def updateUserInfo(id: UUID, newData: UserData): Future[Unit] = {
-    require(id equals newData.id)
-    for (_ <- put(id)(newData)) yield publish(UpdateUserInfo(newData))
+  def updateUserInfo(newData: UserData): Future[Unit] = {
+    for (_ <- put("USER-" + newData.id)(newData))
+      yield publish(UpdateUserInfo(newData))
   }
+
+  def removeUserInfo(id: UUID): Future[Unit] = remove("USER-" + id)
+
+  def fetchRef(id: UUID): Future[Option[ActorRef]] = {
+    get("REF-" + id)
+  }
+
+  def fetchRefs(ids: Seq[UUID]): Future[Seq[(UUID, ActorRef)]] = {
+    val fut = ids map { id =>
+      fetchRef(id).collect { case Some(ref) => (id -> ref) }
+    }
+    Future.sequence(fut)
+  }
+
+  def updateRef(id: UUID, ref: ActorRef): Future[Unit] = put("REF-" + id)(ref)
+
+  def removeRef(id: UUID): Future[Unit] = remove("REF-" + id)
 
   type Event = UpdateUserInfo
   type Subscriber = ActorRef
