@@ -8,7 +8,6 @@ object Chat {
   sealed trait OutEvent extends Event
   sealed trait ServerEvent extends Event
 
-  case object Connect extends InEvent
   case object Disconnect extends InEvent
   case class Message(message: String, room: UUID) extends InEvent
   case class StartConversation(users: Seq[UUID]) extends InEvent
@@ -30,6 +29,7 @@ object Chat {
       availability: Int,
       conversations: Seq[UUID] = Seq.empty) extends OutEvent
 
+  case class Connect(name: String) extends ServerEvent
   case object GetUserId extends ServerEvent
   case object GetName extends ServerEvent
   case object GetRoomId extends ServerEvent

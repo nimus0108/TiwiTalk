@@ -8,7 +8,7 @@ import tiwitalk.pigeon.service.UserService
 
 import ActorSubscriberMessage._
 
-class UserActor(chat: ActorRef, initialData: UserData, userService: UserService)
+class UserActor(initialData: UserData, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
 
   override def preStart(): Unit = {
@@ -25,7 +25,7 @@ class UserActor(chat: ActorRef, initialData: UserData, userService: UserService)
     case GetUserId => sender ! data.id
     case GetName => sender ! data.name
     case Disconnect =>
-      chat ! Disconnect
+      context.parent ! Disconnect
       self ! PoisonPill
     case r @ RoomJoined(cid) if totalDemand > 0 =>
       onNext(r)
@@ -35,10 +35,10 @@ class UserActor(chat: ActorRef, initialData: UserData, userService: UserService)
     case GetUserInfo(None) if totalDemand > 0 => sender() ! data
     case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
     case OnNext(m @ Message(msg, cid)) if data.conversations.contains(cid) =>
-      chat ! UserMessage(data.id, msg, cid)
+      context.parent ! UserMessage(data.id, msg, cid)
     case OnNext(SetAvailability(value)) => setAvailability(value, data)
-    case OnNext(s) => chat ! s
-    case OnComplete => chat ! Disconnect
+    case OnNext(s) => context.parent ! s
+    case OnComplete => context.parent ! Disconnect
   }
 
   def setAvailability(value: Int, data: UserData) =
@@ -48,6 +48,6 @@ class UserActor(chat: ActorRef, initialData: UserData, userService: UserService)
 }
 
 object UserActor {
-  def props(chat: ActorRef, id: UUID, name: String, userService: UserService) =
-    Props(new UserActor(chat, UserData(id, name, 5), userService))
+  def props(id: UUID, name: String, userService: UserService) =
+    Props(new UserActor(UserData(id, name, 5), userService))
 }

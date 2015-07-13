@@ -16,16 +16,16 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(1.second)
 
-  // val context.actorOf(Props[UserService])
-
   def receive = state()
 
   def state(data: SystemData = SystemData()): Receive = {
-    case Connect =>
-      val ref = sender()
-      val newUsers = data.users :+ ref
-      context.watch(ref)
-      stateChange(data.copy(users = newUsers))
+    case Connect(name) =>
+      val userId = UUID.randomUUID()
+      val userActor = context.actorOf(
+        UserActor.props(userId, name, userService))
+      context.watch(userActor)
+      stateChange(data.copy(users = data.users :+ userActor))
+      sender() ! (userId -> userActor)
     case m: UserMessage =>
       if (sentiment.enabled) {
         sentiment.analyze(m.message) onComplete {
