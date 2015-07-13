@@ -1,7 +1,7 @@
 package tiwitalk.pigeon.actors
 
 import akka.actor.{ Actor, ActorRef, Props, Terminated }
-import akka.pattern.ask
+import akka.pattern.{ ask, pipe }
 import akka.util.Timeout
 import java.util.UUID
 import scala.concurrent.Future
@@ -21,11 +21,13 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
   def state(data: SystemData = SystemData()): Receive = {
     case Connect(name) =>
       val userId = UUID.randomUUID()
+      val defaultData = UserData(userId, name, 5)
       val userActor = context.actorOf(
-        UserActor.props(userId, name, userService))
-      context.watch(userActor)
-      stateChange(data.copy(users = data.users :+ userActor))
-      sender() ! (userId -> userActor)
+        UserActor.props(defaultData, userService))
+      val updateFut = userService.updateRef(userId, userActor) map { _ =>
+        (userId -> userActor)
+      }
+      updateFut pipeTo sender
     case m: UserMessage =>
       if (sentiment.enabled) {
         sentiment.analyze(m.message) onComplete {
@@ -35,38 +37,32 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
         }
       }
       data.convos foreach (_.tell(m, sender()))
-    case Disconnect =>
-      data.convos foreach (_ forward Disconnect)
+    case d @ Disconnect(id) =>
+      data.convos foreach (_ forward d)
+      userService.removeRef(id)
     case j: JoinConversation =>
       data.convos foreach (_ forward j)
     case StartConversation(ids) =>
-      val id = UUID.randomUUID()
-      val convActor = context.actorOf(Conversation.props(id))
-      getIds(data.users) foreach { kp =>
-        kp
-          .collect {
-            case (ref, uid) if ids contains uid => ref
-          }
-          .foreach { ref =>
-            convActor.tell(JoinConversation(id), ref)
-          }
-      } 
+      val convId = UUID.randomUUID()
+      val convActor = context.actorOf(Conversation.props(convId))
+      val convFut = Future.traverse(ids) { userId =>
+        userService.fetchRef(userId) map { refOpt =>
+          refOpt foreach (ref => convActor.tell(JoinConversation(convId), ref))
+          userId
+        }
+      }
+      convFut map (_ => ConversationStarted(convId)) pipeTo sender
       stateChange(data.copy(convos = data.convos :+ convActor))
     case GetUserInfo(Some(id)) =>
       val originalSender = sender()
       userService.fetchUserInfo(id) foreach { infoOpt =>
         infoOpt foreach (originalSender ! _)
       }
-    case Terminated(ref) =>
-      stateChange(data.copy(users = data.users.filterNot(_ != ref)))
   }
 
   @inline def stateChange(data: SystemData) = context.become(state(data))
 
-  case class SystemData(
-    users: Seq[ActorRef] = Seq.empty,
-    convos: Seq[ActorRef] = Seq.empty
-  )
+  case class SystemData(convos: Seq[ActorRef] = Seq.empty)
 }
 
 object ChatSystem {

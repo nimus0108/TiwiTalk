@@ -38,7 +38,7 @@ class UserActor(initialData: UserData, userService: UserService)
       context.parent ! UserMessage(data.id, msg, cid)
     case OnNext(SetAvailability(value)) => setAvailability(value, data)
     case OnNext(s) => context.parent ! s
-    case OnComplete => context.parent ! Disconnect
+    case OnComplete => context.parent ! Disconnect(data.id)
   }
 
   def setAvailability(value: Int, data: UserData) =
@@ -48,6 +48,9 @@ class UserActor(initialData: UserData, userService: UserService)
 }
 
 object UserActor {
-  def props(id: UUID, name: String, userService: UserService) =
-    Props(new UserActor(UserData(id, name, 5), userService))
+  def props(data: UserData, userService: UserService): Props =
+    Props(new UserActor(data, userService))
+
+  def props(id: UUID, name: String, userService: UserService): Props =
+    props(UserData(id, name, 5), userService)
 }

@@ -23,7 +23,7 @@ class Conversation(id: UUID) extends Actor {
       }
     case msg: UserMessage if msg.cid == id && data.users.contains(sender()) =>
       broadcast(data.users, msg)
-    case Disconnect if data.users contains sender() =>
+    case Disconnect(id) if data.users contains sender() =>
       getName(sender()) foreach { name =>
         broadcast(data.users, Broadcast(s"$name disconnected."))
       }
@@ -43,7 +43,7 @@ class Conversation(id: UUID) extends Actor {
     case GetRoomId => sender() ! id
     case GetUsers => sender() ! data.users
     case shit =>
-      println(s"[$id] uncaught: $shit")
+      println(s"[conv $id] uncaught: $shit")
   }
 
   def sendMessage(users: Seq[ActorRef], event: OutEvent): Unit =
