@@ -12,7 +12,7 @@ class UserActor(initialData: UserData, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
 
   override def preStart(): Unit = {
-    userService.updateUserInfo(initialData.id, initialData)
+    userService.updateUserInfo(initialData)
   }
 
   def receive = handle(initialData)
@@ -30,7 +30,7 @@ class UserActor(initialData: UserData, userService: UserService)
     case r @ RoomJoined(cid) if totalDemand > 0 =>
       onNext(r)
       val newData = data.copy(conversations = data.conversations :+ cid)
-      userService.updateUserInfo(data.id, newData)
+      userService.updateUserInfo(newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
     case GetUserInfo(None) if totalDemand > 0 => sender() ! data
     case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
@@ -42,7 +42,7 @@ class UserActor(initialData: UserData, userService: UserService)
   }
 
   def setAvailability(value: Int, data: UserData) =
-    userService.updateUserInfo(data.id, data.copy(availability = value))
+    userService.updateUserInfo(data.copy(availability = value))
 
   override def requestStrategy = new WatermarkRequestStrategy(50)
 }
