@@ -17,6 +17,8 @@ lazy val empath = Project("empath", file("empath")).settings(
 lazy val pigeon = Project("pigeon", file("pigeon"))
   .settings(
     libraryDependencies ++= Seq(
+      // Temporary- later, switch to a distributed cache
+      "com.github.cb372" %% "scalacache-guava" % "0.6.4",
       "com.typesafe.akka" %% "akka-http-experimental" % "1.0-RC4",
       "org.scalatest" %% "scalatest" % "2.2.4" % "test",
       "com.lihaoyi" %% "upickle" % "0.3.1"
