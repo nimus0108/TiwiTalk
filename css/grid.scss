@@ -1,0 +1,214 @@
+/* GRID */
+.row {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  
+  // sm
+  @media screen and (min-width: 720px) {
+      width: 700px;
+  }
+  
+  // md
+  @media screen and (min-width: 960px) {
+      width: 935px;
+  }
+  
+  // lg
+  @media screen and (min-width: 1200px) {
+      width: 1170px;
+  }
+  
+  // xl
+  @media screen and (min-width: 1440px) {
+      width: 1400px;
+  }
+}
+
+.container-small {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  
+  // sm
+  @media screen and (min-width: 720px) {
+      width: 500px;
+  }
+  
+  // md
+  @media screen and (min-width: 960px) {
+      width: 735px;
+  }
+  
+  // lg
+  @media screen and (min-width: 1200px) {
+      width: 970px;
+  }
+  
+  // xl
+  @media screen and (min-width: 1440px) {
+      width: 1200px;
+  }
+}
+
+.container-full {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+
+.col-sm-1-5, .col-sm-2-5, .col-sm-3-5, .col-sm-4-5, .col-sm-5-5, .col-md-1-5, .col-md-2-5, .col-md-3-5, .col-md-4-5, .col-md-5-5, .col-lg-1-5, .col-lg-2-5, .col-lg-3-5, .col-lg-4-5, .col-lg-5-5, .col-xl-1-5, .col-xl-2-5, .col-xl-3-5, .col-xl-4-5, .col-xl-5-5, .col-sm-1-12, .col-sm-2-12, .col-sm-3-12, .col-sm-4-12, .col-sm-5-12, .col-sm-6-12, .col-sm-7-12, .col-sm-8-12, .col-sm-9-12, .col-sm-10-12, .col-sm-11-12, .col-sm-12-12, .col-md-1-12, .col-md-2-12, .col-md-3-12, .col-md-4-12, .col-md-5-12, .col-md-6-12, .col-md-7-12, .col-md-8-12, .col-md-9-12, .col-md-10-12, .col-md-11-12, .col-md-12-12, .col-lg-1-12, .col-lg-2-12, .col-lg-3-12, .col-lg-4-12, .col-lg-5-12, .col-lg-6-12, .col-lg-7-12, .col-lg-8-12, .col-lg-9-12, .col-lg-10-12, .col-lg-11-12, .col-lg-12-12, .col-xl-1-12, .col-xl-2-12, .col-xl-3-12, .col-xl-4-12, .col-xl-5-12, .col-xl-6-12, .col-xl-7-12, .col-xl-8-12, .col-xl-9-12, .col-xl-10-12, .col-xl-11-12, .col-xl-12-12, .col-sm-1-16, .col-sm-2-16, .col-sm-3-16, .col-sm-4-16, .col-sm-5-16, .col-sm-6-16, .col-sm-7-16, .col-sm-8-16, .col-sm-9-16, .col-sm-10-16, .col-sm-11-16, .col-sm-12-16, .col-sm-13-16, .col-sm-14-16, .col-sm-15-16, .col-sm-16-16, .col-md-1-16, .col-md-2-16, .col-md-3-16, .col-md-4-16, .col-md-5-16, .col-md-6-16, .col-md-7-16, .col-md-8-16, .col-md-9-16, .col-md-10-16, .col-md-11-16, .col-md-12-16, .col-md-13-16, .col-md-14-16, .col-md-15-16, .col-md-16-16, .col-lg-1-16, .col-lg-2-16, .col-lg-3-16, .col-lg-4-16, .col-lg-5-16, .col-lg-6-16, .col-lg-7-16, .col-lg-8-16, .col-lg-9-16, .col-lg-10-16, .col-lg-11-16, .col-lg-12-16, .col-lg-13-16, .col-lg-14-16, .col-lg-15-16, .col-lg-16-16, .col-xl-1-16, .col-xl-2-16, .col-xl-3-16, .col-xl-4-16, .col-xl-5-16, .col-xl-6-16, .col-xl-7-16, .col-xl-8-16, .col-xl-9-16, .col-xl-10-16, .col-xl-11-16, .col-xl-12-16, .col-xl-13-16, .col-xl-14-16, .col-xl-15-16, .col-xl-16-16 {
+  -ms-flex-preferred-size: 100%;
+  -webkit-flex-basis: 100%;
+  flex-basis: 100%;
+  max-width: 100%;
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+@for $i from 1 through 5 {
+  $width: percentage($i / 5);
+  .col-xs-#{$i}-#{5} {
+    -ms-flex-preferred-size: $width;
+    -webkit-flex-basis: $width;
+    flex-basis: $width;
+    width: $width;
+    float: left;
+    box-sizing: border-box;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
+
+$responsive: (sm, md, lg, xl);
+@each $class in $responsive {
+  $index: 0;
+  @if $class == sm { $index: 720px; }
+  @if $class == md { $index: 960px; }
+  @if $class == lg { $index: 1200px; }
+  @if $class == xl { $index: 1440px; }
+  
+  @media screen and (min-width: $index) {
+    @for $i from 1 through 5 {
+      $width: percentage($i / 5);
+      .col-#{$class}-#{$i}-#{5} {
+        -ms-flex-preferred-size: $width;
+        -webkit-flex-basis: $width;
+        flex-basis: $width;
+        width: $width;
+        max-width: $width;
+      }
+    }
+  }
+}
+
+@for $i from 1 through 12 {
+  $width: percentage($i / 12);
+  .col-xs-#{$i}-#{12} {
+    -ms-flex-preferred-size: $width;
+    -webkit-flex-basis: $width;
+    flex-basis: $width;
+    width: $width;
+    float: left;
+    box-sizing: border-box;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
+
+$responsive: (sm, md, lg, xl);
+@each $class in $responsive {
+  $index: 0;
+  @if $class == sm { $index: 720px; }
+  @if $class == md { $index: 960px; }
+  @if $class == lg { $index: 1200px; }
+  @if $class == xl { $index: 1440px; }
+  
+  @media screen and (min-width: $index) {
+    @for $i from 1 through 12 {
+      $width: percentage($i / 12);
+      .col-#{$class}-#{$i}-#{12} {
+        -ms-flex-preferred-size: $width;
+        -webkit-flex-basis: $width;
+        flex-basis: $width;
+        width: $width;
+        max-width: $width;
+      }
+    }
+  }
+}
+
+@for $i from 1 through 16 {
+  $width: percentage($i / 16);
+  .col-xs-#{$i}-#{16} {
+    -ms-flex-preferred-size: $width;
+    -webkit-flex-basis: $width;
+    flex-basis: $width;
+    width: $width;
+    float: left;
+    box-sizing: border-box;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
+
+$responsive: (sm, md, lg, xl);
+@each $class in $responsive {
+  $index: 0;
+  @if $class == sm { $index: 720px; }
+  @if $class == md { $index: 960px; }
+  @if $class == lg { $index: 1200px; }
+  @if $class == xl { $index: 1440px; }
+  
+  @media screen and (min-width: $index) {
+    @for $i from 1 through 16 {
+      $width: percentage($i / 16);
+      .col-#{$class}-#{$i}-#{16} {
+        -ms-flex-preferred-size: $width;
+        -webkit-flex-basis: $width;
+        flex-basis: $width;
+        width: $width;
+        max-width: $width;
+      }
+    }
+  }
+}

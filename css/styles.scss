@@ -1,0 +1,126 @@
+@import 'grid';
+@import 'colors';
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url("../fonts/Montserrat-UltraLight.otf") format("opentype");
+	font-weight: 200;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Light.otf") format("opentype");
+        font-weight: 300;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Regular.otf") format("opentype");
+        font-weight: 400;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-SemiBold.otf") format("opentype");
+        font-weight: 500;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Bold.otf") format("opentype");
+        font-weight: 600;
+}
+
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-ExtraBold.otf") format("opentype");
+        font-weight: 700;
+}
+@font-face {
+        font-family: 'Montserrat';
+        src: url("../fonts/Montserrat-Black.otf") format("opentype");
+        font-weight: 800;
+}
+
+* {
+	font-family: 'Montserrat';
+	font-weight: 400;	
+}
+
+html {
+	width: 1200px;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: $color-white0;
+}
+
+.vertical-align {
+        position: relative;
+        top: 50%;
+        transform: translateY(50%);
+}
+
+.preview-column {
+        border-right: 1px solid $color-white4;
+        
+        .message-header {
+                width: 100%;
+                height: 50px;
+                margin: 0;
+                padding: 10px 0;
+                background-color: $color-white0;
+                border-bottom: 1px solid $color-white4;
+                text-align: center;
+                
+                h1.new-message {
+                        margin: 0;
+                        font-size: 24px;
+                        line-height: 50px;
+                }
+        }
+        
+        .message-preview {
+                width: 100%;
+                height: 75px;
+                margin: 0;
+                padding: 10px 0;
+                border-bottom: 1px solid $color-white4;
+                background-color: $color-white0;
+                
+                &.active {
+                        background-color: $color-white1;
+                }
+                
+                .conversation-profile {
+                        width: 65px;
+                        height: 65px;  
+                        border-radius: 50%; 
+                        margin-top: 5px;   
+                        margin-left: 15px;
+                        margin-right: 0;  
+                        text-align: right;
+                }
+                
+                .name {
+                        font-size: 22px;
+                        margin: 7px 0 0 0;
+                }
+                
+                .preview {
+                        width: 100%;
+                        margin: 9px 0 0 0;
+                        font-size: 14px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;        
+                }
+        }
+}
