@@ -26,7 +26,6 @@ chat.view = function(ctrl) {
   if (ctrl.userInfo === null) {
     showOpt.push(m("div", [
       m("input", { oninput: m.withAttr("value", ctrl.nameField) }),
-/* onclick: make intro visibility: hidden */
       m("button", { onclick: ctrl.login.bind(ctrl) }, "Connect")
     ]));
   } else {
