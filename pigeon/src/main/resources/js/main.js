@@ -1,14 +1,6 @@
 var m = require("lhorie/mithril");
 
-var Message = function(typeOrData, dataToCopyOpt) {
-  var dataToCopy = dataToCopyOpt || typeOrData;
-  for (k in dataToCopy) this[k] = dataToCopy[k];
-  if (dataToCopyOpt !== undefined) {
-    this.$type = "tiwitalk.pigeon.Chat." + typeOrData;
-  }
-}
-
-Message.prototype.toString = function() { return JSON.stringify(this); }
+var Message = require("./message.js");
 
 var chat = {};
 
@@ -107,7 +99,7 @@ chat.controller.prototype.send = function(msg, id) {
   var convId = id || this.lastConv();
   if (convId) {
     var msg = new Message("Message", { message: msg, room: convId });
-    this.socket.send(msg.toString())
+    msg.send(this.socket);
   } else {
     console.warn("Specify conversation id");
   }
@@ -121,18 +113,18 @@ chat.controller.prototype.startConversation = function(_ids) {
     if (!this.userCache[id]) this.getUserData(id);
   }
   var msg = new Message("StartConversation", { users: ids })
-  this.socket.send(msg.toString())
+  msg.send(this.socket);
 }
 
 chat.controller.prototype.inviteToConversation = function(users, convIdOpt) {
   var convId = convIdOpt || this.lastConv();
   var msg = new Message("InviteToConversation", { id: convId, users: users });
-  this.socket.send(msg.toString())
+  msg.send(this.socket);
 }
 
 chat.controller.prototype.getUserData = function(id) {
-  var idOpt = id ? [id] : [];
-  this.socket.send(JSON.stringify(new Message("GetUserInfo", { id: idOpt })));
+  var msg = new Message("GetUserInfo", { id: id ? [id] : [] });
+  msg.send(this.socket);
 }
 
 m.mount(document.getElementById("login-box"), chat);
