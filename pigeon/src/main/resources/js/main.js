@@ -11,6 +11,8 @@ chat.controller = function() {
   this.userCache = {};
   this.userInfo = null;
   this.lastConv = m.prop(null);
+  this.chatLog = [];
+  this.composeText = m.prop("");
 };
   
 chat.view = function(ctrl) {
@@ -29,7 +31,7 @@ chat.view = function(ctrl) {
           value: i, checked: i == ctrl.userInfo.availability,
           onclick: m.withAttr("value", ctrl.setAvailability.bind(ctrl))
         }),
-        m("label", { "for": "avail-" + i })
+        m("label", { "for": "avail-" + i }, i)
       ]);
     }
     showOpt.push(m("div", [
@@ -41,6 +43,33 @@ chat.view = function(ctrl) {
             m("div", "Name: " ,ctrl.userInfo.name),
             m("div", "Id: ", ctrl.userInfo.id),
             m("div.availability", availRadio)
+          ]),
+          m("div.chat", [
+            m("div.view-messages", ctrl.chatLog.map(function(msg) {
+              var uid = msg.user;
+              var userOpt = ctrl.userCache[uid];
+              var dispName = userOpt ? userOpt.name : uid;
+              if (!userOpt) {
+                ctrl.getUserData();
+              }
+              var speaker = uid == ctrl.userInfo ? "me" : "somebody";
+              var text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
+              return m("div.bubble." + speaker, text);
+            }))
+          ]),
+          m("div.write-message", [
+            m("input.input-box", {
+              type: "text", name: "compose",
+              oninput: m.withAttr("value", ctrl.composeText),
+              value: ctrl.composeText()
+            }),
+            m("button", {
+              onclick: (function() {
+                var msg = new Message("UserMessage", { cid: "test", user: this.userInfo.id, message: this.composeText() });
+                this.chatLog.push(msg);
+                // TODO: real implementation
+              }).bind(ctrl)
+            }, "Send")
           ])
         ])
       ])
