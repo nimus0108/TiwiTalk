@@ -21,8 +21,24 @@ chat.view = function(ctrl) {
       m("button", { onclick: ctrl.login.bind(ctrl) }, "Connect")
     ]));
   } else {
+    var availRadio = [];
+    for (var i = 1; i <= 5; i++) {
+      availRadio[i] = m("span", i, [
+        m("input.radioinput", { name: "avail", type: "radio" })
+      ]);
+    }
     showOpt.push(m("div", [
-      m("p", "Hello, " + ctrl.userInfo.name + "!")
+      m("p", "Hello, " + ctrl.userInfo.name + "!"),
+      m("div", [
+        m("div#sidebar.col-md-3"),
+        m("div#chat.col-md-9", [
+          m("div.chat-intro", [
+            m("div", ctrl.userInfo.name),
+            m("div", ctrl.userInfo.id),
+            m("div.availability", availRadio)
+          ])
+        ])
+      ])
     ]));
   }
   return m("div", showOpt);
@@ -127,4 +143,4 @@ chat.controller.prototype.getUserData = function(id) {
   msg.send(this.socket);
 }
 
-m.mount(document.getElementById("login-box"), chat);
+m.mount(document.getElementById("app"), chat);
