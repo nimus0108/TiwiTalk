@@ -5,5 +5,9 @@
 /project/target/
 /target/
 /pigeon/target/
+/pigeon/src/main/resources/js/node_modules/
+/pigeon/src/main/resources/js/components/
+/pigeon/src/main/resources/web/*.js
+/pigeon/src/main/resources/web/*.css
 /empath/target/
 *.swp

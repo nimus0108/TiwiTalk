@@ -1,3 +1,8 @@
+var m = require("lhorie/mithril");
+
+
+// TODO: Use mithril
+
 var nameIn = document.getElementById("name");
 
 var s = null;
