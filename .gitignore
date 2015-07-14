@@ -11,3 +11,4 @@
 /pigeon/src/main/resources/web/*.css
 /empath/target/
 *.swp
+*.brackets.json

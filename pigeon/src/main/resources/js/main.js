@@ -114,8 +114,6 @@ chat.controller.prototype.send = function(msg, id) {
   }
 }
 
-m.mount(document.getElementById("login-box"), chat);
-
 chat.controller.prototype.startConversation = function(_ids) {
   var ids = _ids.slice()
   ids.push(userInfo.id)
@@ -138,3 +136,4 @@ chat.controller.prototype.getUserData = function(id) {
   this.socket.send(JSON.stringify(new Message("GetUserInfo", { id: idOpt })));
 }
 
+m.mount(document.getElementById("login-box"), chat);
