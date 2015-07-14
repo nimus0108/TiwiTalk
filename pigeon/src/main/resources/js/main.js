@@ -1,25 +1,17 @@
 var m = require("lhorie/mithril");
 
+var chat = {};
 
-// TODO: Use mithril
+chat.controller = function() {
+  this.name = m.prop("");
+};
 
-var nameIn = document.getElementById("name");
-
-var s = null;
-var userInfo = null;
-var lastConv = null;
-var userCache = {};
-
-document.getElementById("login").addEventListener("click", function() {
-  login(nameIn.value);
-});
-
-function login(_name) {
+chat.controller.prototype.login = function() {
   if (s !== null) {
     s.close();
   }
   console.log("connecting...");
-  s = new WebSocket("ws://" + location.host + "/chat?name=" + _name);
+  s = new WebSocket("ws://" + location.host + "/chat?name=" + this.name());
   s.onopen = function(event) {
     console.log("connection established");
     getUserData();
@@ -50,6 +42,22 @@ function login(_name) {
     }
   };
 }
+  
+chat.view = function(ctrl) {
+  return m("div", [
+    m("input", { oninput: m.withAttr("value", ctrl.name) }),
+    m("button", { onclick: ctrl.login.bind(ctrl) }, "Connect")
+  ]);
+};
+
+m.mount(document.getElementById("login-box"), chat);
+
+// TODO: Use mithril
+
+var s = null;
+var userInfo = null;
+var lastConv = null;
+var userCache = {};
 
 function handleMessages(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
