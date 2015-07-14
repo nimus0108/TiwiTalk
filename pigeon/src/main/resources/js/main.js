@@ -13,6 +13,8 @@ chat.controller = function() {
   this.lastConv = m.prop(null);
   this.chatLog = [];
   this.composeText = m.prop("");
+
+  this.inviteField = m.prop("");
 };
   
 chat.view = function(ctrl) {
@@ -37,7 +39,17 @@ chat.view = function(ctrl) {
     showOpt.push(m("div", [
       m("p", "Hello, " + ctrl.userInfo.name + "!"),
       m("div", [
-        m("div#sidebar.col-md-3"),
+        m("div#sidebar.col-md-3", [
+          m("input", {
+            type: "text", oninput: m.withAttr("value", ctrl.inviteField)
+          }),
+          m("button", {
+            onclick: (function() {
+              var targets = ctrl.inviteField().split("[ ,]")
+              ctrl.startConversation(targets);
+            }).bind(ctrl)
+          }, "Start")
+        ]),
         m("div#chat.col-md-9", [
           m("div.chat-intro", [
             m("div", "Name: " ,ctrl.userInfo.name),
@@ -52,7 +64,7 @@ chat.view = function(ctrl) {
               if (!userOpt) {
                 ctrl.getUserData();
               }
-              var speaker = uid == ctrl.userInfo ? "me" : "somebody";
+              var speaker = uid == ctrl.userInfo.id ? "me" : "somebody";
               var text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
               return m("div.bubble." + speaker, text);
             }))
@@ -65,9 +77,8 @@ chat.view = function(ctrl) {
             }),
             m("button", {
               onclick: (function() {
-                var msg = new Message("UserMessage", { cid: "test", user: this.userInfo.id, message: this.composeText() });
-                this.chatLog.push(msg);
-                // TODO: real implementation
+                this.send(this.composeText());
+                this.composeText();
               }).bind(ctrl)
             }, "Send")
           ])
@@ -121,7 +132,7 @@ chat.controller.prototype.login = function() {
         console.info("User data initialized", data);
       }
       self.userCache[data.id] = data;
-    } else if (userInfo !== null) {
+    } else if (self.userInfo !== null) {
       self.handleMessages(data);
     }
     m.endComputation();
@@ -130,11 +141,12 @@ chat.controller.prototype.login = function() {
 
 chat.controller.prototype.handleMessages = function(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+    // TODO: handle this
     console.log(data.message);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
     var uid = data.user;
     var dispName = this.userCache[uid].name || uid;
-    console.log("[" + data.cid + "] " + dispName + ": " + data.message);
+    this.chatLog.push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.lastConv(data.id);
     if (!this.userInfo.conversations) this.userInfo.conversations = [];
@@ -156,7 +168,7 @@ chat.controller.prototype.send = function(msg, id) {
 
 chat.controller.prototype.startConversation = function(_ids) {
   var ids = _ids.slice()
-  ids.push(userInfo.id)
+  ids.push(this.userInfo.id)
   for (var i = 0; i < ids.length; i ++) {
     var id = ids[i];
     if (!this.userCache[id]) this.getUserData(id);
