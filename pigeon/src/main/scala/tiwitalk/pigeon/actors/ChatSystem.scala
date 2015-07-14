@@ -36,18 +36,18 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
           case fail => println(fail)
         }
       }
-      data.convos foreach (_.tell(m, sender()))
+      data.rooms foreach (_.tell(m, sender()))
     case d @ Disconnect(id) =>
-      data.convos foreach (_ forward d)
+      data.rooms foreach (_ forward d)
       userService.removeRef(id)
-    case i: InviteToConversation =>
-      data.convos foreach (_ forward i)
-    case StartConversation(ids) =>
-      val convId = UUID.randomUUID()
-      val convActor = context.actorOf(Conversation.props(convId, userService))
-      convActor ! JoinConversation(ids)
-      sender() ! ConversationStarted(convId)
-      stateChange(data.copy(convos = data.convos :+ convActor))
+    case i: InviteToRoom =>
+      data.rooms foreach (_ forward i)
+    case StartRoom(ids) =>
+      val roomId = UUID.randomUUID()
+      val roomActor = context.actorOf(Room.props(roomId, userService))
+      roomActor ! JoinRoom(ids)
+      sender() ! RoomStarted(roomId)
+      stateChange(data.copy(rooms = data.rooms :+ roomActor))
     case GetUserInfo(Some(id)) =>
       val originalSender = sender()
       userService.fetchUserInfo(id) foreach { infoOpt =>
@@ -57,7 +57,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
 
   @inline def stateChange(data: SystemData) = context.become(state(data))
 
-  case class SystemData(convos: Seq[ActorRef] = Seq.empty)
+  case class SystemData(rooms: Seq[ActorRef] = Seq.empty)
 }
 
 object ChatSystem {

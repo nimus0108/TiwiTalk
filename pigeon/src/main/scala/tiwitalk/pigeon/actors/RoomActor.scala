@@ -10,7 +10,7 @@ import tiwitalk.pigeon.service.UserService
 
 import ChatHelpers._
 
-class Conversation(id: UUID, userService: UserService)
+class Room(id: UUID, userService: UserService)
     extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(5.seconds)
@@ -22,18 +22,18 @@ class Conversation(id: UUID, userService: UserService)
       sendMessage(users, msg)
     case Disconnect(id) if users contains id =>
       sendMessage(users)(user => Broadcast(s"${user.name} disconnected."))
-    case InviteToConversation(_id, userIds) if _id equals id =>
+    case InviteToRoom(_id, userIds) if _id equals id =>
       getData(sender()) foreach { userData =>
         if (users.contains(userData.id)) {
           addUsers(users, userIds)
         }
       }
-    case JoinConversation(ids) =>
+    case JoinRoom(ids) =>
       addUsers(users, ids)
     case GetRoomId => sender() ! id
     case GetUsers => sender() ! users
     case shit =>
-      println(s"[conv $id] uncaught: $shit")
+      println(s"[room $id] uncaught: $shit")
   }
 
   def sendMessage(users: Seq[UUID], event: OutEvent): Unit =
@@ -71,7 +71,7 @@ class Conversation(id: UUID, userService: UserService)
   @inline def stateChange(data: Seq[UUID]) = context.become(status(data))
 }
 
-object Conversation {
+object Room {
   def props(id: UUID, userService: UserService) =
-    Props(new Conversation(id, userService))
+    Props(new Room(id, userService))
 }

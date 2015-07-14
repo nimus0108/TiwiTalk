@@ -9,8 +9,8 @@ object Chat {
   sealed trait ServerEvent extends Event
 
   case class Message(message: String, room: UUID) extends InEvent
-  case class StartConversation(users: Seq[UUID]) extends InEvent
-  case class InviteToConversation(id: UUID, users: Seq[UUID]) extends InEvent
+  case class StartRoom(users: Seq[UUID]) extends InEvent
+  case class InviteToRoom(id: UUID, users: Seq[UUID]) extends InEvent
   case class GetUserInfo(id: Option[UUID]) extends InEvent with ServerEvent
   case object GetAvailability extends InEvent with ServerEvent
   case class SetAvailability(value: Int) extends InEvent
@@ -26,7 +26,7 @@ object Chat {
       id: UUID,
       name: String,
       availability: Int,
-      conversations: Seq[UUID] = Seq.empty) extends OutEvent
+      rooms: Seq[UUID] = Seq.empty) extends OutEvent
 
   case class Connect(name: String) extends ServerEvent
   case class Disconnect(id: UUID) extends ServerEvent
@@ -34,8 +34,8 @@ object Chat {
   case object GetName extends ServerEvent
   case object GetRoomId extends ServerEvent
   case object GetUsers extends ServerEvent
-  case object GetConversations extends ServerEvent
-  case class JoinConversation(ids: Seq[UUID]) extends ServerEvent
+  case object GetRooms extends ServerEvent
+  case class JoinRoom(ids: Seq[UUID]) extends ServerEvent
   case class UpdateUserInfo(data: UserData) extends ServerEvent
-  case class ConversationStarted(id: UUID) extends ServerEvent
+  case class RoomStarted(id: UUID) extends ServerEvent
 }

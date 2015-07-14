@@ -20,14 +20,14 @@ Message.Message = function(message, room) {
   return new Message("Message", { message: message, room: room });
 };
 
-/* Constructs a StartConversation message */
-Message.StartConversation = function(users) {
-  return new Message("StartConversation", { users: users });
+/* Constructs a StartRoom message */
+Message.StartRoom = function(users) {
+  return new Message("StartRoom", { users: users });
 };
 
-/* Constructs an InviteToConversation message */
-Message.InviteToConversation = function(id, users) {
-  return new Message("InviteToConversation", { id: id, users: users });
+/* Constructs an InviteToRoom message */
+Message.InviteToRoom = function(id, users) {
+  return new Message("InviteToRoom", { id: id, users: users });
 };
 
 /* Constructs a GetUserInfo message */

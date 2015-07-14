@@ -10,7 +10,7 @@ chat.controller = function() {
   this.socket = null;
   this.userCache = {};
   this.userInfo = null;
-  this.lastConv = m.prop(null);
+  this.lastRoom = m.prop(null);
   this.chatLog = [];
   this.composeText = m.prop("");
 
@@ -47,7 +47,7 @@ chat.view = function(ctrl) {
           m("button", {
             onclick: (function() {
               var targets = ctrl.inviteField().split("[ ,]")
-              ctrl.startConversation(targets);
+              ctrl.startRoom(targets);
             }).bind(ctrl)
           }, "Start")
         ]),
@@ -149,37 +149,37 @@ chat.controller.prototype.handleMessages = function(data) {
     var dispName = this.userCache[uid].name || uid;
     this.chatLog.push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
-    this.lastConv(data.id);
+    this.lastRoom(data.id);
     if (!this.userInfo.conversations) this.userInfo.conversations = [];
-    this.userInfo.conversations.push(this.lastConv());
-    console.log("Joined " + this.lastConv());
+    this.userInfo.conversations.push(this.lastRoom());
+    console.log("Joined " + this.lastRoom());
   } else {
     console.log("unknown: ", data);
   }
 };
 
 chat.controller.prototype.send = function(msg, id) {
-  var convId = id || this.lastConv();
+  var convId = id || this.lastRoom();
   if (convId) {
     Message.Message(msg, convId).send(this.socket);
   } else {
-    console.warn("Specify conversation id");
+    console.warn("Specify room id");
   }
 };
 
-chat.controller.prototype.startConversation = function(_ids) {
+chat.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
   ids.push(this.userInfo.id)
   for (var i = 0; i < ids.length; i ++) {
     var id = ids[i];
     if (!this.userCache[id]) this.getUserData(id);
   }
-  Message.StartConversation(ids).send(this.socket);
+  Message.StartRoom(ids).send(this.socket);
 };
 
-chat.controller.prototype.inviteToConversation = function(users, convIdOpt) {
-  var convId = convIdOpt || this.lastConv();
-  Message.InviteToConversation(convId, users).send(this.socket);
+chat.controller.prototype.inviteToRoom = function(users, convIdOpt) {
+  var convId = convIdOpt || this.lastRoom();
+  Message.InviteToRoom(convId, users).send(this.socket);
 };
 
 chat.controller.prototype.getUserData = function(id) {

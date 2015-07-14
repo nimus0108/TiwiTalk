@@ -29,12 +29,12 @@ class UserActor(initialData: UserData, userService: UserService)
       self ! PoisonPill
     case r @ RoomJoined(cid) if totalDemand > 0 =>
       onNext(r)
-      val newData = data.copy(conversations = data.conversations :+ cid)
+      val newData = data.copy(rooms = data.rooms :+ cid)
       userService.updateUserInfo(newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
     case GetUserInfo(None) if totalDemand > 0 => sender() ! data
     case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
-    case OnNext(m @ Message(msg, cid)) if data.conversations.contains(cid) =>
+    case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       context.parent ! UserMessage(data.id, msg, cid)
     case OnNext(SetAvailability(value)) => setAvailability(value, data)
     case OnNext(s) => context.parent ! s
