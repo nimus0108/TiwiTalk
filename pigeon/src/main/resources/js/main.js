@@ -21,6 +21,7 @@ chat.view = function(ctrl) {
   var showOpt = [];
   if (ctrl.userInfo === null) {
     showOpt.push(m("div", [
+      m("h1", "Tiwi"),
       m("input", { oninput: m.withAttr("value", ctrl.nameField) }),
       m("button", { onclick: ctrl.login.bind(ctrl) }, "Connect")
     ]));
