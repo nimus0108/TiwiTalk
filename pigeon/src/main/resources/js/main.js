@@ -23,8 +23,13 @@ chat.view = function(ctrl) {
   } else {
     var availRadio = [];
     for (var i = 1; i <= 5; i++) {
-      availRadio[i] = m("span", i, [
-        m("input.radioinput", { name: "avail", type: "radio" })
+      availRadio[i] = m("span", [
+        m("input.radioinput", {
+          name: "avail", id: "avail-" + i, type: "radio",
+          value: i, checked: i == ctrl.userInfo.availability,
+          onclick: m.withAttr("value", ctrl.setAvailability.bind(ctrl))
+        }),
+        m("label", { "for": "avail-" + i })
       ]);
     }
     showOpt.push(m("div", [
@@ -114,12 +119,11 @@ chat.controller.prototype.handleMessages = function(data) {
 chat.controller.prototype.send = function(msg, id) {
   var convId = id || this.lastConv();
   if (convId) {
-    var msg = new Message("Message", { message: msg, room: convId });
-    msg.send(this.socket);
+    Message.Message(msg, convId).send(this.socket);
   } else {
     console.warn("Specify conversation id");
   }
-}
+};
 
 chat.controller.prototype.startConversation = function(_ids) {
   var ids = _ids.slice()
@@ -128,19 +132,21 @@ chat.controller.prototype.startConversation = function(_ids) {
     var id = ids[i];
     if (!this.userCache[id]) this.getUserData(id);
   }
-  var msg = new Message("StartConversation", { users: ids })
-  msg.send(this.socket);
-}
+  Message.StartConversation(ids).send(this.socket);
+};
 
 chat.controller.prototype.inviteToConversation = function(users, convIdOpt) {
   var convId = convIdOpt || this.lastConv();
-  var msg = new Message("InviteToConversation", { id: convId, users: users });
-  msg.send(this.socket);
-}
+  Message.InviteToConversation(convId, users).send(this.socket);
+};
 
 chat.controller.prototype.getUserData = function(id) {
-  var msg = new Message("GetUserInfo", { id: id ? [id] : [] });
-  msg.send(this.socket);
-}
+  Message.GetUserInfo(id).send(this.socket);
+};
+
+chat.controller.prototype.setAvailability = function(value) {
+  Message.SetAvailability(value).send(this.socket);
+  this.getUserData();
+};
 
 m.mount(document.getElementById("app"), chat);
