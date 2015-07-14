@@ -26,10 +26,13 @@ body {
 
 /* AFTER LOGIN */
 #chat {
+    border: 1px solid black;
 }
+
 .chat-intro {
     background-color: #D3D3D3;
     text-align: center;
+    font-size: 16px;
 }
 
 .name {

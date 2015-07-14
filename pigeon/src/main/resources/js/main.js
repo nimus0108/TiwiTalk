@@ -38,8 +38,8 @@ chat.view = function(ctrl) {
         m("div#sidebar.col-md-3"),
         m("div#chat.col-md-9", [
           m("div.chat-intro", [
-            m("div", ctrl.userInfo.name),
-            m("div", ctrl.userInfo.id),
+            m("div", "Name: " ,ctrl.userInfo.name),
+            m("div", "Id: ", ctrl.userInfo.id),
             m("div.availability", availRadio)
           ])
         ])
