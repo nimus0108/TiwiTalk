@@ -103,3 +103,8 @@ body {
     width: 100%;
     bottom: 10px;
 }
+
+.write-message {
+    position: fixed;
+    bottom: 0;
+}
