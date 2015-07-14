@@ -1,1 +1,23 @@
 @import 'necolas/normalize.css';
+
+
+html {
+}
+
+body {
+    font-family: 'Montserrat';
+    height: 100%;
+} 
+
+#intro {
+    text-align: center;
+    font-size: 2em;
+}
+
+#login-box{
+    text-align: center;
+}
+
+#chat {
+    visibility: hidden;
+}
