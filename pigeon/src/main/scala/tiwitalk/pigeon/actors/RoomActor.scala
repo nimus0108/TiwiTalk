@@ -10,30 +10,30 @@ import tiwitalk.pigeon.service.UserService
 
 import ChatHelpers._
 
-class Room(id: UUID, userService: UserService)
+class RoomActor(id: UUID, userService: UserService)
     extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(5.seconds)
 
-  def receive = status(Seq.empty)
+  def receive = status(Room(id, Seq.empty))
 
-  def status(users: Seq[UUID]): Receive = {
-    case msg: UserMessage if msg.cid == id && users.contains(msg.user) =>
-      sendMessage(users, msg)
-    case Disconnect(id) if users contains id =>
-      sendMessage(users)(user => Broadcast(s"${user.name} disconnected."))
+  def status(room: Room): Receive = {
+    case msg: UserMessage if msg.cid == id && room.users.contains(msg.user) =>
+      sendMessage(room.users, msg)
+    case Disconnect(id) if room.users contains id =>
+      sendMessage(room.users)(user => Broadcast(s"${user.name} disconnected."))
     case InviteToRoom(_id, userIds) if _id equals id =>
       getData(sender()) foreach { userData =>
-        if (users.contains(userData.id)) {
-          addUsers(users, userIds)
+        if (room.users.contains(userData.id)) {
+          addUsers(room, userIds)
         }
       }
     case JoinRoom(ids) =>
-      addUsers(users, ids)
+      addUsers(room, ids)
     case GetRoomId => sender() ! id
-    case GetUsers => sender() ! users
+    case GetUsers => sender() ! room.users
     case shit =>
-      println(s"[room $id] uncaught: $shit")
+      println(s"[room ${room.id}] uncaught: $shit")
   }
 
   def sendMessage(users: Seq[UUID], event: OutEvent): Unit =
@@ -54,9 +54,10 @@ class Room(id: UUID, userService: UserService)
     }
   }
 
-  def addUsers(currentUsers: Seq[UUID], users: Seq[UUID]) = {
-    val newUsers = (currentUsers ++ users).distinct
-    sendMessage(users, RoomJoined(id))
+  def addUsers(room: Room, users: Seq[UUID]) = {
+    val newUsers = (room.users ++ users).distinct
+    val updatedRoom = room.copy(users = newUsers)
+    sendMessage(users, RoomJoined(updatedRoom))
     Future.sequence(users map userService.fetchUserInfo) foreach { seq =>
       seq collect {
         case Some(info) => info
@@ -65,13 +66,13 @@ class Room(id: UUID, userService: UserService)
         sendMessage(newUsers, msg)
       }
     }
-    stateChange(newUsers)
+    stateChange(updatedRoom)
   }
   
-  @inline def stateChange(data: Seq[UUID]) = context.become(status(data))
+  @inline def stateChange(data: Room) = context.become(status(data))
 }
 
-object Room {
+object RoomActor {
   def props(id: UUID, userService: UserService) =
-    Props(new Room(id, userService))
+    Props(new RoomActor(id, userService))
 }

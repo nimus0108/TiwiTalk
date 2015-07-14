@@ -21,12 +21,13 @@ object Chat {
     message: String,
     cid: UUID) extends OutEvent
   case class RoomInvite(id: UUID) extends OutEvent
-  case class RoomJoined(id: UUID) extends OutEvent with ServerEvent
+  case class RoomJoined(room: Room) extends OutEvent with ServerEvent
   case class UserData(
       id: UUID,
       name: String,
       availability: Int,
       rooms: Seq[UUID] = Seq.empty) extends OutEvent
+  case class Room(id: UUID, users: Seq[UUID]) extends OutEvent
 
   case class Connect(name: String) extends ServerEvent
   case class Disconnect(id: UUID) extends ServerEvent

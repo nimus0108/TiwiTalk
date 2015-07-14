@@ -44,7 +44,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
       data.rooms foreach (_ forward i)
     case StartRoom(ids) =>
       val roomId = UUID.randomUUID()
-      val roomActor = context.actorOf(Room.props(roomId, userService))
+      val roomActor = context.actorOf(RoomActor.props(roomId, userService))
       roomActor ! JoinRoom(ids)
       sender() ! RoomStarted(roomId)
       stateChange(data.copy(rooms = data.rooms :+ roomActor))

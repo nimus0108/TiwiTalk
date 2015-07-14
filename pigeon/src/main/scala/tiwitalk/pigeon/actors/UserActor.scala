@@ -27,9 +27,9 @@ class UserActor(initialData: UserData, userService: UserService)
     case Disconnect =>
       context.parent ! Disconnect
       self ! PoisonPill
-    case r @ RoomJoined(cid) if totalDemand > 0 =>
+    case r @ RoomJoined(room) if totalDemand > 0 =>
       onNext(r)
-      val newData = data.copy(rooms = data.rooms :+ cid)
+      val newData = data.copy(rooms = data.rooms :+ room.id)
       userService.updateUserInfo(newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
     case GetUserInfo(None) if totalDemand > 0 => sender() ! data

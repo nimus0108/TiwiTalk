@@ -18,13 +18,15 @@ chat.controller = function() {
 };
   
 chat.view = function(ctrl) {
-  var showOpt = [];
+  var showOpt;
   if (ctrl.userInfo === null) {
-    showOpt.push(m("div", [
+    showOpt = m("div", [
       m("h1", "Tiwi"),
-      m("input", { oninput: m.withAttr("value", ctrl.nameField) }),
-      m("button", { onclick: ctrl.login.bind(ctrl) }, "Connect")
-    ]));
+      m("form", { onsubmit: function() { ctrl.login(); return false; } }, [
+        m("input", { oninput: m.withAttr("value", ctrl.nameField) }),
+        m("button[type=submit]", "Connect")
+      ])
+    ]);
   } else {
     var availRadio = [];
     for (var i = 1; i <= 5; i++) {
@@ -37,7 +39,7 @@ chat.view = function(ctrl) {
         m("label", { "for": "avail-" + i }, i)
       ]);
     }
-    showOpt.push(m("div", [
+    showOpt = m("div", [
       m("p", "Hello, " + ctrl.userInfo.name + "!"),
       m("div", [
         m("div#sidebar.col-md-3", [
@@ -70,24 +72,25 @@ chat.view = function(ctrl) {
               return m("div.bubble." + speaker, text);
             }))
           ]),
-          m("div.write-message", [
+          m("form.write-message", {
+            onsubmit: (function() {
+              this.send(this.composeText());
+              this.composeText("");
+              return false;
+            }).bind(ctrl)
+          }, [
             m("input.input-box", {
               type: "text", name: "compose",
               oninput: m.withAttr("value", ctrl.composeText),
               value: ctrl.composeText()
             }),
-            m("button", {
-              onclick: (function() {
-                this.send(this.composeText());
-                this.composeText();
-              }).bind(ctrl)
-            }, "Send")
+            m("button[type=submit]", "Send")
           ])
         ])
       ])
-    ]));
+    ]);
   }
-  return m("div", showOpt);
+  return showOpt;
 };
 
 chat.controller.prototype.logout = function() {
@@ -149,7 +152,8 @@ chat.controller.prototype.handleMessages = function(data) {
     var dispName = this.userCache[uid].name || uid;
     this.chatLog.push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
-    this.lastRoom(data.id);
+    this.lastRoom(data.room.id);
+    this.fetchUserDataNeeded(data.room.users);
     if (!this.userInfo.conversations) this.userInfo.conversations = [];
     this.userInfo.conversations.push(this.lastRoom());
     console.log("Joined " + this.lastRoom());
@@ -170,20 +174,25 @@ chat.controller.prototype.send = function(msg, id) {
 chat.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
   ids.push(this.userInfo.id)
-  for (var i = 0; i < ids.length; i ++) {
-    var id = ids[i];
-    if (!this.userCache[id]) this.getUserData(id);
-  }
+  this.fetchUserDataNeeded(ids);
   Message.StartRoom(ids).send(this.socket);
 };
 
 chat.controller.prototype.inviteToRoom = function(users, convIdOpt) {
   var convId = convIdOpt || this.lastRoom();
+  this.fetchUserDataNeeded(users);
   Message.InviteToRoom(convId, users).send(this.socket);
 };
 
 chat.controller.prototype.getUserData = function(id) {
   Message.GetUserInfo(id).send(this.socket);
+};
+
+chat.controller.prototype.fetchUserDataNeeded = function(ids) {
+  for (var i = 0; i < ids.length; i ++) {
+    var id = ids[i];
+    if (!this.userCache[id]) this.getUserData(id);
+  }
 };
 
 chat.controller.prototype.setAvailability = function(value) {
