@@ -108,3 +108,7 @@ body {
     position: fixed;
     bottom: 0;
 }
+
+ul.roomlist {
+    list-style: none;
+}
