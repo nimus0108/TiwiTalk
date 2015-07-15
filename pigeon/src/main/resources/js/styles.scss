@@ -29,51 +29,61 @@ body {
 } 
 
 #intro {
-    position: relative;
-    top: 30%;
-    text-align: center;
+    width: 100%;
+    height: 100%;
     
-    h1 {
-        margin: 0;
-        color: #fafafa;
-        font-size: 108px;    
-    }
-    
-    h2 {
-        margin: 2px 0 45px 0;
-        color: #d0d0d0;
-        font-size: 36px;
-    }
-    
-    form {
-        input {
-            width: 300px;
+    #app {
+        width: 100%;
+        height: 100%;
+    } 
+    .splash {
+        position: relative;
+        top: 30%;
+        text-align: center;
+      
+        
+        h1 {
             margin: 0;
-            margin-top: 10px;
-            background-color: #f7f7f7;
-            padding: 7px 15px;
-            border: 3px solid #ddd;
-            border-radius: 3px;
-            outline: none;
+            color: #fafafa;
+            font-size: 108px;    
         }
         
-        button {
-            background-color: #2ecc71;
-            color: #f7f7f7;
-            margin: 10px 0 0 5px;
-            padding: 7px 15px;
-            border: 3px solid #2ecc71;
-            border-radius: 3px;
-            outline: none;
+        h2 {
+            margin: 2px 0 45px 0;
+            color: #d0d0d0;
+            font-size: 36px;
+        }
+        
+        form {
+            input {
+                width: 300px;
+                margin: 0;
+                margin-top: 10px;
+                background-color: #f7f7f7;
+                padding: 7px 15px;
+                border: 3px solid #ddd;
+                border-radius: 3px;
+                outline: none;
+            }
             
-            -webkit-transition: all 200ms ease;
-            -moz-transition: all 200ms ease;
-            -ms-transition: all 200ms ease;
-            -o-transition: all 200ms ease;
-            transition: all 200ms ease;
-
-            &:hover {
-                opacity: 0.8;
+            button {
+                background-color: #2ecc71;
+                color: #f7f7f7;
+                margin: 10px 0 0 5px;
+                padding: 7px 15px;
+                border: 3px solid #2ecc71;
+                border-radius: 3px;
+                outline: none;
+                
+                -webkit-transition: all 200ms ease;
+                -moz-transition: all 200ms ease;
+                -ms-transition: all 200ms ease;
+                -o-transition: all 200ms ease;
+                transition: all 200ms ease;
+    
+                &:hover {
+                    opacity: 0.8;
+                }
             }
         }
     }

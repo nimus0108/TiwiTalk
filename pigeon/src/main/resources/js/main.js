@@ -28,7 +28,7 @@ TiwiTalk.controller = function() {
 TiwiTalk.view = function(ctrl) {
   var showOpt;
   if (ctrl.userInfo === null) {
-    showOpt = m("div", [
+    showOpt = m("div.splash", [
       m("h1", "TiwiTalk"),
       m("h2", "Demo v 0.0.0.3"),
       m("form", { onsubmit: function() { ctrl.login(); return false; } }, [
