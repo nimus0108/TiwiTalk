@@ -12,7 +12,7 @@ RoomList.controller = function(args) {
 
 RoomList.view = function(ctrl, args) {
   var rooms = args.userInfo.rooms || [];
-  return m("ul.roomlist", rooms.map(function(room) {
+  return m("div.roomContainer", rooms.map(function(room) {
     var isCurrent = room == args.currentRoom();
     var classOpt = isCurrent ? ".currentroom" : "";
 
@@ -24,7 +24,7 @@ RoomList.view = function(ctrl, args) {
     }
     var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
 
-    return m("li" + classOpt, { onclick: ctrl.setActive(room) }, labelOpt);
+    return m("div.messageTarget" + classOpt, { onclick: ctrl.setActive(room) }, labelOpt);
   }));
 };
 
