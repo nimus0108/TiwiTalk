@@ -142,6 +142,9 @@ body {
 /* Chat rooms */
 ul.roomlist {
     list-style: none;
+}
+
+li.roomlist {
     background-color: #ecf0f1;
 }
 
