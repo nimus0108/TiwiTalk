@@ -189,14 +189,57 @@ body {
 }
 
 /* Chat rooms */
-ul.roomlist {
-    list-style: none;
-}
 
-li.roomlist {
-    background-color: #ecf0f1;
-}
 
-.currentroom {
-    background-color: #2ecc71;
+#sidebar {
+    border-right: 1px solid #777;
+    
+    input {
+        width: calc(100% - 220px);
+        margin: 0;
+        margin-top: 10px;
+        margin-left: 5px;
+        background-color: #f7f7f7;
+        padding: 7px 15px;
+        border: 3px solid #ddd;
+        border-radius: 3px;
+        outline: none;
+    }
+    
+    button {
+        width: 195px;
+        background-color: #2ecc71;
+        color: #f7f7f7;
+        margin: 10px 0 0 5px;
+        padding: 7px 15px;
+        border: 3px solid #2ecc71;
+        border-radius: 3px;
+        outline: none;
+        text-align: center;
+        
+        -webkit-transition: all 200ms ease;
+        -moz-transition: all 200ms ease;
+        -ms-transition: all 200ms ease;
+        -o-transition: all 200ms ease;
+        transition: all 200ms ease;
+    
+        &:hover {
+            opacity: 0.8;
+        }    
+    }
+    
+    ul.roomlist {
+        list-style: none;
+    }
+    
+    li.roomlist {
+        width: 100%;
+        border-bottom: 1px solid #777;
+        background-color: #2ecc71;
+        padding: 25px 5px;
+    }
+    
+    .currentroom {
+        background-color: #2ecc71;
+    }
 }

@@ -51,8 +51,8 @@ TiwiTalk.view = function(ctrl) {
     showOpt = m("div", [
       m("p", "Hello, " + ctrl.userInfo.name + "!"),
       m("div", [
-        m("div#sidebar.col-md-3", [
-          m("input", {
+        m("div#sidebar.col-md-4", [
+          m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)
           }),
           m("button", {
@@ -60,13 +60,13 @@ TiwiTalk.view = function(ctrl) {
               var targets = ctrl.inviteField().split("[ ,]")
               ctrl.startRoom(targets);
             }).bind(ctrl)
-          }, "Start"),
+          }, "Start Chatting!"),
           m.component(RoomList, {
             currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
             userCache: ctrl.userCache, roomCache: ctrl.roomCache
           })
         ]),
-        m("div#chat.col-md-9", [
+        m("div#chat.col-md-8", [
           m("div.chat-intro", [
             m("div", "Name: " ,ctrl.userInfo.name),
             m("div", "Id: ", ctrl.userInfo.id),
