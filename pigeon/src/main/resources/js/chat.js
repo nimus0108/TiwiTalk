@@ -8,8 +8,9 @@ Chat.controller = function() {
 };
 
 Chat.view = function(ctrl, args) {
+  var chatLog = args.chatLogs[args.currentRoom()] || [];
   return m("div.chat", [
-    m("div.view-messages", args.chatLog.map(function(msg) {
+    m("div.view-messages", chatLog.map(function(msg) {
       var text;
       var otherStyle = "";
       if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
@@ -20,7 +21,7 @@ Chat.view = function(ctrl, args) {
           args.getUserData();
         }
         otherStyle = "." + (uid == args.userInfo.id ? "me" : "somebody");
-        text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
+        text = dispName + ": " + msg.message;
       } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
         text = msg.message;
       }

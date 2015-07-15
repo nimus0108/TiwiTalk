@@ -18,7 +18,7 @@ TiwiTalk.controller = function() {
   this.userCache = {};
   this.userInfo = null;
   this.currentRoom = m.prop(null);
-  this.chatLog = [];
+  this.chatLogs = {};
   this.composeText = m.prop("");
 
   this.inviteField = m.prop("");
@@ -71,7 +71,8 @@ TiwiTalk.view = function(ctrl) {
           ]),
           m.component(Chat, {
             userCache: ctrl.userCache, userInfo: ctrl.userInfo,
-            send: ctrl.send.bind(ctrl), chatLog: ctrl.chatLog,
+            send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
+            currentRoom: ctrl.currentRoom,
             getUserData: ctrl.getUserData.bind(ctrl)
           })
         ])
@@ -133,14 +134,15 @@ TiwiTalk.controller.prototype.login = function() {
 
 TiwiTalk.controller.prototype.handleMessages = function(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
-    this.chatLog.push(data);
+    for (id in this.chatLogs) this.chatLogs[id].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
-    this.chatLog.push(data);
+    this.chatLogs[data.cid].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.currentRoom(data.room.id);
     this.fetchUserDataNeeded(data.room.users);
     if (!this.userInfo.rooms) this.userInfo.rooms = [];
     this.userInfo.rooms.push(this.currentRoom());
+    if (!this.chatLogs[data.room.id]) this.chatLogs[data.room.id] = [];
     console.log("Joined " + this.currentRoom());
   } else {
     console.log("unknown: ", data);
