@@ -68,8 +68,8 @@ TiwiTalk.view = function(ctrl) {
         ]),
         m("div#chat", [
           m("div.chat-intro", [
-            m("div", "Name: " ,ctrl.userInfo.name),
-            m("div", "Id: ", ctrl.userInfo.id),
+            m("div.name", ctrl.userInfo.name),
+            m("div.id", ctrl.userInfo.id),
             m("div.availability", availRadio)
           ]),
           m.component(Chat, {

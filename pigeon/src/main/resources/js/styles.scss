@@ -19,6 +19,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 } 
 
 #intro {
@@ -108,9 +109,17 @@ body {
 }
 
 .name {
-    font-weight: 600;
-    font-size: 1.5em;
+    font-size: 48px;
+    color: #1d1d1d;
+    margin: 5px 0 0 0;
 }
+
+.id {
+    font-size: 12px;
+    margin: 2px 0 7px 0;
+    color: #999;
+}
+
 
 .view-messages{
 }
@@ -137,7 +146,7 @@ body {
 
 
 .msg {
-    background-color: #BCED91;
+    background-color: rgba(188, 237, 145, 1.0);
     text-align: center;
     border-radius: 5px;
     display: block;
@@ -160,7 +169,7 @@ body {
 .somebody {
     float: left;   
     margin: 10px 90px 10px 40px;   
-    background-color: #BAEB8D;      
+    background-color: rgba(188, 237, 145, 0.7);      
 }
 
 .somebody::before {
