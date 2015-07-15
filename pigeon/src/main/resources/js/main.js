@@ -29,10 +29,11 @@ TiwiTalk.view = function(ctrl) {
   var showOpt;
   if (ctrl.userInfo === null) {
     showOpt = m("div", [
-      m("h1", "Tiwi"),
+      m("h1", "TiwiTalk"),
+      m("h2", "Demo v 0.0.0.3"),
       m("form", { onsubmit: function() { ctrl.login(); return false; } }, [
-        m("input", { oninput: m.withAttr("value", ctrl.nameField) }),
-        m("button[type=submit]", "Connect")
+        m("input[placeholder=username]", { oninput: m.withAttr("value", ctrl.nameField) }),
+        m("button[type=submit]", "connect")
       ])
     ]);
   } else {

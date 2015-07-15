@@ -1,6 +1,11 @@
 @import 'necolas/normalize.css';
 @import 'twbs/bootstrap@v3.3.5:dist/css/bootstrap.css';
 
+* {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+}
+
 html {
     width: 100%;
     height: 100%;
@@ -10,16 +15,68 @@ html {
 
 
 body {
-    font-family: 'Nunito', sans-serif;
+    width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #05c6d1;
+    background: -webkit-gradient(linear, top, bottom, color-stop(0%, #194fb8), color-stop(100%, #05c6d1));
+    background: -webkit-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+    background: -moz-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+    background: -o-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+    background: -ms-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+    background: linear-gradient(top, #194fb8 0%, #05c6d1 100%);
 } 
 
 #intro {
+    position: relative;
+    top: 30%;
     text-align: center;
-    /* visibility: hidden; */
-}
+    
+    h1 {
+        margin: 0;
+        color: #fafafa;
+        font-size: 108px;    
+    }
+    
+    h2 {
+        margin: 2px 0 45px 0;
+        color: #d0d0d0;
+        font-size: 36px;
+    }
+    
+    form {
+        input {
+            width: 300px;
+            margin: 0;
+            margin-top: 10px;
+            background-color: #f7f7f7;
+            padding: 7px 15px;
+            border: 3px solid #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        button {
+            background-color: #2ecc71;
+            color: #f7f7f7;
+            margin: 10px 0 0 5px;
+            padding: 7px 15px;
+            border: 3px solid #2ecc71;
+            border-radius: 3px;
+            outline: none;
+            
+            -webkit-transition: all 200ms ease;
+            -moz-transition: all 200ms ease;
+            -ms-transition: all 200ms ease;
+            -o-transition: all 200ms ease;
+            transition: all 200ms ease;
 
-#intro h1{
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
 }
 
 #app {
@@ -32,7 +89,6 @@ body {
 }
 
 .chat-intro {
-    background-color: #D3D3D3;
     text-align: center;
     font-size: 16px;
 }
@@ -47,7 +103,8 @@ body {
 
 .chat {
     max-width: 100%;
-    margin: 10px 0;
+    width: 1200px;
+    margin: auto;
     padding: 7px 15px;
     font-size: 16px;
 }
@@ -75,24 +132,6 @@ body {
     vertical-align: top;
     font-size: 14px;
 }
-
-
-
-.msg::before {
-    background-color: #BCED91;
-    content: "\00a0";
-    display: block;
-    height: 16px;
-    position: absolute;
-    top: 11px;
-    transform:             rotate( 29deg ) skew( -35deg );
-        -moz-transform:    rotate( 29deg ) skew( -35deg );
-        -ms-transform:     rotate( 29deg ) skew( -35deg );
-        -o-transform:      rotate( 29deg ) skew( -35deg );
-        -webkit-transform: rotate( 29deg ) skew( -35deg );
-    width:  20px;
-}
-
 
 .somebody {
     float: left;   
