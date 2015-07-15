@@ -1,6 +1,5 @@
 @import 'necolas/normalize.css';
 @import 'twbs/bootstrap@v3.3.5:dist/css/bootstrap.css';
-@import url(http://fonts.googleapis.com/css?family=Nunito:400,700,300);
 
 html {
     width: 100%;
