@@ -51,6 +51,7 @@ TiwiTalk.view = function(ctrl) {
     showOpt = m("div.messenger-container", [
       // m("p", "Hello, " + ctrl.userInfo.name + "!"),
       m("div.messenger", [
+        m("div#profile", "hi, ", ctrl.userInfo.name),
         m("div#sidebar", [
           m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)

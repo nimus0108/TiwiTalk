@@ -194,12 +194,19 @@ body {
     margin-left: 0;
 }
 
+#profile {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 24px;
+}
+
 .write-message {
     position: absolute;
     bottom: 0;
     
     input {
-        width: 720px;
+        width: 540px;
         margin: 0;
         margin-left: 150px;
         background-color: #f7f7f7;
