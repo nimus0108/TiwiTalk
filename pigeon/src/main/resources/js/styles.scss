@@ -19,13 +19,6 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #05c6d1;
-    background: -webkit-gradient(linear, top, bottom, color-stop(0%, #194fb8), color-stop(100%, #05c6d1));
-    background: -webkit-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
-    background: -moz-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
-    background: -o-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
-    background: -ms-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
-    background: linear-gradient(top, #194fb8 0%, #05c6d1 100%);
 } 
 
 #intro {
@@ -36,9 +29,20 @@ body {
         width: 100%;
         height: 100%;
     } 
+    
     .splash {
-        position: relative;
-        top: 30%;
+        // position: relative;
+        // top: 30%;
+        width: 100%;
+        height: 100%;
+        background: #05c6d1;
+        background: -webkit-gradient(linear, top, bottom, color-stop(0%, #194fb8), color-stop(100%, #05c6d1));
+        background: -webkit-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+        background: -moz-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+        background: -o-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+        background: -ms-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+        background: linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+        padding-top: 17%;
         text-align: center;
       
         
@@ -190,9 +194,26 @@ body {
 
 /* Chat rooms */
 
+.messenger-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    .messenger {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
 
 #sidebar {
+    display: inline-block;
+    width: 30%;
+    height: 100%;
     border-right: 1px solid #777;
+    float: left;
     
     input {
         width: calc(100% - 220px);
@@ -242,4 +263,10 @@ body {
     .currentroom {
         background-color: #2ecc71;
     }
+}
+
+#chat {
+    display: inline-block;
+    width: 70%;
+    float: left;
 }

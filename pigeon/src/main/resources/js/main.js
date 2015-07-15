@@ -30,7 +30,7 @@ TiwiTalk.view = function(ctrl) {
   if (ctrl.userInfo === null) {
     showOpt = m("div.splash", [
       m("h1", "TiwiTalk"),
-      m("h2", "Demo v 0.0.0.3"),
+      m("h2", "Demo v0.0.0.3"),
       m("form", { onsubmit: function() { ctrl.login(); return false; } }, [
         m("input[placeholder=username]", { oninput: m.withAttr("value", ctrl.nameField) }),
         m("button[type=submit]", "connect")
@@ -48,10 +48,10 @@ TiwiTalk.view = function(ctrl) {
         m("label", { "for": "avail-" + i }, i)
       ]);
     }
-    showOpt = m("div", [
-      m("p", "Hello, " + ctrl.userInfo.name + "!"),
-      m("div", [
-        m("div#sidebar.col-md-4", [
+    showOpt = m("div.messenger-container", [
+      // m("p", "Hello, " + ctrl.userInfo.name + "!"),
+      m("div.messenger", [
+        m("div#sidebar", [
           m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)
           }),
@@ -66,7 +66,7 @@ TiwiTalk.view = function(ctrl) {
             userCache: ctrl.userCache, roomCache: ctrl.roomCache
           })
         ]),
-        m("div#chat.col-md-8", [
+        m("div#chat", [
           m("div.chat-intro", [
             m("div", "Name: " ,ctrl.userInfo.name),
             m("div", "Id: ", ctrl.userInfo.id),
