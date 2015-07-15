@@ -47,7 +47,6 @@ body {
 
 .chat {
     max-width: 100%;
-    max-width: 720px;
     margin: 10px 0;
     padding: 7px 15px;
     font-size: 16px;
@@ -68,6 +67,7 @@ body {
 
 .msg {
     background-color: #BCED91;
+    text-align: center;
     border-radius: 5px;
     display: block;
     padding: 10px 18px;
@@ -122,23 +122,29 @@ body {
 }
 
 .write-message {
-    position : absolute;
+    position : relative;
     bottom : 0;
     height : 40px; 
 }
 
+.write-message button{
+    margin-bottom: 10px;
+}
+
 .input-box {
+    margin-top: 10px;
     left: 0;
     position: relative;
     width: 100%;
     bottom: 10px;
 }
 
-.write-message {
-    position: fixed;
-    bottom: 0;
-}
-
+/* Chat rooms */
 ul.roomlist {
     list-style: none;
+    background-color: #ecf0f1;
+}
+
+.currentroom {
+    background-color: #2ecc71;
 }
