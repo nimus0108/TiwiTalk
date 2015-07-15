@@ -4,6 +4,9 @@ var m = require("lhorie/mithril");
 /* Scripts */
 var Message = require("./message.js");
 
+/* Components */
+var Chat = require("./chat.js");
+
 /* Main app */
 var TiwiTalk = {};
 
@@ -62,39 +65,11 @@ TiwiTalk.view = function(ctrl) {
             m("div", "Id: ", ctrl.userInfo.id),
             m("div.availability", availRadio)
           ]),
-          m("div.chat", [
-            m("div.view-messages", ctrl.chatLog.map(function(msg) {
-              var text;
-              var otherStyle = "";
-              if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
-                var uid = msg.user;
-                var userOpt = ctrl.userCache[uid];
-                var dispName = userOpt ? userOpt.name : uid;
-                if (!userOpt) {
-                  ctrl.getUserData();
-                }
-                otherStyle = "." + (uid == ctrl.userInfo.id ? "me" : "somebody");
-                text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
-              } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
-                text = msg.message;
-              }
-              return m("div.bubble" + otherStyle, text);
-            }))
-          ]),
-          m("form.write-message", {
-            onsubmit: (function() {
-              this.send(this.composeText());
-              this.composeText("");
-              return false;
-            }).bind(ctrl)
-          }, [
-            m("input.input-box", {
-              type: "text", name: "compose",
-              oninput: m.withAttr("value", ctrl.composeText),
-              value: ctrl.composeText()
-            }),
-            m("button[type=submit]", "Send")
-          ])
+          m.component(Chat, {
+            userCache: ctrl.userCache, userInfo: ctrl.userInfo,
+            send: ctrl.send.bind(ctrl), chatLog: ctrl.chatLog,
+            getUserData: ctrl.getUserData.bind(ctrl)
+          })
         ])
       ])
     ]);
