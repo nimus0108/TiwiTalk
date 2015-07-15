@@ -34,15 +34,12 @@ Chat.view = function(ctrl, args) {
         return false;
       }
     }, [
-      m("center", [
-        m("input.input-box", {
-          type: "text", name: "compose",
-          oninput: m.withAttr("value", ctrl.composeText),
-          value: ctrl.composeText()
-        }),
-        m("button[type=submit]", "Send")
-      ]
-        )
+      m("input.input-box", {
+        type: "text", name: "compose",
+        oninput: m.withAttr("value", ctrl.composeText),
+        value: ctrl.composeText()
+      }),
+      m("button[type=submit]", "Send")
     ])
   ]);
 };
