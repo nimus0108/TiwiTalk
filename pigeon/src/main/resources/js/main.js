@@ -16,6 +16,7 @@ TiwiTalk.controller = function() {
   this.name = m.prop("");
   this.socket = null;
   this.userCache = {};
+  this.roomCache = {};
   this.userInfo = null;
   this.currentRoom = m.prop(null);
   this.chatLogs = {};
@@ -60,7 +61,8 @@ TiwiTalk.view = function(ctrl) {
             }).bind(ctrl)
           }, "Start"),
           m.component(RoomList, {
-            currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo
+            currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
+            userCache: ctrl.userCache, roomCache: ctrl.roomCache
           })
         ]),
         m("div#chat.col-md-9", [
@@ -138,6 +140,7 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
     this.chatLogs[data.cid].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
+    this.roomCache[data.room.id] = data.room;
     this.currentRoom(data.room.id);
     this.fetchUserDataNeeded(data.room.users);
     if (!this.userInfo.rooms) this.userInfo.rooms = [];

@@ -15,7 +15,15 @@ RoomList.view = function(ctrl, args) {
   return m("ul.roomlist", rooms.map(function(room) {
     var isCurrent = room == args.currentRoom();
     var classOpt = isCurrent ? ".currentroom" : "";
-    var labelOpt = isCurrent ? room + " (active)" : room;
+
+    var roomUsers = args.roomCache[room].users;
+    var userNames = [];
+    for (var i = 0; i < roomUsers.length; i++) {
+      var userOpt = args.userCache[roomUsers[i]];
+      userNames.push(userOpt ? userOpt.name : roomUsers[i]);
+    }
+    var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
+
     return m("li" + classOpt, { onclick: ctrl.setActive(room) }, labelOpt);
   }));
 };

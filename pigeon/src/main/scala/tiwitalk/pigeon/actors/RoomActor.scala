@@ -18,8 +18,11 @@ class RoomActor(id: UUID, userService: UserService)
   def receive = status(Room(id, Seq.empty))
 
   def status(room: Room): Receive = {
-    case msg: UserMessage if msg.cid == id && room.users.contains(msg.user) =>
-      sendMessage(room.users, msg)
+    case msg: UserMessage =>
+      // DEBUG: hide messages that aren't directed here
+      if (msg.cid == id && room.users.contains(msg.user)) {
+        sendMessage(room.users, msg)
+      }
     case Disconnect(id) if room.users contains id =>
       sendMessage(room.users)(user => Broadcast(s"${user.name} disconnected."))
     case InviteToRoom(_id, userIds) if _id equals id =>
