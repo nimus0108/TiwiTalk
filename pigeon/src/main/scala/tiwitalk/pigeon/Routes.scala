@@ -12,6 +12,7 @@ import akka.stream.scaladsl._
 import akka.util.Timeout
 import java.util.UUID
 import scala.concurrent.Future
+import scala.util.{ Success, Try }
 import upickle.default.{ read, write }
 
 import actors.{ ChatSystem, UserActor }
@@ -48,9 +49,14 @@ class Routes(chat: ActorRef, userService: UserService)
     Flow() { implicit b =>
       import FlowGraph.Implicits._
 
-      val msgToChat = b.add(Flow[Message].collect {
-        case TextMessage.Strict(s) => read[Chat.InEvent](s)
-      })
+      val msgToChat = b.add(Flow[Message]
+        .collect {
+          case TextMessage.Strict(s) => Try(read[Chat.InEvent](s))
+        }
+        .collect {
+          case Success(s) => s
+        }
+      )
       val chatToMsg = b.add(Flow[Chat.OutEvent].map(s =>
         TextMessage.Strict(write(s))))
       val userFlow = b.add(Flow.wrap(userIn, userOut)((_, _) => ()))
