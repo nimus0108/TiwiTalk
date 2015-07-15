@@ -160,7 +160,6 @@ TiwiTalk.controller.prototype.send = function(msg, id) {
 
 TiwiTalk.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
-  ids.push(this.userInfo.id)
   this.fetchUserDataNeeded(ids);
   Message.StartRoom(ids).send(this.socket);
 };

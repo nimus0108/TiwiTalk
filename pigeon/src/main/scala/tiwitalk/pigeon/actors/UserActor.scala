@@ -36,6 +36,8 @@ class UserActor(initialData: UserData, userService: UserService)
     case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       context.parent ! UserMessage(data.id, msg, cid)
+    case OnNext(StartRoom(ids)) =>
+      context.parent ! StartRoom((ids :+ data.id).distinct)
     case OnNext(SetAvailability(value)) => setAvailability(value, data)
     case OnNext(s) => context.parent ! s
     case OnComplete => context.parent ! Disconnect(data.id)
