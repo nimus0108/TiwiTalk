@@ -1,10 +1,13 @@
+/* Libraries */
 var m = require("lhorie/mithril");
 
+/* Scripts */
 var Message = require("./message.js");
 
-var chat = {};
+/* Main app */
+var TiwiTalk = {};
 
-chat.controller = function() {
+TiwiTalk.controller = function() {
   this.nameField = m.prop("");
   this.name = m.prop("");
   this.socket = null;
@@ -17,7 +20,7 @@ chat.controller = function() {
   this.inviteField = m.prop("");
 };
   
-chat.view = function(ctrl) {
+TiwiTalk.view = function(ctrl) {
   var showOpt;
   if (ctrl.userInfo === null) {
     showOpt = m("div", [
@@ -61,15 +64,21 @@ chat.view = function(ctrl) {
           ]),
           m("div.chat", [
             m("div.view-messages", ctrl.chatLog.map(function(msg) {
-              var uid = msg.user;
-              var userOpt = ctrl.userCache[uid];
-              var dispName = userOpt ? userOpt.name : uid;
-              if (!userOpt) {
-                ctrl.getUserData();
+              var text;
+              var otherStyle = "";
+              if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
+                var uid = msg.user;
+                var userOpt = ctrl.userCache[uid];
+                var dispName = userOpt ? userOpt.name : uid;
+                if (!userOpt) {
+                  ctrl.getUserData();
+                }
+                otherStyle = "." + (uid == ctrl.userInfo.id ? "me" : "somebody");
+                text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
+              } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+                text = msg.message;
               }
-              var speaker = uid == ctrl.userInfo.id ? "me" : "somebody";
-              var text = "[" + msg.cid + "]" + dispName + ": " + msg.message;
-              return m("div.bubble." + speaker, text);
+              return m("div.bubble" + otherStyle, text);
             }))
           ]),
           m("form.write-message", {
@@ -93,7 +102,7 @@ chat.view = function(ctrl) {
   return showOpt;
 };
 
-chat.controller.prototype.logout = function() {
+TiwiTalk.controller.prototype.logout = function() {
   m.startComputation();
   if (this.socket !== null) {
     this.socket.close();
@@ -103,7 +112,7 @@ chat.controller.prototype.logout = function() {
   m.endComputation();
 }
 
-chat.controller.prototype.login = function() {
+TiwiTalk.controller.prototype.login = function() {
   this.logout();
   console.log("connecting...");
   var self = this;
@@ -143,13 +152,12 @@ chat.controller.prototype.login = function() {
   };
 };
 
-chat.controller.prototype.handleMessages = function(data) {
+TiwiTalk.controller.prototype.handleMessages = function(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+    this.chatLog.push(data);
     // TODO: handle this
-    console.log(data.message);
+    // console.log(data.message);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
-    var uid = data.user;
-    var dispName = this.userCache[uid].name || uid;
     this.chatLog.push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.lastRoom(data.room.id);
@@ -162,7 +170,7 @@ chat.controller.prototype.handleMessages = function(data) {
   }
 };
 
-chat.controller.prototype.send = function(msg, id) {
+TiwiTalk.controller.prototype.send = function(msg, id) {
   var convId = id || this.lastRoom();
   if (convId) {
     Message.Message(msg, convId).send(this.socket);
@@ -171,33 +179,33 @@ chat.controller.prototype.send = function(msg, id) {
   }
 };
 
-chat.controller.prototype.startRoom = function(_ids) {
+TiwiTalk.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
   ids.push(this.userInfo.id)
   this.fetchUserDataNeeded(ids);
   Message.StartRoom(ids).send(this.socket);
 };
 
-chat.controller.prototype.inviteToRoom = function(users, convIdOpt) {
+TiwiTalk.controller.prototype.inviteToRoom = function(users, convIdOpt) {
   var convId = convIdOpt || this.lastRoom();
   this.fetchUserDataNeeded(users);
   Message.InviteToRoom(convId, users).send(this.socket);
 };
 
-chat.controller.prototype.getUserData = function(id) {
+TiwiTalk.controller.prototype.getUserData = function(id) {
   Message.GetUserInfo(id).send(this.socket);
 };
 
-chat.controller.prototype.fetchUserDataNeeded = function(ids) {
+TiwiTalk.controller.prototype.fetchUserDataNeeded = function(ids) {
   for (var i = 0; i < ids.length; i ++) {
     var id = ids[i];
     if (!this.userCache[id]) this.getUserData(id);
   }
 };
 
-chat.controller.prototype.setAvailability = function(value) {
+TiwiTalk.controller.prototype.setAvailability = function(value) {
   Message.SetAvailability(value).send(this.socket);
   this.getUserData();
 };
 
-m.mount(document.getElementById("app"), chat);
+m.mount(document.getElementById("app"), TiwiTalk);
