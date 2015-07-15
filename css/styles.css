@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Nunito';
-  src: url("../fonts/Nunito-Regular.otf") format("opentype");
+  src: url("../fonts/Nunito-Regular.ttf") format("truetype");
 }
 
 * {
@@ -20,17 +20,61 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f7f7f7;
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+.introduction {
+  width: 100%;
+  min-height: 100%;
+  background-color: #262626;
+  background: url(../images/background.png) no-repeat center center scroll;
+  background-size: cover;  
 }
 
 .logo {
-  width: 125px;
-  height: 125px;
+  width: 130px;
+  height: 130px;
+}
+
+.container {
+  padding-top: 7%;
+}
+
+h1 {
+  position: relative;
+  top: 40px;
+  left: 40px;
+  display: inline-block;
+  font-size: 128px;
+  margin: 0;
+  padding: 0;
+  color: #fbfbfb;
+}
+
+h2 {
+  font-size: 42px;
+  margin: 7px 0 10% 0;
+  padding: 0;
+  color: #f4f4f4;
+}
+
+h3 {
+  font-size: 12px;
+  margin: 2px 0 150px 0;
+  color: #ddd;
+}
+
+.phone {
+  width: 400px; 
+  text-align: center;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .email-form {
-  display: inline;
-  width: 345px;
+  display: inline-block;
+  width: 420px;
+  max-width: 100%;
   padding: 9px 14px 5px 14px;
   font-size: 18px;
   background-color: #f7f7f7;
