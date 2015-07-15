@@ -24,7 +24,8 @@ class RoomActor(id: UUID, userService: UserService)
         sendMessage(room.users, msg)
       }
     case Disconnect(id) if room.users contains id =>
-      sendMessage(room.users)(user => Broadcast(s"${user.name} disconnected."))
+      sendMessage(room.users)(user =>
+        Broadcast(room.id, s"${user.name} disconnected."))
     case InviteToRoom(_id, userIds) if _id equals id =>
       getData(sender()) foreach { userData =>
         if (room.users.contains(userData.id)) {
@@ -65,7 +66,7 @@ class RoomActor(id: UUID, userService: UserService)
       seq collect {
         case Some(info) => info
       } foreach { u =>
-        val msg = Broadcast(s"${u.name} joined the conversation!")
+        val msg = Broadcast(room.id, s"${u.name} joined the conversation!")
         sendMessage(newUsers, msg)
       }
     }

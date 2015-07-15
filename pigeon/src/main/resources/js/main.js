@@ -136,7 +136,7 @@ TiwiTalk.controller.prototype.login = function() {
 
 TiwiTalk.controller.prototype.handleMessages = function(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
-    for (id in this.chatLogs) this.chatLogs[id].push(data);
+    this.chatLogs[data.room].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
     this.chatLogs[data.cid].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
