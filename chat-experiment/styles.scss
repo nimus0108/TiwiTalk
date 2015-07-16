@@ -6,6 +6,7 @@ $color-black: #1d1d1d;
 $color-lightblack: #313131;
 $color-stronggray: #777;
 $color-green: #27ae60;
+$color-lightgreen: #47ce80;
 
 * {
     font-family: 'Nunito', sans-serif;
@@ -186,7 +187,6 @@ body {
 				padding: 7px 15px;
 				color: $color-white;
 				font-size: 18px;
-				background-color: $color-green;
 				border-radius: 3px;
 			}
 		}
@@ -195,7 +195,7 @@ body {
 	.friend {
 		.wrap {
 			.message {
-				// float: left;
+				background-color: $color-green;
 			}
 			
 			&:nth-child(1) {
@@ -214,6 +214,7 @@ body {
 	.me {
 		.wrap {
 			.message {
+				background-color: $color-lightgreen;
 				margin-left: auto;
 				margin-right: auto;	
 			}

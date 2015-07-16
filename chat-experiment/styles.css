@@ -138,13 +138,15 @@ body {
         padding: 7px 15px;
         color: #fafafa;
         font-size: 18px;
-        background-color: #27ae60;
         border-radius: 3px; }
+  .conversation-scr .friend .wrap .message {
+    background-color: #27ae60; }
   .conversation-scr .friend .wrap:nth-child(1) .message {
     border-top-left-radius: 12px; }
   .conversation-scr .friend .wrap:nth-last-child(1) .message {
     border-bottom-left-radius: 12px; }
   .conversation-scr .me .wrap .message {
+    background-color: #47ce80;
     margin-left: auto;
     margin-right: auto; }
   .conversation-scr .me .wrap:nth-child(1) .message {
