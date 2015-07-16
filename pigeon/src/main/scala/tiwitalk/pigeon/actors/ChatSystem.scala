@@ -21,7 +21,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
   def state(data: SystemData = SystemData()): Receive = {
     case Connect(name) =>
       val userId = UUID.randomUUID()
-      val defaultData = UserData(userId, name, 5)
+      val defaultData = UserProfile(userId, name, 5)
       val userActor = context.actorOf(
         UserActor.props(defaultData, userService))
       val updateFut = userService.updateRef(userId, userActor) map { _ =>
@@ -42,9 +42,9 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
       roomActor ! JoinRoom(ids)
       sender() ! RoomStarted(roomId)
       stateChange(data.copy(rooms = data.rooms :+ roomActor))
-    case GetUserInfo(Some(id)) =>
+    case GetUserProfile(Some(id)) =>
       val originalSender = sender()
-      userService.fetchUserInfo(id) foreach { infoOpt =>
+      userService.fetchUserProfile(id) foreach { infoOpt =>
         infoOpt foreach (originalSender ! _)
       }
   }

@@ -5,23 +5,23 @@ import akka.event.{ EventBus, LookupClassification }
 import java.util.UUID
 import scala.concurrent.Future
 import scalacache._
-import tiwitalk.pigeon.Chat.{ UserData, UpdateUserInfo }
+import tiwitalk.pigeon.Chat.{ UserProfile, UpdateUserProfile }
 
 class UserService(implicit cache: ScalaCache, system: ActorSystem)
     extends EventBus with LookupClassification {
 
   import system.dispatcher
 
-  def fetchUserInfo(id: UUID): Future[Option[UserData]] = {
+  def fetchUserProfile(id: UUID): Future[Option[UserProfile]] = {
     get("USER-" + id)
   }
 
-  def updateUserInfo(newData: UserData): Future[Unit] = {
+  def updateUserProfile(newData: UserProfile): Future[Unit] = {
     for (_ <- put("USER-" + newData.id)(newData))
-      yield publish(UpdateUserInfo(newData))
+      yield publish(UpdateUserProfile(newData))
   }
 
-  def removeUserInfo(id: UUID): Future[Unit] = remove("USER-" + id)
+  def removeUserProfile(id: UUID): Future[Unit] = remove("USER-" + id)
 
   def fetchRef(id: UUID): Future[Option[ActorRef]] = {
     get("REF-" + id)
@@ -38,7 +38,7 @@ class UserService(implicit cache: ScalaCache, system: ActorSystem)
 
   def removeRef(id: UUID): Future[Unit] = remove("REF-" + id)
 
-  type Event = UpdateUserInfo
+  type Event = UpdateUserProfile
   type Subscriber = ActorRef
   type Classifier = UUID
 

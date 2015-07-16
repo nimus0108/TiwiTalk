@@ -78,15 +78,15 @@ class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
       kps foreach (_._2 ! event)
     }
 
-  def sendMessage(users: Seq[UUID])(event: UserData => OutEvent): Unit = {
+  def sendMessage(users: Seq[UUID])(event: UserProfile => OutEvent): Unit = {
     users foreach { id =>
-      val infoFut = userService.fetchUserInfo(id)
+      val profileFut = userService.fetchUserProfile(id)
       val refFut = userService.fetchRef(id)
       for {
-        infoOpt <- infoFut
+        profileOpt <- profileFut
         refOpt <- refFut
       } yield {
-        infoOpt foreach (info => refOpt foreach (_ ! event(info)))
+        profileOpt foreach (p => refOpt foreach (_ ! event(p)))
       }
     }
   }
@@ -95,7 +95,7 @@ class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
     val newUsers = (room.users ++ users).distinct
     val updatedRoom = room.copy(users = newUsers)
     sendMessage(users, RoomJoined(updatedRoom))
-    Future.sequence(users map userService.fetchUserInfo) foreach { seq =>
+    Future.sequence(users map userService.fetchUserProfile) foreach { seq =>
       seq collect {
         case Some(info) => info
       } foreach { u =>

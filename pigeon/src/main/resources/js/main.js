@@ -77,7 +77,7 @@ TiwiTalk.view = function(ctrl) {
             userCache: ctrl.userCache, userInfo: ctrl.userInfo,
             send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
             currentRoom: ctrl.currentRoom,
-            getUserData: ctrl.getUserData.bind(ctrl)
+            getUserProfile: ctrl.getUserProfile.bind(ctrl)
           })
         ])
       ])
@@ -104,7 +104,7 @@ TiwiTalk.controller.prototype.login = function() {
                               "/chat?name=" + this.nameField());
   this.socket.onopen = function(event) {
     console.log("connection established");
-    self.getUserData();
+    self.getUserProfile();
   };
   this.socket.onclose = function(event) {
     console.log("connection closed")
@@ -116,7 +116,7 @@ TiwiTalk.controller.prototype.login = function() {
     m.startComputation();
     var data = new Message(JSON.parse(event.data));
     // console.debug("received msg", data);
-    if (data.$type == "tiwitalk.pigeon.Chat.UserData") {
+    if (data.$type == "tiwitalk.pigeon.Chat.UserProfile") {
       if (self.userInfo !== null) {
         if (self.userInfo.id === data.id) {
           self.userInfo = data;
@@ -144,7 +144,7 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.roomCache[data.room.id] = data.room;
     this.currentRoom(data.room.id);
-    this.fetchUserDataNeeded(data.room.users);
+    this.fetchUserProfileNeeded(data.room.users);
     if (!this.userInfo.rooms) this.userInfo.rooms = [];
     this.userInfo.rooms.push(this.currentRoom());
     if (!this.chatLogs[data.room.id]) this.chatLogs[data.room.id] = [];
@@ -168,30 +168,30 @@ TiwiTalk.controller.prototype.send = function(msg, id) {
 
 TiwiTalk.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
-  this.fetchUserDataNeeded(ids);
+  this.fetchUserProfileNeeded(ids);
   Message.StartRoom(ids).send(this.socket);
 };
 
 TiwiTalk.controller.prototype.inviteToRoom = function(users, convIdOpt) {
   var convId = convIdOpt || this.currentRoom();
-  this.fetchUserDataNeeded(users);
+  this.fetchUserProfileNeeded(users);
   Message.InviteToRoom(convId, users).send(this.socket);
 };
 
-TiwiTalk.controller.prototype.getUserData = function(id) {
-  Message.GetUserInfo(id).send(this.socket);
+TiwiTalk.controller.prototype.getUserProfile = function(id) {
+  Message.GetUserProfile(id).send(this.socket);
 };
 
-TiwiTalk.controller.prototype.fetchUserDataNeeded = function(ids) {
+TiwiTalk.controller.prototype.fetchUserProfileNeeded = function(ids) {
   for (var i = 0; i < ids.length; i ++) {
     var id = ids[i];
-    if (!this.userCache[id]) this.getUserData(id);
+    if (!this.userCache[id]) this.getUserProfile(id);
   }
 };
 
 TiwiTalk.controller.prototype.setAvailability = function(value) {
   Message.SetAvailability(value).send(this.socket);
-  this.getUserData();
+  this.getUserProfile();
 };
 
 m.mount(document.getElementById("app"), TiwiTalk);

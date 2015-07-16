@@ -10,5 +10,5 @@ import tiwitalk.pigeon.Chat._
 object ChatHelpers {
 
   def getData(ref: ActorRef)(implicit ec: ExecCtx, timeout: Timeout):
-    Future[UserData] = (ref ? GetUserInfo(None)).mapTo[UserData]
+    Future[UserProfile] = (ref ? GetUserProfile(None)).mapTo[UserProfile]
 }

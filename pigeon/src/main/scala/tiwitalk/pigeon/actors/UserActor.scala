@@ -8,17 +8,17 @@ import tiwitalk.pigeon.service.UserService
 
 import ActorSubscriberMessage._
 
-class UserActor(initialData: UserData, userService: UserService)
+class UserActor(initialData: UserProfile, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
 
   override def preStart(): Unit = {
-    userService.updateUserInfo(initialData)
+    userService.updateUserProfile(initialData)
   }
 
   def receive = handle(initialData)
 
-  def handle(data: UserData): Receive = {
-    case UpdateUserInfo(newData) if data.id equals newData.id =>
+  def handle(data: UserProfile): Receive = {
+    case UpdateUserProfile(newData) if data.id equals newData.id =>
       context.become(handle(newData))
     case GetAvailability => sender ! data.availability
     case SetAvailability(value) => setAvailability(value, data)
@@ -30,10 +30,10 @@ class UserActor(initialData: UserData, userService: UserService)
     case r @ RoomJoined(room) if totalDemand > 0 =>
       onNext(r)
       val newData = data.copy(rooms = data.rooms :+ room.id)
-      userService.updateUserInfo(newData)
+      userService.updateUserProfile(newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
-    case GetUserInfo(None) if totalDemand > 0 => sender() ! data
-    case OnNext(GetUserInfo(None)) if totalDemand > 0 => onNext(data)
+    case GetUserProfile(None) if totalDemand > 0 => sender() ! data
+    case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data)
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       context.parent ! UserMessage(data.id, msg, cid)
     case OnNext(StartRoom(ids)) =>
@@ -43,16 +43,16 @@ class UserActor(initialData: UserData, userService: UserService)
     case OnComplete => context.parent ! Disconnect(data.id)
   }
 
-  def setAvailability(value: Int, data: UserData) =
-    userService.updateUserInfo(data.copy(availability = value))
+  def setAvailability(value: Int, data: UserProfile) =
+    userService.updateUserProfile(data.copy(availability = value))
 
   override def requestStrategy = new WatermarkRequestStrategy(50)
 }
 
 object UserActor {
-  def props(data: UserData, userService: UserService): Props =
-    Props(new UserActor(data, userService))
+  def props(profile: UserProfile, userService: UserService): Props =
+    Props(new UserActor(profile, userService))
 
   def props(id: UUID, name: String, userService: UserService): Props =
-    props(UserData(id, name, 5), userService)
+    props(UserProfile(id, name, 5), userService)
 }

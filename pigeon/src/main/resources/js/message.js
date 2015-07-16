@@ -30,9 +30,9 @@ Message.InviteToRoom = function(id, users) {
   return new Message("InviteToRoom", { id: id, users: users });
 };
 
-/* Constructs a GetUserInfo message */
-Message.GetUserInfo = function(id) {
-  return new Message("GetUserInfo", { id: id ? [id] : [] });
+/* Constructs a GetUserProfile message */
+Message.GetUserProfile = function(id) {
+  return new Message("GetUserProfile", { id: id ? [id] : [] });
 };
 
 /* Constructs a SetAvailability message */
