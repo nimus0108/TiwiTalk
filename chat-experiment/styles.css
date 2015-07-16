@@ -31,6 +31,20 @@ body {
   padding: 0;
   float: left;
   border-right: 1px solid #f0f0f0; }
+  .preview .search {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0; }
+    .preview .search input.search-friend {
+      width: calc(100% - 50px);
+      height: 75px;
+      border: none;
+      color: #1d1d1d;
+      margin: 0;
+      padding: 7px 25px;
+      font-size: 18px;
+      outline: none; }
   .preview .friend-preview {
     display: table;
     width: 100%;
@@ -38,16 +52,14 @@ body {
     margin: 0;
     padding: 0;
     border-bottom: 1px solid #f0f0f0; }
-    .preview .friend-preview:nth-child(1) {
-      border-top: 1px solid #f0f0f0; }
     .preview .friend-preview .face-container {
       display: inline-block;
       width: 25%;
       height: 100%;
       text-align: center; }
       .preview .friend-preview .face-container .face {
-        width: 65px;
-        height: 65px;
+        width: 60px;
+        height: 60px;
         margin: 0 15px 0 0;
         border-radius: 50%; }
     .preview .friend-preview .vertical-container {

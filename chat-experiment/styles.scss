@@ -43,6 +43,23 @@ body {
 	float: left;
 	border-right: 1px solid $color-gray;
 	
+	.search {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid $color-gray;
+		
+		input.search-friend {
+			width: calc(100% - 50px);
+			height: 75px;
+			border: none;
+			color: $color-black;
+			margin: 0;
+			padding: 7px 25px;
+			font-size: 18px;
+			outline: none;
+		}
+	}
 	.friend-preview {
 		display: table;
 		width: 100%;
@@ -51,10 +68,6 @@ body {
 		padding: 0;
 		border-bottom: 1px solid $color-gray;
 		
-		&:nth-child(1) {
-			border-top: 1px solid $color-gray;
-		}
-		
 		.face-container {
 			display: inline-block;
 			width: 25%;
@@ -62,8 +75,8 @@ body {
 			text-align: center;
 			
 			.face {
-				width: 65px;
-				height: 65px;
+				width: 60px;
+				height: 60px;
 				margin: 0 15px 0 0;
 				border-radius: 50%;
 			}
