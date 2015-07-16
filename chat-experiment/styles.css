@@ -14,14 +14,24 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  background: #05c6d1;
+  background: -webkit-gradient(linear, top, bottom, color-stop(0%, #194fb8), color-stop(100%, #05c6d1));
+  background: -webkit-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+  background: -moz-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+  background: -o-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+  background: -ms-linear-gradient(top, #194fb8 0%, #05c6d1 100%);
+  background: linear-gradient(top, #194fb8 0%, #05c6d1 100%); }
 
-.messenger {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+#messenger {
+  width: 75%;
+  height: 95%;
+  position: relative;
+  top: 2.5%;
+  margin: 0 auto;
   padding: 0;
-  background-color: #fafafa; }
+  background-color: #fff;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }
 
 .preview {
   display: inline-block;
@@ -30,12 +40,14 @@ body {
   margin: 0;
   padding: 0;
   float: left;
-  border-left: 1px solid #f0f0f0; }
+  border-left: 1px solid #f0f0f0;
+  background-color: #f5f5f5; }
   .preview .search {
     width: 100%;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #f0f0f0; }
+    border-bottom: 1px solid #f0f0f0;
+    color: #f5f5f5; }
     .preview .search input.search-friend {
       width: calc(100% - 50px);
       height: 75px;
@@ -92,7 +104,7 @@ body {
 
 .conversation-scr {
   display: inline-block;
-  width: calc(100% - 500px);
+  width: calc(100% - 423px);
   height: 100%;
   margin: 0;
   padding: 0;
@@ -123,7 +135,7 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 30px 35px 0 35px; }
+    padding: 0; }
     .conversation-scr .chat h2.announcement {
       margin: 15px auto;
       padding: 0;
@@ -131,7 +143,8 @@ body {
       color: #777;
       text-align: center; }
     .conversation-scr .chat .wrap {
-      margin: 22px 0; }
+      margin: 22px 0;
+      padding: 0 125px; }
       .conversation-scr .chat .wrap .message {
         width: auto !important;
         margin: 0;
@@ -145,13 +158,15 @@ body {
     border-top-left-radius: 12px; }
   .conversation-scr .friend .wrap:nth-last-child(1) .message {
     border-bottom-left-radius: 12px; }
-  .conversation-scr .me .wrap .message {
-    background-color: #47ce80;
-    margin-left: auto;
-    margin-right: auto; }
-  .conversation-scr .me .wrap:nth-child(1) .message {
-    border-top-right-radius: 12px; }
-  .conversation-scr .me .wrap:nth-last-child(1) .message {
-    border-bottom-right-radius: 12px; }
+  .conversation-scr .me {
+    text-align: right; }
+    .conversation-scr .me .wrap .message {
+      background-color: #47ce80;
+      margin-left: auto;
+      margin-right: auto; }
+    .conversation-scr .me .wrap:nth-child(1) .message {
+      border-top-right-radius: 12px; }
+    .conversation-scr .me .wrap:nth-last-child(1) .message {
+      border-bottom-right-radius: 12px; }
 
 /*# sourceMappingURL=styles.css.map */
