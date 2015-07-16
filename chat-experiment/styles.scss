@@ -1,0 +1,43 @@
+@import 'necolas/normalize.css';
+
+$color-white: #fafafa;
+$color-gray: #f0f0f0;
+
+* {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+} 
+
+.messenger {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: $color-white;
+}
+
+.preview {
+	display: inline-block;
+	width: 320px;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	float: left;
+	border-right: 1px solid $color-gray;
+}
