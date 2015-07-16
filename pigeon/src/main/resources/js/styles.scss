@@ -214,6 +214,11 @@ body {
         border: 3px solid #ddd;
         border-radius: 3px;
         outline: none;
+        
+        @media screen and (max-width: 1080px) {
+            dispay: block;
+            width: 270px;
+        }
     }
     
     button {
@@ -272,13 +277,13 @@ body {
 
 #sidebar {
     display: inline-block;
-    width: 30%;
+    width: 25%;
     height: 100%;
     border-right: 1px solid #777;
     float: left;
     
     input {
-        width: calc(100% - 220px);
+        width: calc(100% - 170px);
         margin: 0;
         margin-top: 10px;
         margin-left: 5px;
@@ -290,7 +295,7 @@ body {
     }
     
     button {
-        width: 195px;
+        width: 155px;
         background-color: #2ecc71;
         color: #f7f7f7;
         margin: 10px 0 0 5px;
