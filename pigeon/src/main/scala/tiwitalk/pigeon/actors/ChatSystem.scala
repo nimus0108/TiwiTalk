@@ -29,13 +29,6 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
       }
       updateFut pipeTo sender
     case m: UserMessage =>
-      if (sentiment.enabled) {
-        sentiment.analyze(m.message) onComplete {
-          case util.Success(score) =>
-            println(s"'${m.message}' = $score")
-          case fail => println(fail)
-        }
-      }
       data.rooms foreach (_.tell(m, sender()))
     case d @ Disconnect(id) =>
       data.rooms foreach (_ forward d)
@@ -44,7 +37,8 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
       data.rooms foreach (_ forward i)
     case StartRoom(ids) =>
       val roomId = UUID.randomUUID()
-      val roomActor = context.actorOf(RoomActor.props(roomId, userService))
+      val roomActor = context.actorOf(
+        RoomActor.props(roomId, userService, sentiment))
       roomActor ! JoinRoom(ids)
       sender() ! RoomStarted(roomId)
       stateChange(data.copy(rooms = data.rooms :+ roomActor))

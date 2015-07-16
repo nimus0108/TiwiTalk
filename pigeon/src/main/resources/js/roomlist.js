@@ -23,8 +23,14 @@ RoomList.view = function(ctrl, args) {
       userNames.push(userOpt ? userOpt.name : roomUsers[i]);
     }
     var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
-
-    return m("div.messageTarget" + classOpt, { onclick: ctrl.setActive(room) }, labelOpt);
+    var styleOpt = {};
+    if (args.roomCache[room].moodColor) {
+      styleOpt.background = args.roomCache[room].moodColor;
+    }
+    return m("div.messageTarget" + classOpt, {
+      onclick: ctrl.setActive(room),
+      style: styleOpt
+    }, labelOpt);
   }));
 };
 

@@ -149,6 +149,9 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
     this.userInfo.rooms.push(this.currentRoom());
     if (!this.chatLogs[data.room.id]) this.chatLogs[data.room.id] = [];
     console.log("Joined " + this.currentRoom());
+  } else if (data.$type == "tiwitalk.pigeon.Chat.MoodColor") {
+    this.roomCache[data.room].moodColor = data.color;
+    console.log("%c Received color " + data.color, "background: " + data.color + ";");
   } else {
     console.log("unknown: ", data);
   }

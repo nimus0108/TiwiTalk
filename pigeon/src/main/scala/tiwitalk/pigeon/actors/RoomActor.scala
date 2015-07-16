@@ -3,24 +3,57 @@ package tiwitalk.pigeon.actors
 import akka.actor._
 import akka.util.Timeout
 import java.util.UUID
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
-import tiwitalk.pigeon.service.UserService
+import tiwitalk.pigeon.service.{ UserService, Sentiment }
 
 import ChatHelpers._
 
-class RoomActor(id: UUID, userService: UserService)
+class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
     extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(5.seconds)
 
+  val chatLog = ArrayBuffer[UserMessage]()
+  var lastAnalysis = System.currentTimeMillis()
+
   def receive = status(Room(id, Seq.empty))
 
   def status(room: Room): Receive = {
+    // TODO: implement a dedicated actor for this
+    case lastAnaly: Long => lastAnalysis = lastAnaly
     case msg: UserMessage =>
       // DEBUG: hide messages that aren't directed here
       if (msg.cid == id && room.users.contains(msg.user)) {
+        chatLog += msg
+        if (sentiment.enabled) {
+          val now = System.currentTimeMillis()
+          val submission =
+            chatLog
+              .toSeq
+              .map(s => s.message.trim)
+              .map(s => if (s.matches("^.*[\\.!?]$")) s else s + ".")
+          if (submission.mkString(" ").split(" ").size > 35) {
+            sentiment.analyze(submission.mkString(" ")) foreach { kp =>
+              val score = kp._2
+              val shades: Seq[Float] = Seq(
+                (math.abs(score - 1)/2) * 255,
+                (1 - (math.abs(score - 1)/2)) * 255,
+                (1 - math.abs(score)) * 255
+              )
+              val colorCodes = shades.map(c => Integer.toHexString(c.toInt))
+              val colCode =
+                colorCodes.map(c => "".padTo(2 - c.size, "0").mkString + c)
+              val color = MoodColor(room.id, "#" + colCode.mkString.toUpperCase)
+              sendMessage(room.users, color)
+              println(s"Submission '$submission': $score")
+              self ! lastAnalysis
+            }
+            chatLog.clear()
+          }
+        }
         sendMessage(room.users, msg)
       }
     case Disconnect(id) if room.users contains id =>
@@ -77,6 +110,6 @@ class RoomActor(id: UUID, userService: UserService)
 }
 
 object RoomActor {
-  def props(id: UUID, userService: UserService) =
-    Props(new RoomActor(id, userService))
+  def props(id: UUID, userService: UserService, sentiment: Sentiment) =
+    Props(new RoomActor(id, userService, sentiment: Sentiment))
 }

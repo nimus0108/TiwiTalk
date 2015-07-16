@@ -16,7 +16,7 @@ class Sentiment(val enabled: Boolean, apiKey: String)
 
   val apiUrl = s"http://api.repustate.com/v3/$apiKey/score.json?text="
 
-  def analyze(text: String): Future[Any] = {
+  def analyze(text: String): Future[(String, Float)] = {
     val request = HttpRequest(POST, uri = apiUrl + urlEncode(text, "UTF-8"))
     for {
       response <- Http().singleRequest(request)
