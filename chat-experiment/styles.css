@@ -31,5 +31,29 @@ body {
   padding: 0;
   float: left;
   border-right: 1px solid #f0f0f0; }
+  .preview .friend-preview {
+    margin: 0;
+    padding: 15px 25px; }
+    .preview .friend-preview .face {
+      display: inline-block;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%; }
+    .preview .friend-preview .show {
+      display: inline-block;
+      width: auto;
+      height: 65px; }
+
+.conversation-scr {
+  display: inline-block;
+  width: calc(100% - 320px);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  float: left; }
+  .conversation-scr .face {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%; }
 
 /*# sourceMappingURL=styles.css.map */
