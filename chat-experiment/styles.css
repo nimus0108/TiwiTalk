@@ -103,7 +103,21 @@ body {
     border-radius: 50%; }
   .conversation-scr .header {
     width: 100%;
-    height: 89px;
+    height: 74px;
     border-bottom: 1px solid #f0f0f0; }
+    .conversation-scr .header .identity {
+      width: 100%;
+      text-align: center;
+      margin: 15px auto 0 auto; }
+      .conversation-scr .header .identity .friend-name {
+        margin: 0;
+        padding: 0;
+        font-size: 28px;
+        color: #1d1d1d; }
+      .conversation-scr .header .identity .status {
+        margin: 0;
+        padding: 0;
+        color: #313131;
+        font-size: 18px; }
 
 /*# sourceMappingURL=styles.css.map */
