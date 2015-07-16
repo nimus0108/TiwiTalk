@@ -19,15 +19,13 @@ class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
   def receive = state()
 
   def state(data: SystemData = SystemData()): Receive = {
-    case Connect(name) =>
-      val userId = UUID.randomUUID()
-      val defaultData = UserProfile(userId, name, 5)
-      val userActor = context.actorOf(
-        UserActor.props(defaultData, userService))
-      val updateFut = userService.updateRef(userId, userActor) map { _ =>
-        (userId -> userActor)
-      }
-      updateFut pipeTo sender
+    case Connect(id) =>
+      val s = sender()
+      userService.fetchUserProfile(id) map {
+        case Some(user) =>
+          Some(context.actorOf(UserActor.props(user, userService)))
+        case None => None
+      } pipeTo s
     case m: UserMessage =>
       data.rooms foreach (_.tell(m, sender()))
     case d @ Disconnect(id) =>

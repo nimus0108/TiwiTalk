@@ -28,12 +28,12 @@ class DatabaseService(config: Config) {
   val userCol = db.collection("users")
 
   def findUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    userCol.find(BSONDocument("id" -> id.toString)).one[UserProfile]
+    userCol.find(BSONDocument("_id" -> id.toString)).one[UserProfile]
   }
 
   import userCol.BatchCommands.FindAndModifyCommand.FindAndModifyResult
   def updateUserProfile(p: UserProfile): Future[FindAndModifyResult] = {
-    val query = BSONDocument("id" -> p.id.toString)
+    val query = BSONDocument("_id" -> p.id.toString)
     userCol.findAndUpdate(query, p, upsert = true)
   }
 }

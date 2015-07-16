@@ -31,7 +31,7 @@ object Chat {
   case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
 
-  case class Connect(name: String) extends ServerEvent
+  case class Connect(id: UUID) extends ServerEvent
   case class Disconnect(id: UUID) extends ServerEvent
   case object GetUserId extends ServerEvent
   case object GetName extends ServerEvent

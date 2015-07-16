@@ -31,7 +31,7 @@ object PigeonServer extends App {
   val userService = new UserService(databaseService)
 
   val chatSystem = system.actorOf(ChatSystem.props(sentiment, userService), "chat")
-  val routes = new Routes(chatSystem, userService)
+  val routes = new Routes(chatSystem, userService, databaseService)
 
   val serverFuture = Http().bindAndHandle(routes.default, host, port)
   serverFuture onComplete {

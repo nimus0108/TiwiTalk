@@ -12,7 +12,7 @@ var Chat = require("./chat.js");
 var TiwiTalk = {};
 
 TiwiTalk.controller = function() {
-  this.nameField = m.prop("");
+  this.loginField = m.prop("");
   this.name = m.prop("");
   this.socket = null;
   this.userCache = {};
@@ -28,12 +28,21 @@ TiwiTalk.controller = function() {
 TiwiTalk.view = function(ctrl) {
   var showOpt;
   if (ctrl.userInfo === null) {
+    var nameInput = m("input[placeholder=username]", {
+      oninput: m.withAttr("value", ctrl.loginField),
+      value: ctrl.loginField()
+    });
+    var connectFn = function() { ctrl.login(ctrl.loginField()); return false; };
     showOpt = m("div.splash", [
       m("h1", "TiwiTalk"),
       m("h2", "Demo v0.0.0.3"),
-      m("form", { onsubmit: function() { ctrl.login(); return false; } }, [
-        m("input[placeholder=username]", { oninput: m.withAttr("value", ctrl.nameField) }),
-        m("button[type=submit]", "connect")
+      m("form", { onsubmit: function() { ctrl.register(); return false; } }, [
+        m("button[type=submit]", "register"),
+        nameInput
+      ]),
+      m("form", { onsubmit: connectFn }, [
+        m("button[type=submit]", "connect"),
+        nameInput
       ])
     ]);
   } else {
@@ -96,12 +105,11 @@ TiwiTalk.controller.prototype.logout = function() {
   m.endComputation();
 }
 
-TiwiTalk.controller.prototype.login = function() {
+TiwiTalk.controller.prototype.login = function(id) {
   this.logout();
   console.log("connecting...");
   var self = this;
-  this.socket = new WebSocket("ws://" + location.host +
-                              "/chat?name=" + this.nameField());
+  this.socket = new WebSocket("ws://" + location.host + "/chat?id=" + id);
   this.socket.onopen = function(event) {
     console.log("connection established");
     self.getUserProfile();
@@ -134,6 +142,14 @@ TiwiTalk.controller.prototype.login = function() {
     }
     m.endComputation();
   };
+};
+
+TiwiTalk.constructor.prototype.register = function() {
+  var self = this;
+  var params = { method: "POST", url: "/register?name=" + this.loginField() };
+  m.request(params).then(function(response) {
+    self.login(response.id);
+  });
 };
 
 TiwiTalk.controller.prototype.handleMessages = function(data) {
