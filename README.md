@@ -8,9 +8,12 @@ Pigeon is the instant messaging platform.
 
 ## Setting Up
 
+Install Duo.js:
 ```
 npm install -g duo
 ```
+
+Install MongoDB 3.x.x or higher.
 
 ## Running and Developing
 

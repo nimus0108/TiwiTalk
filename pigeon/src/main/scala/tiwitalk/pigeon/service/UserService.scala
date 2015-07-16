@@ -4,20 +4,26 @@ import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.{ EventBus, LookupClassification }
 import java.util.UUID
 import scala.concurrent.Future
+import scala.concurrent.duration._
 import scalacache._
 import tiwitalk.pigeon.Chat.{ UserProfile, UpdateUserProfile }
 
-class UserService(implicit cache: ScalaCache, system: ActorSystem)
-    extends EventBus with LookupClassification {
+class UserService(db: DatabaseService)(implicit cache: ScalaCache,
+    system: ActorSystem) extends EventBus with LookupClassification {
 
   import system.dispatcher
 
   def fetchUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    get("USER-" + id)
+    get("USER-" + id) flatMap {
+      case Some(u) => Future.successful(Some(u))
+      case None =>
+        db.findUserProfile(id)
+    }
   }
 
   def updateUserProfile(newData: UserProfile): Future[Unit] = {
-    for (_ <- put("USER-" + newData.id)(newData))
+    db.updateUserProfile(newData)
+    for (_ <- put("USER-" + newData.id)(newData, ttl = Some(1.minute)))
       yield publish(UpdateUserProfile(newData))
   }
 

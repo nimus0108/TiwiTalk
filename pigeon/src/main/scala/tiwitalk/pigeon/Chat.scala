@@ -1,6 +1,7 @@
 package tiwitalk.pigeon
 
 import java.util.UUID
+import reactivemongo.bson.Macros.Annotations.Key
 
 object Chat {
   sealed trait Event
@@ -23,11 +24,11 @@ object Chat {
   case class RoomInvite(id: UUID) extends OutEvent
   case class RoomJoined(room: Room) extends OutEvent with ServerEvent
   case class UserProfile(
-      id: UUID,
+      @Key("_id") id: UUID,
       name: String,
       availability: Int,
       rooms: Seq[UUID] = Seq.empty) extends OutEvent
-  case class Room(id: UUID, users: Seq[UUID]) extends OutEvent
+  case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
 
   case class Connect(name: String) extends ServerEvent

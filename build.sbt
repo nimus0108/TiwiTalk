@@ -21,7 +21,8 @@ lazy val pigeon = Project("pigeon", file("pigeon"))
       "com.github.cb372" %% "scalacache-guava" % "0.6.4",
       "com.typesafe.akka" %% "akka-http-experimental" % "1.0-RC4",
       "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-      "com.lihaoyi" %% "upickle" % "0.3.1"
+      "com.lihaoyi" %% "upickle" % "0.3.1",
+      "org.reactivemongo" %% "reactivemongo" % "0.11.2"
     ),
     packageName in Docker := "pigeon",
     maintainer in Docker := "Bryan Tan <bryan@tiwitalk.com",

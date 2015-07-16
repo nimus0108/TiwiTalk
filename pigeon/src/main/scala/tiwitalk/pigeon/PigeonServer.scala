@@ -10,11 +10,12 @@ import scalacache._
 import scalacache.guava._
 
 import actors.ChatSystem
-import service.{ Sentiment, UserService }
+import service._
 
 object PigeonServer extends App {
 
   val config = ConfigFactory.load()
+  val databaseService = new DatabaseService(config)
   
   implicit val system = ActorSystem("pigeon")
   implicit val mat = ActorMaterializer()
@@ -27,7 +28,7 @@ object PigeonServer extends App {
 
   val sentiment = new Sentiment(config.getBoolean("pigeon.sentiment.enabled"),
     config.getString("pigeon.sentiment.apiKey"))
-  val userService = new UserService
+  val userService = new UserService(databaseService)
 
   val chatSystem = system.actorOf(ChatSystem.props(sentiment, userService), "chat")
   val routes = new Routes(chatSystem, userService)
