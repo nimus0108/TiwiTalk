@@ -2,6 +2,8 @@
 
 $color-white: #fafafa;
 $color-gray: #f0f0f0;
+$color-black: #1d1d1d;
+$color-lightblack: #313131;
 
 * {
     font-family: 'Nunito', sans-serif;
@@ -34,28 +36,74 @@ body {
 
 .preview {
 	display: inline-block;
-	width: 320px;
+	width: 420px;
 	height: 100%;
 	margin: 0;
 	padding: 0;
 	float: left;
 	border-right: 1px solid $color-gray;
 	
-	.friend-preview {	
+	.friend-preview {
+		display: table;
+		width: 100%;
+		height: 100px;	
 		margin: 0;
-		padding: 15px 25px;
+		padding: 0;
+		border-bottom: 1px solid $color-gray;
 		
-		.face {
+		&:nth-child(1) {
+			border-top: 1px solid $color-gray;
+		}
+		
+		.face-container {
 			display: inline-block;
-			width: 65px;
-			height: 65px;
-			border-radius: 50%;
+			width: 25%;
+			height: 100%;
+			text-align: center;
+			
+			.face {
+				width: 65px;
+				height: 65px;
+				margin: 0 15px 0 0;
+				border-radius: 50%;
+			}
+		}
+		
+		.vertical-container {
+			display: table;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			.vertical-align {
+				display: table-cell;
+				vertical-align: middle;
+				margin: 0;
+				padding: 0;
+			}
 		}
 		
 		.show {
 			display: inline-block;
-			width: auto;
-			height: 65px;
+			width: 75%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			h1.friend-name {
+				margin: 0;
+				padding: 0;
+				color: $color-black;
+				font-size: 20px;
+			}
+			
+			h2.exerpt {
+				margin: 0;
+				padding: 0;
+				color: $color-lightblack;
+				font-size: 16px;
+			}
 		}
 	}
 }

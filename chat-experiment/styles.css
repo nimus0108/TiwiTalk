@@ -25,24 +25,58 @@ body {
 
 .preview {
   display: inline-block;
-  width: 320px;
+  width: 420px;
   height: 100%;
   margin: 0;
   padding: 0;
   float: left;
   border-right: 1px solid #f0f0f0; }
   .preview .friend-preview {
+    display: table;
+    width: 100%;
+    height: 100px;
     margin: 0;
-    padding: 15px 25px; }
-    .preview .friend-preview .face {
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0; }
+    .preview .friend-preview:nth-child(1) {
+      border-top: 1px solid #f0f0f0; }
+    .preview .friend-preview .face-container {
       display: inline-block;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%; }
+      width: 25%;
+      height: 100%;
+      text-align: center; }
+      .preview .friend-preview .face-container .face {
+        width: 65px;
+        height: 65px;
+        margin: 0 15px 0 0;
+        border-radius: 50%; }
+    .preview .friend-preview .vertical-container {
+      display: table;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .preview .friend-preview .vertical-container .vertical-align {
+        display: table-cell;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0; }
     .preview .friend-preview .show {
       display: inline-block;
-      width: auto;
-      height: 65px; }
+      width: 75%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .preview .friend-preview .show h1.friend-name {
+        margin: 0;
+        padding: 0;
+        color: #1d1d1d;
+        font-size: 20px; }
+      .preview .friend-preview .show h2.exerpt {
+        margin: 0;
+        padding: 0;
+        color: #313131;
+        font-size: 16px; }
 
 .conversation-scr {
   display: inline-block;
