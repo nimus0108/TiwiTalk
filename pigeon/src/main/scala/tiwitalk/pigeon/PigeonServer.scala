@@ -29,8 +29,10 @@ object PigeonServer extends App {
   val sentiment = new Sentiment(config.getBoolean("pigeon.sentiment.enabled"),
     config.getString("pigeon.sentiment.apiKey"))
   val userService = new UserService(databaseService)
+  val roomService = new RoomService(databaseService)
 
-  val chatSystem = system.actorOf(ChatSystem.props(sentiment, userService), "chat")
+  val chatSystem = system.actorOf(
+    ChatSystem.props(sentiment, userService, roomService), "chat")
   val routes = new Routes(chatSystem, userService, databaseService)
 
   val serverFuture = Http().bindAndHandle(routes.default, host, port)

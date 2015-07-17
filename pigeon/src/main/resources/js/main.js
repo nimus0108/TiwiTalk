@@ -135,6 +135,10 @@ TiwiTalk.controller.prototype.login = function(id) {
       } else {
         self.userInfo = data;
         console.info("User data initialized", data);
+        var rooms = data.rooms || [];
+        rooms.map(function(r) {
+          Message.GetRoomInfo(r).send(self.socket);
+        });
       }
       self.userCache[data.id] = data;
     } else if (self.userInfo !== null) {
@@ -144,7 +148,7 @@ TiwiTalk.controller.prototype.login = function(id) {
   };
 };
 
-TiwiTalk.constructor.prototype.register = function() {
+TiwiTalk.controller.prototype.register = function() {
   var self = this;
   var params = { method: "POST", url: "/register?name=" + this.loginField() };
   m.request(params).then(function(response) {
@@ -157,13 +161,12 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
     this.chatLogs[data.room].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
     this.chatLogs[data.cid].push(data);
+  } else if (data.$type == "tiwitalk.pigeon.Chat.Room") {
+    this.updateRoomInfo(data);
+    console.log("Updated room info", data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
-    this.roomCache[data.room.id] = data.room;
-    this.currentRoom(data.room.id);
-    this.fetchUserProfileNeeded(data.room.users);
-    if (!this.userInfo.rooms) this.userInfo.rooms = [];
+    this.updateRoomInfo(data.room);
     this.userInfo.rooms.push(this.currentRoom());
-    if (!this.chatLogs[data.room.id]) this.chatLogs[data.room.id] = [];
     console.log("Joined " + this.currentRoom());
   } else if (data.$type == "tiwitalk.pigeon.Chat.MoodColor") {
     this.roomCache[data.room].moodColor = data.color;
@@ -171,6 +174,14 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
   } else {
     console.log("unknown: ", data);
   }
+};
+
+TiwiTalk.controller.prototype.updateRoomInfo = function(room) {
+  this.roomCache[room.id] = room;
+  this.currentRoom(room.id);
+  this.fetchUserProfileNeeded(room.users);
+  if (!this.userInfo.rooms) this.userInfo.rooms = [];
+  if (!this.chatLogs[room.id]) this.chatLogs[room.id] = [];
 };
 
 TiwiTalk.controller.prototype.send = function(msg, id) {
@@ -207,7 +218,6 @@ TiwiTalk.controller.prototype.fetchUserProfileNeeded = function(ids) {
 
 TiwiTalk.controller.prototype.setAvailability = function(value) {
   Message.SetAvailability(value).send(this.socket);
-  this.getUserProfile();
 };
 
 m.mount(document.getElementById("app"), TiwiTalk);

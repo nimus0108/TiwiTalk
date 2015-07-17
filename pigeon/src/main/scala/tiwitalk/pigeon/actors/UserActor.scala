@@ -11,15 +11,14 @@ import ActorSubscriberMessage._
 class UserActor(initialData: UserProfile, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
 
-  override def preStart(): Unit = {
-    userService.updateUserProfile(initialData)
-  }
-
   def receive = handle(initialData)
 
   def handle(data: UserProfile): Receive = {
     case UpdateUserProfile(newData) if data.id equals newData.id =>
-      context.become(handle(newData))
+      if (!(newData equals data)) {
+        context.become(handle(newData))
+        if (totalDemand > 0) onNext(newData)
+      }
     case GetAvailability => sender ! data.availability
     case SetAvailability(value) => setAvailability(value, data)
     case GetUserId => sender ! data.id
@@ -29,8 +28,6 @@ class UserActor(initialData: UserProfile, userService: UserService)
       self ! PoisonPill
     case r @ RoomJoined(room) if totalDemand > 0 =>
       onNext(r)
-      val newData = data.copy(rooms = data.rooms :+ room.id)
-      userService.updateUserProfile(newData)
     case e: OutEvent if totalDemand > 0 => onNext(e)
     case GetUserProfile(None) if totalDemand > 0 => sender() ! data
     case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data)

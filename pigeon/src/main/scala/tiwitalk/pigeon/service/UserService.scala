@@ -14,30 +14,51 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
   import system.dispatcher
 
   def fetchUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    get("USER-" + id) flatMap {
+    get[UserProfile]("USER-" + id) flatMap {
       case Some(u) => Future.successful(Some(u))
       case None =>
-        db.findUserProfile(id)
+        db.findUserProfile(id) flatMap {
+          case o @ Some(p) =>
+            publish(UpdateUserProfile(p))
+            put("USER-" + p.id)(p, ttl = Some(1.minute)) map (_ => o)
+          case None => Future.successful(None)
+        }
+    }
+  }
+
+  def fetchUserProfiles(ids: Seq[UUID]): Future[Seq[UserProfile]] = {
+    // TODO: batch requests to DB
+    Future.sequence(ids map fetchUserProfile) map { profs =>
+      profs collect { case Some(x) => x}
     }
   }
 
   def updateUserProfile(newData: UserProfile): Future[Unit] = {
-    db.updateUserProfile(newData)
-    for (_ <- put("USER-" + newData.id)(newData, ttl = Some(1.minute)))
-      yield publish(UpdateUserProfile(newData))
+    val dbFut = db.updateUserProfile(newData)
+    val cacheFut = put("USER-" + newData.id)(newData, ttl = Some(1.minute))
+    for {
+      _ <- dbFut
+      _ <- cacheFut
+    } yield publish(UpdateUserProfile(newData))
   }
 
-  def removeUserProfile(id: UUID): Future[Unit] = remove("USER-" + id)
+  def uncacheUserProfile(id: UUID): Future[Unit] = {
+    val f = remove("USER-" + id)
+    f onFailure { case e => e.printStackTrace() }
+    f
+  }
 
   def fetchRef(id: UUID): Future[Option[ActorRef]] = {
-    get("REF-" + id)
+    get[ActorRef]("REF-" + id)
   }
 
   def fetchRefs(ids: Seq[UUID]): Future[Seq[(UUID, ActorRef)]] = {
     val fut = ids map { id =>
-      fetchRef(id).collect { case Some(ref) => (id -> ref) }
+      fetchRef(id) map (_ map (id -> _))
     }
-    Future.sequence(fut)
+    Future.sequence(fut) map { idkp =>
+      idkp collect { case Some(x) => x}
+    }
   }
 
   def updateRef(id: UUID, ref: ActorRef): Future[Unit] = put("REF-" + id)(ref)

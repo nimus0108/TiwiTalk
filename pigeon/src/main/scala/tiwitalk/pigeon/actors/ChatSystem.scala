@@ -7,52 +7,70 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
-import tiwitalk.pigeon.service.{ Sentiment, UserService }
+import tiwitalk.pigeon.service.{ RoomService, Sentiment, UserService }
 
 import ChatHelpers._
 
-class ChatSystem(sentiment: Sentiment, userService: UserService) extends Actor {
+class ChatSystem(sentiment: Sentiment, userService: UserService,
+                 roomService: RoomService) extends Actor {
 
   import context.dispatcher
   implicit val timeout = Timeout(1.second)
 
-  def receive = state()
+  def receive = state
 
-  def state(data: SystemData = SystemData()): Receive = {
+  def state: Receive = {
     case Connect(id) =>
       val s = sender()
       userService.fetchUserProfile(id) map {
         case Some(user) =>
-          Some(context.actorOf(UserActor.props(user, userService)))
+          val ref = context.actorOf(UserActor.props(user, userService))
+          userService.updateRef(id, ref)
+          Some(ref)
         case None => None
       } pipeTo s
     case m: UserMessage =>
-      data.rooms foreach (_.tell(m, sender()))
+      sendToRoom(m.cid)(_ ! m)
     case d @ Disconnect(id) =>
-      data.rooms foreach (_ forward d)
+      sendToRoom(id)(_ forward d)
       userService.removeRef(id)
     case i: InviteToRoom =>
-      data.rooms foreach (_ forward i)
+      sendToRoom(i.id)(_ forward i)
+    case StartRoomRef(room) =>
+      sender ! context.actorOf(
+        RoomActor.props(room, userService, sentiment, roomService))
     case StartRoom(ids) =>
+      val sendr = sender()
       val roomId = UUID.randomUUID()
-      val roomActor = context.actorOf(
-        RoomActor.props(roomId, userService, sentiment))
-      roomActor ! JoinRoom(ids)
-      sender() ! RoomStarted(roomId)
-      stateChange(data.copy(rooms = data.rooms :+ roomActor))
+      val room = Room(roomId, Seq.empty)
+      roomService.updateRoom(room) foreach { _ =>
+        val roomActor = context.actorOf(
+          RoomActor.props(room, userService, sentiment, roomService))
+        roomActor ! JoinRoom(ids)
+        sendr ! RoomStarted(roomId)
+      }
     case GetUserProfile(Some(id)) =>
       val originalSender = sender()
       userService.fetchUserProfile(id) foreach { infoOpt =>
         infoOpt foreach (originalSender ! _)
       }
+    case GetRoomInfo(id) =>
+      val originalSender = sender()
+      roomService.findRoom(id) foreach { roomOpt =>
+        roomOpt foreach (originalSender ! _)
+      }
   }
 
-  @inline def stateChange(data: SystemData) = context.become(state(data))
-
-  case class SystemData(rooms: Seq[ActorRef] = Seq.empty)
+  def sendToRoom(id: UUID)(block: ActorRef => Unit): Future[Unit] = {
+    roomService.findRoomRef(id) map {
+      case Some(r) => block(r)
+      case _ =>
+    }
+  }
 }
 
 object ChatSystem {
-  def props(sentiment: Sentiment, userService: UserService) =
-    Props(new ChatSystem(sentiment, userService))
+  def props(sentiment: Sentiment, userService: UserService,
+            roomService: RoomService) =
+    Props(new ChatSystem(sentiment, userService, roomService))
 }

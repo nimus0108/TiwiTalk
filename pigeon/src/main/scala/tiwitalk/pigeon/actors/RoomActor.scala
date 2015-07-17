@@ -7,19 +7,22 @@ import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
-import tiwitalk.pigeon.service.{ UserService, Sentiment }
+import tiwitalk.pigeon.service.{ RoomService, Sentiment, UserService }
 
 import ChatHelpers._
 
-class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
+class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
+                roomService: RoomService)
     extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(5.seconds)
 
+  val id = data.id
+
   val chatLog = ArrayBuffer[UserMessage]()
   var lastAnalysis = System.currentTimeMillis()
 
-  def receive = status(Room(id, Seq.empty))
+  def receive = status(data)
 
   def status(room: Room): Receive = {
     // TODO: implement a dedicated actor for this
@@ -73,10 +76,11 @@ class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
       println(s"[room ${room.id}] uncaught: $shit")
   }
 
-  def sendMessage(users: Seq[UUID], event: OutEvent): Unit =
+  def sendMessage(users: Seq[UUID], event: OutEvent): Unit = {
     userService.fetchRefs(users) foreach { kps =>
       kps foreach (_._2 ! event)
     }
+  }
 
   def sendMessage(users: Seq[UUID])(event: UserProfile => OutEvent): Unit = {
     users foreach { id =>
@@ -93,23 +97,29 @@ class RoomActor(id: UUID, userService: UserService, sentiment: Sentiment)
 
   def addUsers(room: Room, users: Seq[UUID]) = {
     val newUsers = (room.users ++ users).distinct
-    val updatedRoom = room.copy(users = newUsers)
-    sendMessage(users, RoomJoined(updatedRoom))
-    Future.sequence(users map userService.fetchUserProfile) foreach { seq =>
-      seq collect {
-        case Some(info) => info
-      } foreach { u =>
-        val msg = Broadcast(room.id, s"${u.name} joined the conversation!")
-        sendMessage(newUsers, msg)
+    val addUserFut = roomService.addUsers(room.id, users)
+    val uncacheFut =
+      Future.sequence(users map (userService.uncacheUserProfile(_)))
+    for {
+      _ <- uncacheFut
+      updatedRoom <- addUserFut
+    } yield {
+      stateChange(updatedRoom)
+      sendMessage(users, RoomJoined(updatedRoom))
+      userService.fetchUserProfiles(users) foreach { seq =>
+        seq foreach { u =>
+          val msg = Broadcast(room.id, s"${u.name} joined the conversation!")
+          sendMessage(newUsers, msg)
+        }
       }
     }
-    stateChange(updatedRoom)
   }
   
-  @inline def stateChange(data: Room) = context.become(status(data))
+  def stateChange(data: Room) = context.become(status(data))
 }
 
 object RoomActor {
-  def props(id: UUID, userService: UserService, sentiment: Sentiment) =
-    Props(new RoomActor(id, userService, sentiment: Sentiment))
+  def props(data: Room, userService: UserService, sentiment: Sentiment, 
+            roomService: RoomService) =
+    Props(new RoomActor(data, userService, sentiment, roomService))
 }
