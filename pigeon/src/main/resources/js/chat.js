@@ -24,6 +24,7 @@ Chat.view = function(ctrl, args) {
         text = dispName + ": " + msg.message;
       } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
         text = msg.message;
+        otherStyle = ".broadcast";
       }
       return m("div.msg" + otherStyle, text)
     })),

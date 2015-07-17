@@ -70,7 +70,7 @@ TiwiTalk.view = function(ctrl) {
               var targets = ctrl.inviteField().split("[ ,]")
               ctrl.startRoom(targets);
             }).bind(ctrl)
-          }, "Start Chatting!"),
+          }, "Start"),
           m.component(RoomList, {
             currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
             userCache: ctrl.userCache, roomCache: ctrl.roomCache
