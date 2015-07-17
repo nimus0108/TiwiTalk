@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import java.util.UUID
 import reactivemongo.api._
 import reactivemongo.bson._
+import play.api.libs.iteratee.Iteratee
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import tiwitalk.pigeon.Chat._
@@ -27,6 +28,28 @@ class DatabaseService(config: Config) {
   
   val userCol = db.collection("users")
   val roomCol = db.collection("rooms")
+
+  def watchOplog() {
+    val localDb = connection("local")
+    val oplog = localDb.collection("oplog.$main")
+
+    oplog
+      .find(BSONDocument())
+      .options(QueryOpts().tailable.awaitData)
+      .cursor[BSONDocument]()
+      .enumerate()
+      .apply(Iteratee.foreach { l =>
+        val opt = l.getAs[BSONDocument]("o") filterNot (_ equals BSONDocument())
+        opt foreach { doc =>
+          val op = l.getAs[String]("op").get
+          // o2 = find query
+          // o  = insert/updated object; find query for remove
+          println(s"type: $op: ${BSONDocument.pretty(doc)}")
+        }
+      })
+  }
+
+  // watchOplog()
 
   def findUserProfile(id: UUID): Future[Option[UserProfile]] = {
     userCol.find(BSONDocument("_id" -> id)).one[UserProfile]
