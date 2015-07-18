@@ -60,14 +60,17 @@ TiwiTalk.view = function(ctrl) {
     showOpt = m("div.messenger-container", [
       // m("p", "Hello, " + ctrl.userInfo.name + "!"),
       m("div.messenger", [
-        m("div#profile", "hi, ", ctrl.userInfo.name),
+        m("div#profile", [
+          m("span", "Hi, " + ctrl.userInfo.name),
+          m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
+        ]),
         m("div#sidebar", [
           m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)
           }),
           m("button", {
             onclick: (function() {
-              var targets = ctrl.inviteField().split("[ ,]")
+              var targets = ctrl.inviteField().split("[ ,]+")
               ctrl.startRoom(targets);
             }).bind(ctrl)
           }, "Start"),
@@ -97,11 +100,13 @@ TiwiTalk.view = function(ctrl) {
 
 TiwiTalk.controller.prototype.logout = function() {
   m.startComputation();
+  this.userInfo = null;
+  this.currentRoom(null);
+  this.chatLogs = {};
   if (this.socket !== null) {
     this.socket.close();
   }
   this.socket = null;
-  this.userInfo = null;
   m.endComputation();
 }
 
@@ -116,9 +121,10 @@ TiwiTalk.controller.prototype.login = function(id) {
   };
   this.socket.onclose = function(event) {
     console.log("connection closed")
-    m.startComputation();
-    self.loginData(null);
-    m.endComputation();
+    if (self.userInfo) {
+      window.alert("Lost connection to server.");
+      self.logout();
+    }
   };
   this.socket.onmessage = function(event) {
     m.startComputation();
