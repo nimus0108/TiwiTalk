@@ -5,6 +5,7 @@ var m = require("lhorie/mithril");
 var Message = require("./message.js");
 
 /* Components */
+var Login = require("./login.js");
 var RoomList = require("./roomlist.js");
 var Chat = require("./chat.js");
 
@@ -12,8 +13,6 @@ var Chat = require("./chat.js");
 var TiwiTalk = {};
 
 TiwiTalk.controller = function() {
-  this.loginField = m.prop("");
-  this.name = m.prop("");
   this.socket = null;
   this.userCache = {};
   this.roomCache = {};
@@ -28,23 +27,12 @@ TiwiTalk.controller = function() {
 TiwiTalk.view = function(ctrl) {
   var showOpt;
   if (ctrl.userInfo === null) {
-    var nameInput = m("input[placeholder=username]", {
-      oninput: m.withAttr("value", ctrl.loginField),
-      value: ctrl.loginField()
+    // TODO: encapsulate properly
+    showOpt = m.component(Login, {
+      login: ctrl.login,
+      register: ctrl.register,
+      ctrl: ctrl
     });
-    var connectFn = function() { ctrl.login(ctrl.loginField()); return false; };
-    showOpt = m("div.splash", [
-      m("h1", "TiwiTalk"),
-      m("h2", "Demo v0.0.0.3"),
-      m("form", { onsubmit: function() { ctrl.register(); return false; } }, [
-        m("button[type=submit]", "register"),
-        nameInput
-      ]),
-      m("form", { onsubmit: connectFn }, [
-        m("button[type=submit]", "connect"),
-        nameInput
-      ])
-    ]);
   } else {
     var availRadio = [];
     for (var i = 1; i <= 5; i++) {
