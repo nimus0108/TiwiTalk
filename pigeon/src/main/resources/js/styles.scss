@@ -1,28 +1,8 @@
 @import 'necolas/normalize.css';
+@import 'splash.css';
 /*
 @import 'twbs/bootstrap@v3.3.5:dist/css/bootstrap.css';
 */
-
-@-webkit-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @-moz-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @-o-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @keyframes BackGradient { 
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
 
 @viewport {
     zoom: 1.0;
@@ -50,11 +30,10 @@ body {
 }
 
 button {
-    background-color: #2ecc71;
+    background-color: #FF9933;
     color: #f7f7f7;
     padding: 7px 15px;
-    border: 3px solid #2ecc71;
-    border-radius: 3px;
+    border: 3px solid #FF9933;
     outline: none;
 }
 
@@ -72,15 +51,6 @@ button {
         // top: 30%;`
         width: 100%;
         height: 100%;
-        background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9, #32bf2a, #bcbf2a, #0fa9a8);
-        background-size: 1600% 1600%;
-
-        -webkit-animation: BackGradient 60s ease infinite;
-        -moz-animation: BackGradient 60s ease infinite;
-        -o-animation: BackGradient 60s ease infinite;
-        animation: BackGradient 60s ease infinite;
-
-        
         padding-top: 230px;
         text-align: center;
       
@@ -103,9 +73,8 @@ button {
                 margin: 0;
                 margin-top: 10px;
                 background-color: #f7f7f7;
-                padding: 7px 15px;
                 border: 3px solid #ddd;
-                border-radius: 3px;
+                padding: 7px 15px;
                 outline: none;
             }
             
@@ -120,8 +89,13 @@ button {
                 transition: all 200ms ease;
     
                 &:hover {
-                    opacity: 0.8;
+                    background-color: #FF4500;
+                    border-color: #FF4500;
                 }
+            }
+            
+            .register:focus {
+                border: 3px solid #FF9933;
             }
         }
     }
@@ -239,7 +213,6 @@ button {
         background-color: #f7f7f7;
         padding: 7px 15px;
         border: 3px solid #ddd;
-        border-radius: 3px;
         outline: none;
         
         @media screen and (max-width: 1080px) {
@@ -319,12 +292,11 @@ button {
     
     button {
         width: 155px;
-        background-color: #2ecc71;
+        background-color: #FF6600;
         color: #f7f7f7;
         margin: 10px 0 0 5px;
         padding: 7px;
-        border: 3px solid #2ecc71;
-        border-radius: 3px;
+        border: 3px solid #FF6600;
         outline: none;
         text-align: center;
         
@@ -335,7 +307,7 @@ button {
         transition: all 200ms ease;
     
         &:hover {
-            opacity: 0.8;
+            background-color: #FF6600;
         }    
     }
     

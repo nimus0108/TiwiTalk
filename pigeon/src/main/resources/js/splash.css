@@ -1,0 +1,32 @@
+@-webkit-keyframes BackGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @-moz-keyframes BackGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @-o-keyframes BackGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @keyframes BackGradient { 
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+
+.splash {
+        background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9,           #32bf2a, #bcbf2a, #0fa9a8);
+        background-size: 1600% 1600%;
+
+        -webkit-animation: BackGradient 45s ease infinite;
+        -moz-animation: BackGradient 45s ease infinite;
+        -o-animation: BackGradient 45s ease infinite;
+        animation: BackGradient 45s ease infinite;
+
+        
+}

@@ -17,7 +17,12 @@ Login.controller = function(args) {
 };
 
 Login.view = function(ctrl, args) {
-  var nameInput = m("input[placeholder=username]", {
+  var usernameInput = m("input.register[placeholder=username]", {
+    oninput: m.withAttr("value", ctrl.loginField),
+    value: ctrl.loginField()
+  });
+    
+  var nameInput = m("input.register[placeholder=name]", {
     oninput: m.withAttr("value", ctrl.loginField),
     value: ctrl.loginField()
   });
@@ -32,7 +37,7 @@ Login.view = function(ctrl, args) {
     m("h2", "Demo v0.0.0.3"),
     m("form", { onsubmit: ctrl.register }, [
       m("button[type=submit]", "register"),
-      nameInput
+      usernameInput
     ]),
     m("form", { onsubmit: loginFn }, [
       m("button[type=submit]", "connect"),
