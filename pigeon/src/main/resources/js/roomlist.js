@@ -12,7 +12,7 @@ RoomList.controller = function(args) {
 
 RoomList.view = function(ctrl, args) {
   var rooms = args.userInfo.rooms || [];
-  return m("div.roomContainer", rooms.map(function(roomId) {
+  return m("div.nothing", rooms.map(function(roomId) {
     var isCurrent = roomId == args.currentRoom();
     var classOpt = isCurrent ? ".currentroom" : "";
 
@@ -28,10 +28,26 @@ RoomList.view = function(ctrl, args) {
     if (room.moodColor) {
       styleOpt.background = args.roomCache[room].moodColor;
     }
-    return m("div.messageTarget" + classOpt, {
+    return m("div.friend-preview" + classOpt, {
       onclick: ctrl.setActive(roomId),
       style: styleOpt
-    }, labelOpt);
+    }, [
+	    m("div.face-container", [
+	      m("div.vertical-container", [
+	        m("div.vertical-align", [
+	          m("img.face[src=/logo.png]")  
+	        ]),  
+	      ]),  
+	    ]),
+	    m("div.show", [
+	      m("div.vertical-container", [
+	        m("div.vertical-align", [
+	          m("h1.friend-name", labelOpt),
+            m("h2.excerpt", "placeholder-excerpt")  
+	        ]),  
+	      ])
+      ])
+    ]);
   }));
 };
 

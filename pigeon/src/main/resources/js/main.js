@@ -33,54 +33,129 @@ TiwiTalk.view = function(ctrl) {
       ctrl: ctrl
     });
   } else {
-    var availRadio = [];
-    for (var i = 1; i <= 5; i++) {
-      availRadio[i] = m("span", [
-        m("input.radioinput", {
-          name: "avail", id: "avail-" + i, type: "radio",
-          value: i, checked: i == ctrl.userInfo.profile.availability,
-          onclick: m.withAttr("value", ctrl.setAvailability.bind(ctrl))
+    
+    var availRadio = []; /* stupid and useless */
+    // for (var i = 1; i <= 5; i++) {
+    //   availRadio[i] = m("span", [
+    //     m("input.radioinput", {
+    //       name: "avail", id: "avail-" + i, type: "radio",
+    //       value: i, checked: i == ctrl.userInfo.profile.availability,
+    //       onclick: m.withAttr("value", ctrl.setAvailability.bind(ctrl))
+    //     }),
+    //     m("label", { "for": "avail-" + i }, i)
+    //   ]);
+    // }
+    
+    // m("div#profile", [
+    //   m("span", "Hi, " + ctrl.userInfo.profile.name),
+    //   m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
+    // ]),
+    
+    showOpt = m("div#messenger", [
+      m("div.tiwi", [
+    	  m("div.friend-preview", [
+    	    m("div.face-container", [
+    	      m("div.vertical-container", [
+    	        m("div.vertical-align", [
+    	          m("img.face")  
+    	        ]),  
+    	      ]),  
+    	    ]),
+    	    m("div.show", [
+    	      m("div.vertical-container", [
+    	        m("div.vertical-align", [
+    	          m("h1.friend-name"),
+    	          m("h2.excerpt")  
+    	        ]),  
+    	      ]),  
+    	    ]),  
+    	  ]),
+    	  m("div.avail-status", [
+    	    m("h1.avail", "You are busy right now"),
+    	    m("h2.tip", "People won't bother you unless there's something important")
+    	  ]),
+    	]),
+      // end tiwi
+      
+      
+      
+      // m("div.preview", [
+    	//   m("div.search", [
+    	//     m("form", [
+    	//       m("input.search-friend", {
+    	//         type: "text", placeholder: "Search"  
+    	//       }),  
+    	//     ]),  
+    	//   ]),
+    	//   m("div.friend-preview", [
+    	//     m("div.face-container", [
+    	//       m("div.vertical-container", [
+    	//         m("div.vertical-align", [
+    	//           m("img.face[src=/person.jpg]")  
+    	//         ]),  
+    	//       ]),  
+    	//     ]),
+    	//     m("div.show", [
+    	//       m("div.vertical-container", [
+    	//         m("div.vertical-align", [
+    	//           m("h1.friend-name", "friendname"),
+    	//           m("h2.excerpt", "this is the exerpt")  
+    	//         ]),  
+    	//       ]),  
+    	//     ]),  
+    	//   ]),
+    	// ]),
+      
+      //start chat
+      m("div.conversation-scr", [
+        m("div.header", [
+          m("div.identity", [
+            m("h1.friend-name", ctrl.userInfo.profile.name),
+            m("h2.status", ctrl.userInfo.id)
+          ])
+        ]),
+      // m("div#chat", [
+      //   m("div.chat-intro", [
+      //     m("div.name", ctrl.userInfo.profile.name),
+      //     m("div.id", ctrl.userInfo.id),
+      //     m("div.availability", availRadio)
+      //   ]),
+        m.component(Chat, {
+          userCache: ctrl.userCache, userInfo: ctrl.userInfo,
+          send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
+          currentRoom: ctrl.currentRoom,
+          getUserProfile: ctrl.getUserProfile.bind(ctrl)
+        })
+      ]),
+      //end chat
+      
+      //start preview
+      m("div.preview", [
+        m("div.search", [
+    	    m("form", [
+    	      m("input.search-friend", {
+    	        type: "text", placeholder: "Search", oninput: m.withAttr("value", ctrl.inviteField)  
+    	      }),  
+    	    ]),  
+    	  ]),
+        m("input[placeholder=Enter ID Here]", {
+          type: "text", oninput: m.withAttr("value", ctrl.inviteField)
         }),
-        m("label", { "for": "avail-" + i }, i)
-      ]);
-    }
-    showOpt = m("div.messenger-container", [
-      m("div.messenger", [
-        m("div#profile", [
-          m("span", "Hi, " + ctrl.userInfo.profile.name),
-          m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
-        ]),
-        m("div#sidebar", [
-          m("input[placeholder=Enter ID Here]", {
-            type: "text", oninput: m.withAttr("value", ctrl.inviteField)
-          }),
-          m("button", {
-            onclick: (function() {
-              var targets = ctrl.inviteField().split("[ ,]+")
-              ctrl.startRoom(targets);
-            }).bind(ctrl)
-          }, "Start"),
-          m.component(RoomList, {
-            currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
-            userCache: ctrl.userCache, roomCache: ctrl.roomCache
-          })
-        ]),
-        m("div#chat", [
-          m("div.chat-intro", [
-            m("div.name", ctrl.userInfo.profile.name),
-            m("div.id", ctrl.userInfo.id),
-            m("div.availability", availRadio)
-          ]),
-          m.component(Chat, {
-            userCache: ctrl.userCache, userInfo: ctrl.userInfo,
-            send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
-            currentRoom: ctrl.currentRoom,
-            getUserProfile: ctrl.getUserProfile.bind(ctrl)
-          })
-        ])
+        m("button", {
+          onclick: (function() {
+            var targets = ctrl.inviteField().split("[ ,]+")
+            ctrl.startRoom(targets);
+          }).bind(ctrl)
+        }, "Start"),
+        m.component(RoomList, {
+          currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
+          userCache: ctrl.userCache, roomCache: ctrl.roomCache
+        })
       ])
-    ]);
-  }
+      //end preview
+      
+    ]); //showOpt
+  } //if
   return showOpt;
 };
 

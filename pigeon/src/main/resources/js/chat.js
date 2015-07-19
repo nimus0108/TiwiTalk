@@ -10,7 +10,7 @@ Chat.controller = function() {
 Chat.view = function(ctrl, args) {
   var chatLog = args.chatLogs[args.currentRoom()] || [];
   return m("div.chat", [
-    m("div.view-messages", chatLog.map(function(msg) {
+    m("div.messageContainer", chatLog.map(function(msg) {
       var text;
       var otherStyle = "";
       if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
@@ -20,13 +20,17 @@ Chat.view = function(ctrl, args) {
         if (!userOpt) {
           args.getUserAccount(uid);
         }
-        otherStyle = "." + (uid == args.userInfo.id ? "me" : "somebody");
-        text = dispName + ": " + msg.message;
-      } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+        otherStyle = "." + (uid == args.userInfo.id ? "me" : "friend");
+        // text = dispName + ": " + msg.message;
         text = msg.message;
-        otherStyle = ".broadcast";
+      } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+        return m("h2.announcement", msg.message)
       }
-      return m("div.msg" + otherStyle, text)
+      return m("div" + otherStyle, [
+        m("div.wrap", [
+          m("span.message", text)
+        ])
+      ])
     })),
     m("form.write-message", {
       onsubmit: function() {
