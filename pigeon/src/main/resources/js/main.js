@@ -47,64 +47,11 @@ TiwiTalk.view = function(ctrl) {
     }
     showOpt = m("div.messenger-container", [
       // m("p", "Hello, " + ctrl.userInfo.name + "!"),
-      
-      
-      m("div#messenger", [
-        
-        /* Left Bar */
-        m("div.tiwi", [
-          m("div.friend-preview", [
-            m("div.face-container", [
-              m("div.vertical-container", [
-                m("div.vertical-align", [
-                  m("img.face")  
-                ]),  
-              ]),  
-            ]),
-            m("div.show", [
-              m("div.vertical-container", [
-                m("div.vertical-align", [
-                  m("h1.friend-name"),
-                  m("h2.excerpt")  
-                ]),  
-              ]),  
-            ]),  
-          ]),
-          m("div.avail-status", [
-            m("h1.avail"),
-            m("h2.tip")
-          ]),
-          // m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
+      m("div.messenger", [
+        m("div#profile", [
+          m("span", "Hi, " + ctrl.userInfo.name),
+          m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
         ]),
-        
-        /* Preview Bar - Right Side */
-        m("div.preview", [
-          m("div.search", [
-            m("form", [
-              m("input.search-friend", {
-                type: "text", placeholder: "Search"  
-              }),  
-            ]),  
-          ]),
-          m("div.friend-preview", [
-            m("div.face-container", [
-              m("div.vertical-container", [
-                m("div.vertical-align", [
-                  m("img.face")  
-                ]),  
-              ]),  
-            ]),
-            m("div.show", [
-              m("div.vertical-container", [
-                m("div.vertical-align", [
-                  m("h1.friend-name"),
-                  m("h2.excerpt")  
-                ]),  
-              ]),  
-            ]),  
-          ]),
-        ]),
-        
         m("div#sidebar", [
           m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)
