@@ -8,6 +8,7 @@ var Message = require("./message.js");
 var Login = require("./login.js");
 var RoomList = require("./roomlist.js");
 var Chat = require("./chat.js");
+var Search = require("./search.js");
 
 /* Main app */
 var TiwiTalk = {};
@@ -51,6 +52,7 @@ TiwiTalk.view = function(ctrl) {
           m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
         ]),
         m("div#sidebar", [
+          m.component(Search, ctrl.socket),
           m("input[placeholder=Enter ID Here]", {
             type: "text", oninput: m.withAttr("value", ctrl.inviteField)
           }),
@@ -155,6 +157,8 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
     this.updateRoomInfo(data.room);
     this.userInfo.rooms.push(this.currentRoom());
     console.log("Joined " + this.currentRoom());
+  } else if (data.$type == "tiwitalk.pigeon.Chat.UserSearchResult") {
+    console.log("Search results for " + data.query, data.results);
   } else if (data.$type == "tiwitalk.pigeon.Chat.MoodColor") {
     this.roomCache[data.room].moodColor = data.color;
     console.log("%c Received color " + data.color, "background: " + data.color + ";");

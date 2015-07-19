@@ -17,6 +17,7 @@ object Chat {
   case object GetAvailability extends InEvent with ServerEvent
   case class SetAvailability(value: Int) extends InEvent
   case object GetUserAccount extends InEvent
+  case class SearchForUser(name: String) extends InEvent
 
   case class Broadcast(room: UUID, message: String) extends OutEvent
   case class UserMessage(
@@ -36,6 +37,8 @@ object Chat {
       availability: Int) extends OutEvent
   case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
+  case class UserSearchResult(query: String, results: Seq[UserProfile])
+      extends OutEvent
 
   case class Connect(id: UUID) extends ServerEvent
   case class Disconnect(id: UUID) extends ServerEvent
