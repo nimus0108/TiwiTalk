@@ -2,8 +2,18 @@ var m = require("lhorie/mithril");
 
 var Login = {};
 
-Login.controller = function() {
+Login.controller = function(args) {
   this.loginField = m.prop("");
+  this.login = args.login.bind(args.ctrl);
+  var self = this;
+  this.register = function() {
+    var params = { method: "POST", url: "/register?name=" + self.loginField() };
+    m.request(params).then(function(response) {
+      console.info(response);
+      self.login(response.id);
+    });
+    return false;
+  };
 };
 
 Login.view = function(ctrl, args) {
@@ -12,24 +22,19 @@ Login.view = function(ctrl, args) {
     value: ctrl.loginField()
   });
 
-  var registerFn = function() {
-    args.register.bind(args.ctrl)();
-    return false;
-  };
-
-  var connectFn = function() {
-    args.login.bind(args.ctrl)(ctrl.loginField());
+  var loginFn = function() {
+    ctrl.login(ctrl.loginField());
     return false;
   };
 
   return m("div.splash", [
     m("h1", "TiwiTalk"),
     m("h2", "Demo v0.0.0.3"),
-    m("form", { onsubmit: registerFn }, [
+    m("form", { onsubmit: ctrl.register }, [
       m("button[type=submit]", "register"),
       nameInput
     ]),
-    m("form", { onsubmit: connectFn }, [
+    m("form", { onsubmit: loginFn }, [
       m("button[type=submit]", "connect"),
       nameInput
     ])

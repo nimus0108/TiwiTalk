@@ -6,43 +6,63 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scalacache._
-import tiwitalk.pigeon.Chat.{ UserProfile, UpdateUserProfile }
+import tiwitalk.pigeon.Chat.{ UserAccount, UserProfile, UpdateUserAccount }
 
 class UserService(db: DatabaseService)(implicit cache: ScalaCache,
     system: ActorSystem) extends EventBus with LookupClassification {
 
   import system.dispatcher
 
-  def fetchUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    get[UserProfile]("USER-" + id) flatMap {
+  def fetchUserAccount(id: UUID): Future[Option[UserAccount]] = {
+    get[UserAccount]("USER-" + id) flatMap {
       case Some(u) => Future.successful(Some(u))
       case None =>
-        db.findUserProfile(id) flatMap {
+        db.findUserAccount(id) flatMap {
           case o @ Some(p) =>
-            publish(UpdateUserProfile(p))
+            publish(UpdateUserAccount(p))
             put("USER-" + p.id)(p, ttl = Some(1.minute)) map (_ => o)
           case None => Future.successful(None)
         }
     }
   }
 
-  def fetchUserProfiles(ids: Seq[UUID]): Future[Seq[UserProfile]] = {
-    // TODO: batch requests to DB
-    Future.sequence(ids map fetchUserProfile) map { profs =>
-      profs collect { case Some(x) => x}
+  def fetchUserProfile(id: UUID): Future[Option[UserProfile]] = {
+    fetchUserAccount(id) map {
+      case Some(u) => Some(u.profile)
+      case None => None
     }
   }
 
-  def updateUserProfile(newData: UserProfile): Future[Unit] = {
-    val dbFut = db.updateUserProfile(newData)
+  def fetchUserAccounts(ids: Seq[UUID]): Future[Seq[UserAccount]] = {
+    // TODO: batch requests to DB
+    Future.sequence(ids map fetchUserAccount) map { profs =>
+      profs collect { case Some(x) => x }
+    }
+  }
+
+  def fetchUserProfiles(ids: Seq[UUID]): Future[Seq[UserProfile]] = {
+    Future.sequence(ids map fetchUserProfile) map { profs =>
+      profs collect { case Some(x) => x }
+    }
+  }
+
+  def updateUserAccount(newData: UserAccount): Future[Unit] = {
+    val dbFut = db.updateUserAccount(newData)
     val cacheFut = put("USER-" + newData.id)(newData, ttl = Some(1.minute))
     for {
       _ <- dbFut
       _ <- cacheFut
-    } yield publish(UpdateUserProfile(newData))
+    } yield publish(UpdateUserAccount(newData))
   }
 
-  def uncacheUserProfile(id: UUID): Future[Unit] = {
+  def updateUserProfile(newData: UserProfile): Future[Unit] = {
+    for {
+      account <- db.updateUserProfile(newData).collect { case Some(a) => a }
+      _ <- put("USER-" + account.id)(account, ttl = Some(1.minute))
+    } yield publish(UpdateUserAccount(account))
+  }
+
+  def uncacheUserAccount(id: UUID): Future[Unit] = {
     val f = remove("USER-" + id)
     f onFailure { case e => e.printStackTrace() }
     f
@@ -65,7 +85,7 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
 
   def removeRef(id: UUID): Future[Unit] = remove("REF-" + id)
 
-  type Event = UpdateUserProfile
+  type Event = UpdateUserAccount
   type Subscriber = ActorRef
   type Classifier = UUID
 

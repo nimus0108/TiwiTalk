@@ -35,6 +35,11 @@ Message.GetUserProfile = function(id) {
   return new Message("GetUserProfile", { id: id ? [id] : [] });
 };
 
+/* Constructs a GetUserAccount message. */
+Message.GetUserAccount = function(id) {
+  return new Message("GetUserAccount", {});
+};
+
 /* Constructs a GetRoomInfo message */
 Message.GetRoomInfo = function(id) {
   return new Message("GetRoomInfo", { id: id });

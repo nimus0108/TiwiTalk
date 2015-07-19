@@ -99,7 +99,7 @@ class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
     val newUsers = (room.users ++ users).distinct
     val addUserFut = roomService.addUsers(room.id, users)
     val uncacheFut =
-      Future.sequence(users map (userService.uncacheUserProfile(_)))
+      Future.sequence(users map (userService.uncacheUserAccount(_)))
     for {
       _ <- uncacheFut
       updatedRoom <- addUserFut

@@ -8,34 +8,35 @@ import tiwitalk.pigeon.service.UserService
 
 import ActorSubscriberMessage._
 
-class UserActor(initialData: UserProfile, userService: UserService)
+class UserActor(initialData: UserAccount, userService: UserService)
     extends ActorSubscriber with ActorPublisher[OutEvent] {
 
   def receive = handle(initialData)
 
-  def handle(data: UserProfile): Receive = {
-    case UpdateUserProfile(newData) if data.id equals newData.id =>
+  def handle(data: UserAccount): Receive = {
+    case UpdateUserAccount(newData) if data.id equals newData.id =>
       if (!(newData equals data)) {
         context.become(handle(newData))
         if (totalDemand > 0) onNext(newData)
       }
-    case GetAvailability => sender ! data.availability
-    case SetAvailability(value) => setAvailability(value, data)
+    case GetAvailability => sender ! data.profile.availability
+    case SetAvailability(value) => setAvailability(value, data.profile)
     case GetUserId => sender ! data.id
-    case GetName => sender ! data.name
+    case GetName => sender ! data.profile.name
     case Disconnect =>
       context.parent ! Disconnect
       self ! PoisonPill
     case r @ RoomJoined(room) if totalDemand > 0 =>
       onNext(r)
     case e: OutEvent if totalDemand > 0 => onNext(e)
-    case GetUserProfile(None) if totalDemand > 0 => sender() ! data
-    case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data)
+    case GetUserProfile(None) if totalDemand > 0 => sender() ! data.profile
+    case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data.profile)
+    case OnNext(GetUserAccount) if totalDemand > 0 => onNext(data)
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       context.parent ! UserMessage(data.id, msg, cid)
     case OnNext(StartRoom(ids)) =>
       context.parent ! StartRoom((ids :+ data.id).distinct)
-    case OnNext(SetAvailability(value)) => setAvailability(value, data)
+    case OnNext(SetAvailability(value)) => setAvailability(value, data.profile)
     case OnNext(s) => context.parent ! s
     case OnComplete => context.parent ! Disconnect(data.id)
   }
@@ -47,9 +48,9 @@ class UserActor(initialData: UserProfile, userService: UserService)
 }
 
 object UserActor {
-  def props(profile: UserProfile, userService: UserService): Props =
-    Props(new UserActor(profile, userService))
+  def props(account: UserAccount, userService: UserService): Props =
+    Props(new UserActor(account, userService))
 
   def props(id: UUID, name: String, userService: UserService): Props =
-    props(UserProfile(id, name, 5), userService)
+    props(UserAccount(id, UserProfile(id, name, 5)), userService)
 }

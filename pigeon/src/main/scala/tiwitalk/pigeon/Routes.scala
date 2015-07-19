@@ -59,9 +59,9 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
           post {
             complete {
               val id = UUID.randomUUID()
-              val prof = Chat.UserProfile(id, name, 5)
-              val msg = write(prof)
-              db.updateUserProfile(prof) map { _ =>
+              val acc = Chat.UserAccount(id, Chat.UserProfile(id, name, 5))
+              val msg = write(acc.profile)
+              db.updateUserAccount(acc) map { _ =>
                 HttpResponse(
                   status = StatusCodes.OK,
                   entity = HttpEntity(MediaTypes.`application/json`, msg)

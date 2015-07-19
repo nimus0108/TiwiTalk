@@ -16,6 +16,7 @@ object Chat {
   case class GetRoomInfo(id: UUID) extends InEvent
   case object GetAvailability extends InEvent with ServerEvent
   case class SetAvailability(value: Int) extends InEvent
+  case object GetUserAccount extends InEvent
 
   case class Broadcast(room: UUID, message: String) extends OutEvent
   case class UserMessage(
@@ -24,11 +25,15 @@ object Chat {
     cid: UUID) extends OutEvent
   case class RoomInvite(id: UUID) extends OutEvent
   case class RoomJoined(room: Room) extends OutEvent with ServerEvent
-  case class UserProfile(
+  case class UserAccount(
       @Key("_id") id: UUID,
+      profile: UserProfile,
+      rooms: Seq[UUID] = Seq.empty,
+      contacts: Seq[UUID] = Seq.empty) extends OutEvent
+  case class UserProfile(
+      id: UUID,
       name: String,
-      availability: Int,
-      rooms: Seq[UUID] = Seq.empty) extends OutEvent
+      availability: Int) extends OutEvent
   case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
 
@@ -40,7 +45,7 @@ object Chat {
   case object GetUsers extends ServerEvent
   case object GetRooms extends ServerEvent
   case class JoinRoom(ids: Seq[UUID]) extends ServerEvent
-  case class UpdateUserProfile(data: UserProfile) extends ServerEvent
+  case class UpdateUserAccount(data: UserAccount) extends ServerEvent
   case class RoomStarted(id: UUID) extends ServerEvent
   case class StartRoomRef(room: Room) extends ServerEvent
 }

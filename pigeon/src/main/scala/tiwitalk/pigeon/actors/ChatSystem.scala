@@ -22,7 +22,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
   def state: Receive = {
     case Connect(id) =>
       val s = sender()
-      userService.fetchUserProfile(id) map {
+      userService.fetchUserAccount(id) map {
         case Some(user) =>
           val ref = context.actorOf(UserActor.props(user, userService))
           userService.updateRef(id, ref)

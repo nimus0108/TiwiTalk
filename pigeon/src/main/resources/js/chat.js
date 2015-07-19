@@ -18,7 +18,7 @@ Chat.view = function(ctrl, args) {
         var userOpt = args.userCache[uid];
         var dispName = userOpt ? userOpt.name : uid;
         if (!userOpt) {
-          args.getUserData();
+          args.getUserAccount(uid);
         }
         otherStyle = "." + (uid == args.userInfo.id ? "me" : "somebody");
         text = dispName + ": " + msg.message;

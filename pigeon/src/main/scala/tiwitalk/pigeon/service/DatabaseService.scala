@@ -19,6 +19,7 @@ class DatabaseService(config: Config) {
 
   implicit val roomHandler = Macros.handler[Room]
   implicit val userProfileHandler = Macros.handler[UserProfile]
+  implicit val userAccountHandler = Macros.handler[UserAccount]
 
   val driver = new MongoDriver
   val uri = MongoConnection.parseURI(config.getString("mongodbUri")).get
@@ -51,14 +52,31 @@ class DatabaseService(config: Config) {
 
   // watchOplog()
 
+  def findUserAccount(id: UUID): Future[Option[UserAccount]] = {
+    userCol.find(BSONDocument("_id" -> id)).one[UserAccount]
+  }
+
   def findUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    userCol.find(BSONDocument("_id" -> id)).one[UserProfile]
+    val query = BSONDocument("_id" -> id)
+    val fields = BSONDocument("profile" -> 1)
+    userCol.find(query, fields).one[BSONDocument].map { docOpt =>
+      docOpt map { doc =>
+        doc.getAs[UserProfile]("profile").get
+      }
+    }
   }
 
   import userCol.BatchCommands.FindAndModifyCommand.FindAndModifyResult
-  def updateUserProfile(p: UserProfile): Future[FindAndModifyResult] = {
+  def updateUserAccount(a: UserAccount): Future[FindAndModifyResult] = {
+    val query = BSONDocument("_id" -> a.id)
+    userCol.findAndUpdate(query, a, upsert = true)
+  }
+
+  def updateUserProfile(p: UserProfile): Future[Option[UserAccount]] = {
     val query = BSONDocument("_id" -> p.id)
-    userCol.findAndUpdate(query, p, upsert = true)
+    val upd = BSONDocument("$set" -> BSONDocument("profile" -> p))
+    val f = userCol.findAndUpdate(query, upd, fetchNewObject = true)
+    f.map(_.result[UserAccount])
   }
 
   def findRoom(id: UUID): Future[Option[Room]] = {
