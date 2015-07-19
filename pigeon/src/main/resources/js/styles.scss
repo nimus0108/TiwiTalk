@@ -1,5 +1,5 @@
 @import 'necolas/normalize.css';
-@import 'splash.css';
+@import 'splash.scss';
 /*
 @import 'twbs/bootstrap@v3.3.5:dist/css/bootstrap.css';
 */
@@ -100,6 +100,8 @@ button {
         }
     }
 }
+
+
 
 #app {
     text-align: center;
