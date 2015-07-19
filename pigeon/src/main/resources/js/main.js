@@ -57,15 +57,15 @@ TiwiTalk.view = function(ctrl) {
     	    m("div.face-container", [
     	      m("div.vertical-container", [
     	        m("div.vertical-align", [
-    	          m("img.face")  
+    	          m("img.face[src=/logo.png]")  
     	        ]),  
     	      ]),  
     	    ]),
     	    m("div.show", [
     	      m("div.vertical-container", [
     	        m("div.vertical-align", [
-    	          m("h1.friend-name"),
-    	          m("h2.excerpt")  
+    	          m("h1.friend-name", "Someone"),
+    	          m("h2.excerpt", "Some status")  
     	        ]),  
     	      ]),  
     	    ]),  
@@ -132,21 +132,16 @@ TiwiTalk.view = function(ctrl) {
       //start preview
       m("div.preview", [
         m("div.search", [
-    	    m("form", [
-    	      m("input.search-friend", {
-    	        type: "text", placeholder: "Search", oninput: m.withAttr("value", ctrl.inviteField)  
-    	      }),  
-    	    ]),  
+  	      m("input.search-friend", {
+  	        type: "text", placeholder: "Enter ID Here", oninput: m.withAttr("value", ctrl.inviteField)  
+  	      }),  
+          m("button.start", {
+            onclick: (function() {
+              var targets = ctrl.inviteField().split("[ ,]+")
+              ctrl.startRoom(targets);
+            }).bind(ctrl)
+          }, "start talking"),
     	  ]),
-        m("input[placeholder=Enter ID Here]", {
-          type: "text", oninput: m.withAttr("value", ctrl.inviteField)
-        }),
-        m("button", {
-          onclick: (function() {
-            var targets = ctrl.inviteField().split("[ ,]+")
-            ctrl.startRoom(targets);
-          }).bind(ctrl)
-        }, "Start"),
         m.component(RoomList, {
           currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
           userCache: ctrl.userCache, roomCache: ctrl.roomCache
