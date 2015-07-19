@@ -375,7 +375,8 @@ h2.excerpt {
 	}
 	
 	.messageContainer {
-		max-height: calc(100% - 150px);
+		height: calc(100% - 170px);
+		max-height: calc(100% - 170px);
 		overflow: hidden;
 		overflow-y: scroll;
 	}
@@ -426,4 +427,45 @@ h2.excerpt {
 			// }
 		}
 	}
+}
+
+form.write-message {
+	positon: fixed;
+	bottom: 140px;
+	width: 100%;
+	height: 64px;
+	
+	.messager {
+		width: 100%;
+		height: calc(100% - 1px);
+		border: none;
+		border-top: 1px solid $color-gray;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.input-box {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 7px 25px;
+		font-size: 18px;
+		outline: none;
+		border: none;
+		border-top: 1px solid $color-gray;
+	}
+}
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #777;
+}
+
+::-webkit-scrollbar-corner {
+    background: #777;
 }

@@ -72,7 +72,7 @@ TiwiTalk.view = function(ctrl) {
     	  ]),
     	  m("div.avail-status", [
     	    m("h1.avail", "You are busy right now"),
-    	    m("h2.tip", "People won't bother you unless there's something important")
+    	    m("h2.tip", "People won't bother you unless Lily's here")
     	  ]),
     	]),
       // end tiwi
