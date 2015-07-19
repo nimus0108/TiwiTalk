@@ -59,6 +59,10 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
       roomService.findRoom(id) foreach { roomOpt =>
         roomOpt foreach (originalSender ! _)
       }
+    case SearchForUser(name) if !name.trim.isEmpty =>
+      userService.searchUsersByName(name) map { accs =>
+        UserSearchResult(name, accs map (_.profile))
+      } pipeTo sender()
   }
 
   def sendToRoom(id: UUID)(block: ActorRef => Unit): Future[Unit] = {

@@ -5,7 +5,7 @@ import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
-import scala.util.Success
+import scala.util.{ Failure, Success }
 import scalacache._
 import scalacache.guava._
 
@@ -35,12 +35,18 @@ object PigeonServer extends App {
     ChatSystem.props(sentiment, userService, roomService), "chat")
   val routes = new Routes(chatSystem, userService, databaseService)
 
-  val serverFuture = Http().bindAndHandle(routes.default, host, port)
-  serverFuture onComplete {
+  // Intentionally not parallel
+  val startFuture = for {
+    _ <- databaseService.init()
+    res <- Http().bindAndHandle(routes.default, host, port)
+  } yield res
+
+  startFuture onComplete {
     case Success(_) =>
       println(s"Server listening on $host, port $port")
-    case _ =>
+    case Failure(e) =>
       println("Failed to start server")
+      e.printStackTrace()
       system.shutdown()
   }
 }

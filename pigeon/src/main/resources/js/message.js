@@ -50,4 +50,8 @@ Message.SetAvailability = function(value) {
   return new Message("SetAvailability", { value: value });
 };
 
+Message.SearchForUser = function(name) {
+  return new Message("SearchForUser", { name: name });
+};
+
 module.exports = Message;
