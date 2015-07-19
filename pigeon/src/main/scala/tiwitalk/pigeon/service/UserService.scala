@@ -68,6 +68,9 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
     f
   }
 
+  def searchUsersByName(name: String): Future[Seq[UserAccount]] =
+    db.searchUsersByName(name)
+
   def fetchRef(id: UUID): Future[Option[ActorRef]] = {
     get[ActorRef]("REF-" + id)
   }

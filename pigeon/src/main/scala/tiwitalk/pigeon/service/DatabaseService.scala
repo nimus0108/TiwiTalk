@@ -3,6 +3,7 @@ package tiwitalk.pigeon.service
 import com.typesafe.config.Config
 import java.util.UUID
 import reactivemongo.api._
+import reactivemongo.api.indexes.{ Index, IndexType }
 import reactivemongo.bson._
 import play.api.libs.iteratee.Iteratee
 import scala.concurrent.Future
@@ -29,6 +30,12 @@ class DatabaseService(config: Config) {
   
   val userCol = db.collection("users")
   val roomCol = db.collection("rooms")
+
+  def init(): Future[Unit] = {
+    val nameSearch = userCol.indexesManager.ensure(
+      new Index(Seq("profile.name" -> IndexType.Text)))
+    nameSearch map (_ => ())
+  }
 
   def watchOplog() {
     val localDb = connection("local")
@@ -112,5 +119,10 @@ class DatabaseService(config: Config) {
   def findRoomsWithUser(id: UUID): Future[Seq[Room]] = {
     val query = BSONDocument("users" -> BSONDocument("$in" -> BSONArray(id)))
     roomCol.find(query).cursor[Room]().collect[Seq]()
+  }
+
+  def searchUsersByName(name: String): Future[Seq[UserAccount]] = {
+    val query = BSONDocument("profile.name" -> BSONRegex(name, "i"))
+    userCol.find(query).cursor[UserAccount]().collect[Seq]()
   }
 }
