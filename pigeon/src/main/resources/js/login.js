@@ -34,7 +34,7 @@ Login.view = function(ctrl, args) {
 
   return m("div.splash", [
     m("h1", "TiwiTalk"),
-    m("h2", "Demo v0.0.0.3"),
+    m("h2", "Demo v0.0.0.5-DEVELOPER PREVIEW"),
     m("form", { onsubmit: ctrl.register }, [
       m("button[type=submit]", "register"),
       usernameInput
