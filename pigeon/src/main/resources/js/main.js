@@ -20,6 +20,7 @@ TiwiTalk.controller = function() {
   this.userInfo = null;
   this.currentRoom = m.prop(null);
   this.chatLogs = {};
+  this.searchResults = [];
   this.composeText = m.prop("");
 
   this.inviteField = m.prop("");
@@ -64,8 +65,8 @@ TiwiTalk.view = function(ctrl) {
     	    m("div.show", [
     	      m("div.vertical-container", [
     	        m("div.vertical-align", [
-    	          m("h1.friend-name", "Someone"),
-    	          m("h2.excerpt", "Some status")  
+    	          m("h1.friend-name", ctrl.userInfo.profile.name),
+    	          m("h2.excerpt", "")  
     	        ]),  
     	      ]),  
     	    ]),  
@@ -74,6 +75,7 @@ TiwiTalk.view = function(ctrl) {
     	    m("h1.avail", "You are busy right now"),
     	    m("h2.tip", "People won't bother you unless Lily's here")
     	  ]),
+        m.component(Search, { socket: ctrl.socket, searchResults: ctrl.searchResults })
     	]),
       // end tiwi
       
@@ -226,7 +228,7 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
     this.userInfo.rooms.push(this.currentRoom());
     console.log("Joined " + this.currentRoom());
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserSearchResult") {
-    console.log("Search results for " + data.query, data.results);
+    this.searchResults = data.results;
   } else if (data.$type == "tiwitalk.pigeon.Chat.MoodColor") {
     this.roomCache[data.room].moodColor = data.color;
     console.log("%c Received color " + data.color, "background: " + data.color + ";");

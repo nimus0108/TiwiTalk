@@ -14,16 +14,20 @@ Search.controller = function() {
   }).bind(this);
 };
 
-Search.view = function(ctrl, socket) {
+Search.view = function(ctrl, args) {
   var searchInputAttr = {
     type: "text",
     placeholder: "name",
     oninput: m.withAttr("value", ctrl.searchField),
     value: ctrl.searchField()
   };
-  return m("form", { onsubmit: function() { return ctrl.search(socket); } }, [
-    m("input", searchInputAttr),
-    m("button", "Search")
+  return m("div", [
+    m("form.search-friend", { onsubmit: function() { return ctrl.search(args.socket); } }, [
+      m("input", searchInputAttr)
+    ]),
+    m("div", args.searchResults.map(function(usr) {
+      return m("div", usr.name + " (" + usr.id + ")");
+    }))
   ]);
 };
 
