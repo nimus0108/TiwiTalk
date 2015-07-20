@@ -174,7 +174,7 @@ TiwiTalk.controller.prototype.login = function(id) {
 
 TiwiTalk.controller.prototype.handleMessages = function(data) {
   if (data.$type == "tiwitalk.pigeon.Chat.UserProfile") {
-    this.userInfo.profile = data;
+    if (this.userInfo.id == data.id) this.userInfo.profile = data;
     this.userCache[data.id] = data;
   } else if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
     this.chatLogs[data.room].push(data);
