@@ -33,7 +33,10 @@ class UserActor(initialData: UserAccount, userService: UserService)
     case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data.profile)
     case OnNext(GetUserAccount) if totalDemand > 0 => onNext(data)
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
-      context.parent ! UserMessage(data.id, msg, cid)
+      val trimmed = msg.trim
+      if (trimmed.length > 0) {
+        context.parent ! UserMessage(data.id, trimmed, cid)
+      }
     case OnNext(StartRoom(ids)) =>
       context.parent ! StartRoom((ids :+ data.id).distinct)
     case OnNext(SetAvailability(value)) => setAvailability(value, data.profile)

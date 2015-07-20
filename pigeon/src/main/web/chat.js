@@ -21,7 +21,6 @@ Chat.view = function(ctrl, args) {
           args.getUserAccount(uid);
         }
         otherStyle = "." + (uid == args.userInfo.id ? "me" : "friend");
-        // text = dispName + ": " + msg.message;
         text = msg.message;
       } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
         return m("h2.announcement", msg.message)
@@ -34,7 +33,10 @@ Chat.view = function(ctrl, args) {
     })),
     m("form.write-message", {
       onsubmit: function() {
-        args.send(ctrl.composeText());
+        var trimmed = ctrl.composeText().trim();
+        if (trimmed.length > 0) {
+          args.send(trimmed);
+        }
         ctrl.composeText("");
         return false;
       }
