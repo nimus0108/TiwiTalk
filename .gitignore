@@ -7,6 +7,8 @@
 /pigeon/target/
 /pigeon/src/main/web/node_modules/
 /pigeon/src/main/web/components/
+/pigeon/src/main/web/js/components/
+/pigeon/src/main/web/css/components/
 /pigeon/src/main/resources/public/*.js
 /pigeon/src/main/resources/public/*.css
 /empath/target/
