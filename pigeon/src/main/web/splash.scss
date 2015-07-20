@@ -1,120 +1,94 @@
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: scroll;
-}
+$splash-orange: #FF9933;
 
 button {
-    background-color: #FF9933;
+    background-color: $splash-orange;
     color: #f7f7f7;
     padding: 7px 15px;
-    border: 3px solid #FF9933;
+    border: 3px solid $splash-orange;
     outline: none;
 }
 
-
-
-
-#intro {
+.splash {
     width: 100%;
     height: 100%;
-    
-    #app {
-        width: 100%;
-        height: 100%;
-    } 
-    
-    .splash {
-        // position: relative;
-        // top: 30%;`
-        width: 100%;
-        height: 100%;
-        padding-top: 230px;
-        text-align: center;
-      
-        
-        h1 {
+    padding-top: 230px;
+    text-align: center;
+
+    h1 {
+        margin: 0;
+        color: #fafafa;
+        font-size: 108px;
+    }
+
+    h2 {
+        margin: 2px 0 45px 0;
+        color: #d0d0d0;
+        font-size: 36px;
+    }
+
+    form {
+        input {
+            width: 300px;
             margin: 0;
-            color: #fafafa;
-            font-size: 108px;    
+            margin-top: 10px;
+            background-color: #f7f7f7;
+            border: 3px solid #ddd;
+            padding: 7px 15px;
+            outline: none;
         }
-        
-        h2 {
-            margin: 2px 0 45px 0;
-            color: #d0d0d0;
-            font-size: 36px;
+
+        button {
+            margin: 10px 0 0 5px;
+            padding: 7px 15px;
+
+            $trans: all 200ms ease;
+
+            -webkit-transition: $trans;
+               -moz-transition: $trans;
+                -ms-transition: $trans;
+                 -o-transition: $trans;
+                    transition: $trans;
         }
-        
-        form {
-            input {
-                width: 300px;
-                margin: 0;
-                margin-top: 10px;
-                background-color: #f7f7f7;
-                border: 3px solid #ddd;
-                padding: 7px 15px;
-                outline: none;
-            }
-            
-            button {
-                margin: 10px 0 0 5px;
-                padding: 7px 15px;
-                
-                -webkit-transition: all 200ms ease;
-                -moz-transition: all 200ms ease;
-                -ms-transition: all 200ms ease;
-                -o-transition: all 200ms ease;
-                transition: all 200ms ease;
-    
-                &:hover {
-                    background-color: #FF4500;
-                    border-color: #FF4500;
-                }
-            }
-            
-            .register:focus {
-                border: 3px solid #FF9933;
-            }
+
+        button:hover {
+            background-color: #FF4500;
+            border-color: #FF4500;
+        }
+
+        .register:focus {
+            border: 3px solid $splash-orange;
         }
     }
 }
 
-
-
-
 /* Background colors */
 
+@mixin BackGradientFrames() {
+    0%   { background-position: 0%   50% }
+    50%  { background-position: 100% 50% }
+    100% { background-position: 0%   50% }
+}
+
 @-webkit-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @-moz-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @-o-keyframes BackGradient {
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
-        @keyframes BackGradient { 
-            0%{background-position:0% 50%}
-            50%{background-position:100% 50%}
-            100%{background-position:0% 50%}
-        }
+    @include BackGradientFrames();
+}
+@-moz-keyframes BackGradient {
+    @include BackGradientFrames();
+}
+@-o-keyframes BackGradient {
+    @include BackGradientFrames();
+}
+@keyframes BackGradient {
+    @include BackGradientFrames();
+}
 
 .splash {
-        background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9,           #32bf2a, #bcbf2a, #0fa9a8);
-        background-size: 1600% 1600%;
+    background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9, #32bf2a, #bcbf2a, #0fa9a8);
+    background-size: 1600% 1600%;
 
-        -webkit-animation: BackGradient 45s ease infinite;
-        -moz-animation: BackGradient 45s ease infinite;
-        -o-animation: BackGradient 45s ease infinite;
-        animation: BackGradient 45s ease infinite;
-
-        
+    $anim: BackGradient 45s ease infinite;
+    -webkit-animation: $anim;
+       -moz-animation: $anim;
+         -o-animation: $anim;
+            animation: $anim;
 }
