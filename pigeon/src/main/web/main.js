@@ -71,10 +71,12 @@ TiwiTalk.view = function(ctrl) {
     	      ]),  
     	    ]),  
     	  ]),
+        /*
     	  m("div.avail-status", [
     	    m("h1.avail", "You are busy right now"),
     	    m("h2.tip", "People won't bother you unless Lily's here")
     	  ]),
+        */
         m.component(Search, {
           socket: ctrl.socket,
           searchResults: ctrl.searchResults,
@@ -82,36 +84,7 @@ TiwiTalk.view = function(ctrl) {
         })
     	]),
       // end tiwi
-      
-      
-      
-      // m("div.preview", [
-    	//   m("div.search", [
-    	//     m("form", [
-    	//       m("input.search-friend", {
-    	//         type: "text", placeholder: "Search"  
-    	//       }),  
-    	//     ]),  
-    	//   ]),
-    	//   m("div.friend-preview", [
-    	//     m("div.face-container", [
-    	//       m("div.vertical-container", [
-    	//         m("div.vertical-align", [
-    	//           m("img.face[src=/person.jpg]")  
-    	//         ]),  
-    	//       ]),  
-    	//     ]),
-    	//     m("div.show", [
-    	//       m("div.vertical-container", [
-    	//         m("div.vertical-align", [
-    	//           m("h1.friend-name", "friendname"),
-    	//           m("h2.excerpt", "this is the exerpt")  
-    	//         ]),  
-    	//       ]),  
-    	//     ]),  
-    	//   ]),
-    	// ]),
-      
+
       //start chat
       m("div.conversation-scr", [
         m("div.header", [
@@ -120,12 +93,6 @@ TiwiTalk.view = function(ctrl) {
             m("h2.status", ctrl.userInfo.id)
           ])
         ]),
-      // m("div#chat", [
-      //   m("div.chat-intro", [
-      //     m("div.name", ctrl.userInfo.profile.name),
-      //     m("div.id", ctrl.userInfo.id),
-      //     m("div.availability", availRadio)
-      //   ]),
         m.component(Chat, {
           userCache: ctrl.userCache, userInfo: ctrl.userInfo,
           send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
@@ -137,17 +104,6 @@ TiwiTalk.view = function(ctrl) {
       
       //start preview
       m("div.preview", [
-        m("div.search", [
-  	      m("input.search-friend", {
-  	        type: "text", placeholder: "Enter ID Here", oninput: m.withAttr("value", ctrl.inviteField)  
-  	      }),  
-          m("button.start", {
-            onclick: (function() {
-              var targets = ctrl.inviteField().split("[ ,]+")
-              ctrl.startRoom(targets);
-            }).bind(ctrl)
-          }, "start talking"),
-    	  ]),
         m.component(RoomList, {
           currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
           userCache: ctrl.userCache, roomCache: ctrl.roomCache

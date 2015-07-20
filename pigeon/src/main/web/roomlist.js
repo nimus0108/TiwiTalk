@@ -12,7 +12,7 @@ RoomList.controller = function(args) {
 
 RoomList.view = function(ctrl, args) {
   var rooms = args.userInfo.rooms || [];
-  return m("div.nothing", rooms.map(function(roomId) {
+  return m("div.roomlist", rooms.map(function(roomId) {
     var isCurrent = roomId == args.currentRoom();
     var classOpt = isCurrent ? ".currentroom" : "";
 

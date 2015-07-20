@@ -17,24 +17,24 @@ Search.controller = function() {
 Search.view = function(ctrl, args) {
   var searchInputAttr = {
     type: "text",
-    placeholder: "name",
+    placeholder: "Search for friends...",
     oninput: m.withAttr("value", ctrl.searchField),
     value: ctrl.searchField()
   };
   var searchFn = function() { return ctrl.search(args.socket) };
 
-  return m("div", [
-    m("form.search-friend", { onsubmit: searchFn }, [
+  return m("div.search-panel", [
+    m("form", { onsubmit: searchFn }, [
       m("input", searchInputAttr)
     ]),
-    m("ul.searchresults", args.searchResults.map(function(usr) {
+    args.searchResults.length != 0 ? "" : m("p", "No users found."),
+    m("ul", args.searchResults.map(function(usr) {
       var addFn = function() { args.startRoom([usr.id]) };
       return m("li", [
         m("span", usr.name),
         m("button.invitebtn", { onclick: addFn }, "+")
       ]);
-    })),
-    args.searchResults.length != 0 ? "" : m("p", "No users found.")
+    }))
   ]);
 };
 
