@@ -6,10 +6,11 @@ var Search = {};
 Search.controller = function() {
   this.searchField = m.prop("");
   this.search = (function(socket) {
-    console.info(this.searchField());
-    var msg = Message.SearchForUser(this.searchField());
-    console.info(msg);
-    msg.send(socket);
+    var query = this.searchField().trim();
+    if (query) {
+      var msg = Message.SearchForUser(query);
+      msg.send(socket);
+    }
     return false;
   }).bind(this);
 };

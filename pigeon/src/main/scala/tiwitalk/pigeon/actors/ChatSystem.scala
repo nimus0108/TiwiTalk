@@ -60,7 +60,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
         roomOpt foreach (originalSender ! _)
       }
     case SearchForUser(name) if !name.trim.isEmpty =>
-      userService.searchUsersByName(name) map { accs =>
+      userService.searchUsersByName(name.trim) map { accs =>
         UserSearchResult(name, accs map (_.profile))
       } pipeTo sender()
   }
