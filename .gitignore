@@ -5,10 +5,11 @@
 /project/target/
 /target/
 /pigeon/target/
-/pigeon/src/main/resources/js/node_modules/
-/pigeon/src/main/resources/js/components/
-/pigeon/src/main/resources/web/*.js
-/pigeon/src/main/resources/web/*.css
+/pigeon/src/main/web/node_modules/
+/pigeon/src/main/web/components/
+/pigeon/src/main/resources/public/*.js
+/pigeon/src/main/resources/public/*.css
 /empath/target/
 *.swp
 *.brackets.json
+.settings

@@ -71,9 +71,9 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
           }
         } ~
         pathSingleSlash {
-          getFromResource("web/index.html")
+          getFromResource("public/index.html")
         } ~
-        getFromResourceDirectory("web")
+        getFromResourceDirectory("public")
       }
     }
 
