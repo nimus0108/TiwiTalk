@@ -3,6 +3,7 @@
 * {
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
+    font-size: 1em;
 }
 
 html {
@@ -36,7 +37,7 @@ body {
 
 .tiwi {
 	display: inline-block;
-	width: 420px;
+	width: 20em;
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -99,7 +100,6 @@ body {
 				margin: 0;
 				padding: 0;
 				color: $color-lightblack;
-				font-size: 16px;
 			}
 		}
 	}
@@ -126,7 +126,7 @@ body {
 
 .preview {
 	display: inline-block;
-	width: 420px;
+	width: 20em;
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -199,13 +199,6 @@ body {
 				color: $color-black;
 				font-size: 20px;
 			}
-			
-			h2.excerpt {
-				margin: 0;
-				padding: 0;
-				color: $color-lightblack;
-				font-size: 16px;
-			}
 		}
 	}
 }
@@ -214,37 +207,37 @@ h2.excerpt {
 	margin: 0;
 	padding: 0;
 	color: $color-lightblack;
-	font-size: 16px;
+	font-size: 1em;
 }
 			
 .conversation-scr {
 	display: inline-block;
-	width: calc(100% - 846px);
+	width: calc(100% - 40.25em);
 	height: 100%;
 	margin: 0;
 	padding: 0;
 	float: left;
 	
 	.face {
-		width: 65px;
-		height: 65px;
+		width: 4.0625em;
+		height: 4.0625em;
 		border-radius: 50%;
 	}
 	
 	.header {
 		width: 100%;
-		height: 74px;
+		height: 4.625em;
 		border-bottom: 1px solid $color-gray;
 		
 		.identity {
 			width: 100%;
 			text-align: center;
-			margin: 15px auto 0 auto;
+			margin: 1em auto 0 auto;
 			
 			.friend-name {
 				margin: 0;
 				padding: 0;
-				font-size: 28px;
+				font-size: 1.75em;
 				color: $color-black;
 			}
 			
@@ -252,7 +245,7 @@ h2.excerpt {
 				margin: 0;
 				padding: 0;
 				color: $color-lightblack;
-				font-size: 18px;
+				font-size: 1.125em;
 			}
 		}
 	}
@@ -264,23 +257,23 @@ h2.excerpt {
 		padding: 0;
 		
 		h2.announcement {
-			margin: 15px auto;
+			margin: 1em auto;
 			padding: 0;
-			font-size: 18px;
+			font-size: 1.125em;
 			color: $color-stronggray;
 			text-align: center;
 		}
 		
 		.wrap {
-			margin: 22px 0;
-			padding: 0 125px;
+			margin: 1.375em 0;
+			padding: 0 2em;
 			
 			.message {
 				width: auto !important;
 				margin: 0;
-				padding: 7px 15px;
+				padding: 0.5em 1em;
 				color: $color-white;
-				font-size: 18px;
+				font-size: 1.125em;
 				border-radius: 3px;
 			}
 		}
@@ -314,10 +307,9 @@ h2.excerpt {
 }
 
 form.write-message {
-	positon: fixed;
 	bottom: 140px;
 	width: 100%;
-	height: 64px;
+	height: 4em;
 	
 	.messager {
 		width: 100%;
@@ -332,8 +324,8 @@ form.write-message {
 		width: 100%;
 		height: 100%;
 		margin: 0;
-		padding: 7px 25px;
-		font-size: 18px;
+		padding: 0.5em 1.5625em;
+		font-size: 1.125em;
 		outline: none;
 		border: none;
 		border-top: 1px solid $color-gray;
