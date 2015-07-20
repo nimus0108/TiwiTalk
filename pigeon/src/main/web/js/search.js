@@ -25,15 +25,15 @@ Search.view = function(ctrl, args) {
   var searchFn = function() { return ctrl.search(args.socket) };
 
   return m("div.search-panel", [
-    m("form", { onsubmit: searchFn }, [
-      m("input", searchInputAttr)
+    m("form.search-form.pure-form", { onsubmit: searchFn }, [
+      m("input[type=text]", searchInputAttr),
     ]),
     args.searchResults.length != 0 ? "" : m("p", "No users found."),
     m("ul", args.searchResults.map(function(usr) {
       var addFn = function() { args.startRoom([usr.id]) };
       return m("li", [
         m("span", usr.name),
-        m("button.invitebtn", { onclick: addFn }, "+")
+        m("button.invitebtn", { onclick: addFn }, m("span.fa.fa-plus"))
       ]);
     }))
   ]);

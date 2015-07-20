@@ -345,26 +345,3 @@ form.write-message {
 ::-webkit-scrollbar-corner {
     background: #777;
 }
-
-div.search-panel {
-    padding: 1em 2em 0 2em;
-    ul {
-        list-style: none;
-        overflow-y: auto;
-        padding: 0;
-
-        li {
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
-            clear: both;
-        }
-    }
-}
-
-.invitebtn {
-    color: $color-white;
-    background: $color-lightgreen;
-    border-radius: 3px;
-    border: none;
-    float: right;
-}
