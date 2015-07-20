@@ -21,13 +21,20 @@ Search.view = function(ctrl, args) {
     oninput: m.withAttr("value", ctrl.searchField),
     value: ctrl.searchField()
   };
+  var searchFn = function() { return ctrl.search(args.socket) };
+
   return m("div", [
-    m("form.search-friend", { onsubmit: function() { return ctrl.search(args.socket); } }, [
+    m("form.search-friend", { onsubmit: searchFn }, [
       m("input", searchInputAttr)
     ]),
-    m("div", args.searchResults.map(function(usr) {
-      return m("div", usr.name + " (" + usr.id + ")");
-    }))
+    m("ul.searchresults", args.searchResults.map(function(usr) {
+      var addFn = function() { args.startRoom([usr.id]) };
+      return m("li", [
+        m("span", usr.name),
+        m("button.invitebtn", { onclick: addFn }, "+")
+      ]);
+    })),
+    args.searchResults.length != 0 ? "" : m("p", "No users found.")
   ]);
 };
 

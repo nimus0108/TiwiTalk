@@ -75,7 +75,11 @@ TiwiTalk.view = function(ctrl) {
     	    m("h1.avail", "You are busy right now"),
     	    m("h2.tip", "People won't bother you unless Lily's here")
     	  ]),
-        m.component(Search, { socket: ctrl.socket, searchResults: ctrl.searchResults })
+        m.component(Search, {
+          socket: ctrl.socket,
+          searchResults: ctrl.searchResults,
+          startRoom: ctrl.startRoom.bind(ctrl)
+        })
     	]),
       // end tiwi
       

@@ -329,20 +329,6 @@ h2.excerpt {
 			.message {
 				background-color: $color-green;
 			}
-			
-			// &:nth-child(1) {
-			// 	.message {
-			// 		border-top-left-radius: 12px;
-			// 		// border-top-right-radius: 12px;
-			// 	}
-			// }
-			
-			// &:nth-last-child(1) {
-			// 	.message {
-			// 		border-bottom-left-radius: 12px;
-			// 		// border-bottom-right-radius: 12px;
-			// 	}
-			// }
 		}
 	}
 	.me {
@@ -354,20 +340,6 @@ h2.excerpt {
 				margin-left: auto;
 				margin-right: auto;	
 			}
-			
-			// &:nth-child(1) {
-			// 	.message {
-			// 		// border-top-left-radius: 12px;
-			// 		border-top-right-radius: 12px;
-			// 	}
-			// }
-			
-			// &:nth-last-child(1) {
-			// 	.message {
-			// 		// border-bottom-left-radius: 12px;
-			// 		border-bottom-right-radius: 12px;
-			// 	}
-			// }
 		}
 	}
 }
@@ -411,4 +383,23 @@ form.write-message {
 
 ::-webkit-scrollbar-corner {
     background: #777;
+}
+
+ul.searchresults {
+    list-style: none;
+    padding: 0 2em 0 2em;
+
+    li {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        clear: both;
+    }
+}
+
+.invitebtn {
+    color: $color-white;
+    background: $color-lightgreen;
+    border-radius: 3px;
+    border: none;
+    float: right;
 }
