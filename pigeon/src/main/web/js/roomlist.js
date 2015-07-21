@@ -26,7 +26,7 @@ RoomList.view = function(ctrl, args) {
     var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
     var styleOpt = {};
     if (room.moodColor) {
-      styleOpt.background = args.roomCache[room].moodColor;
+      styleOpt.background = args.roomCache[roomId].moodColor;
     }
     return m("div.friend-preview" + classOpt, {
       onclick: ctrl.setActive(roomId),
