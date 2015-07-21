@@ -40,6 +40,8 @@ class UserActor(initialData: UserAccount, userService: UserService)
     case OnNext(StartRoom(ids)) =>
       context.parent ! StartRoom((ids :+ data.id).distinct)
     case OnNext(SetAvailability(value)) => setAvailability(value, data.profile)
+    case OnNext(m @ ModifyContacts(add, rm)) =>
+      userService.modifyContacts(data.id, (add ++ data.contacts).distinct, rm)
     case OnNext(s) => context.parent ! s
     case OnComplete => context.parent ! Disconnect(data.id)
   }

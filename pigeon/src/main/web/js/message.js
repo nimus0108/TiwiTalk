@@ -54,4 +54,10 @@ Message.SearchForUser = function(name) {
   return new Message("SearchForUser", { name: name });
 };
 
+Message.ModifyContacts = function(_add, _remove) {
+  var add = _add || [];
+  var remove = _remove || [];
+  return new Message("ModifyContacts", { add: add, remove: remove });
+};
+
 module.exports = Message;

@@ -125,4 +125,20 @@ class DatabaseService(config: Config) {
     val query = BSONDocument("profile.name" -> BSONRegex(name, "i"))
     userCol.find(query).cursor[UserAccount]().collect[Seq]()
   }
+
+  def modifyContacts(id: UUID, add: Seq[UUID],
+                     remove: Seq[UUID]): Future[Option[UserAccount]] = {
+    val query = BSONDocument("_id" -> id)
+    val addQuery =
+      BSONDocument("$addToSet" ->
+        BSONDocument("contacts" ->
+          BSONDocument("$each" -> add)))
+    val rmQuery = BSONDocument("$pullAll" -> BSONDocument("contacts" -> remove))
+    for {
+      _   <- userCol.update(query, rmQuery)
+      res <- userCol.findAndUpdate(query, addQuery, fetchNewObject = true)
+    } yield {
+      res.result[UserAccount]
+    }
+  }
 }

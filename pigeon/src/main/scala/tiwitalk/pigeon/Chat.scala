@@ -18,6 +18,7 @@ object Chat {
   case class SetAvailability(value: Int) extends InEvent
   case object GetUserAccount extends InEvent
   case class SearchForUser(name: String) extends InEvent
+  case class ModifyContacts(add: Seq[UUID], remove: Seq[UUID]) extends InEvent
 
   case class Broadcast(room: UUID, message: String) extends OutEvent
   case class UserMessage(

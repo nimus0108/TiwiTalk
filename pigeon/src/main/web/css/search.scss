@@ -15,11 +15,20 @@ div.search-panel {
     }
 }
 
-.invitebtn {
-    color: $color-white;
-    background: $color-lightgreen;
-    border-radius: 3px;
-    border: none;
+.search-btn-toolbar {
     float: right;
-}
 
+    button {
+        color: $color-white;
+        background: $color-lightgreen;
+        border-radius: 3px;
+        border: none;
+        margin-right: 0.5em;
+
+        &:last-child { margin-right: 0; }
+
+        &:disabled {
+            background: $color-gray;
+        }
+    }
+}

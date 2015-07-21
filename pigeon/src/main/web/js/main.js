@@ -80,7 +80,8 @@ TiwiTalk.view = function(ctrl) {
         m.component(Search, {
           socket: ctrl.socket,
           searchResults: ctrl.searchResults,
-          startRoom: ctrl.startRoom.bind(ctrl)
+          startRoom: ctrl.startRoom.bind(ctrl),
+          contacts: ctrl.userInfo.contacts
         })
     	]),
       // end tiwi
