@@ -70,7 +70,7 @@ body {
 			display: table;
 			width: 100%;
 			height: 100%;
-            margin-left: 2em;
+            margin: 0;
             padding: 0;
 			
 			.vertical-align {
@@ -102,7 +102,7 @@ body {
 			}
 		}
 	}
-	
+    
 	.avail-status {
 		width: calc(100% - 20px);
 		margin: 0;
@@ -130,7 +130,7 @@ body {
 	margin: 0;
 	padding: 0;
 	float: left;
-	border-left: 1px solid $color-gray;
+	border-left: 1px solid #D0D0D0;
 	background-color: $color-darkwhite;
 	
 	.start {
@@ -154,7 +154,7 @@ body {
 		height: 100px;	
 		margin: 0;
 		padding: 0;
-		border-bottom: 1px solid $color-gray;
+		border-bottom: 1px solid #B8B8B8;
 		
 		.face-container {
 			display: inline-block;
@@ -199,7 +199,11 @@ body {
 				font-size: 20px;
 			}
 		}
-	}
+	}    
+}
+
+.currentroom {
+    background-color: #C8C8C8;
 }
 
 h2.excerpt {
