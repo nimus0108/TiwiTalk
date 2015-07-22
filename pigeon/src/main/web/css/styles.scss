@@ -1,12 +1,12 @@
-/* Duo imports */
-@import 'necolas/normalize.css';
+// Main Styles
 
-/* Sass imports */
-@import "./variables";
-@import "./splash";
-@import "./theme";
-@import "./search";
+// Essentials
+@import 'necolas/normalize.css'; // Reset
+@import "./sass/_variables"; // Variables (Colors & ETC)
+@import "./sass/_std"; // Standard Mixins and Templates
+@import "./sass/_typography"; // Fonts
+@import "./sass/_base"; // Initial Setup
 
-@viewport {
-    zoom: 1.0;
-}
+// Screens
+@import "./sass/pages/launch"; // Launch / Splash Page
+@import "./sass/pages/chat"; // Chat / Messaging Page

@@ -1,1 +1,178 @@
 // Chat : Sidebar
+
+.tiwi {
+	display: inline-block;
+	width: 20%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	float: left;
+	border-right: 1px solid $color-gray;
+	background-color: $color-white;
+	
+	.friend-preview {
+		display: table;
+		width: 100%;
+		height: 89px;	
+		padding: 0;
+		border-bottom: 1px solid $color-gray;
+		
+		.face-container {
+			display: inline-block;
+			width: 25%;
+			height: 100%;
+			text-align: center;
+			
+			.face {
+				width: 60px;
+				height: 60px;
+				border-radius: 50%;
+			}
+		}
+		
+		.vertical-container {
+			display: table;
+			width: 100%;
+			height: 100%;
+            margin: 0;
+            padding: 0;
+			
+			.vertical-align {
+				display: table-cell;
+				vertical-align: middle;
+				margin: 0;
+				padding: 0;
+			}
+		}
+		
+		.show {
+			display: inline-block !important;
+			width: 75%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			h1.friend-name {
+				margin: 0;
+				padding: 0;
+				color: $color-black;
+				font-size: 20px;
+			}
+			
+			h2.excerpt {
+				margin: 0;
+				padding: 0;
+				color: $color-lightblack;
+			}
+		}
+	}
+    
+	.avail-status {
+		width: calc(100% - 20px);
+		margin: 0;
+		padding: 25px 0 25px 20px;
+		background-color: rgba(255, 0, 0, 0.3);
+		
+		.avail {
+			font-size: 24px;
+			margin: 0;
+		}
+		
+		.tip {
+			font-size: 18px;
+			margin: 0;
+			margin-top: 5px;
+			color: $color-stronggray;
+		}
+	}
+}
+
+.preview {
+	display: inline-block;
+	width: 20%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	float: left;
+	border-left: 1px solid #D0D0D0;
+	background-color: $color-darkwhite;
+	
+	.start {
+		width: 100%;
+		text-align: center;
+		background-color: #2ecc71;
+		border: none;
+	}
+	
+	.roomlist {
+		width: 100%;
+		max-height: 100%;
+		margin: 0;
+		padding: 0;
+        overflow-y: auto;
+	}
+	
+	.friend-preview {
+		display: table;
+		width: 100%;
+		height: 100px;	
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid #B8B8B8;
+		
+		.face-container {
+			display: inline-block;
+			width: 25%;
+			height: 100%;
+			text-align: center;
+			
+			.face {
+				width: 60px;
+				height: 60px;
+				margin: 0 15px 0 0;
+				border-radius: 50%;
+			}
+		}
+		
+		.vertical-container {
+			display: table;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			.vertical-align {
+				display: table-cell;
+				vertical-align: middle;
+				margin: 0;
+				padding: 0;
+			}
+		}
+		
+		.show {
+			display: inline-block !important;
+			width: 75%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			
+			h1.friend-name {
+				margin: 0;
+				padding: 0;
+				color: $color-black;
+				font-size: 20px;
+			}
+		}
+	}    
+}
+
+.currentroom {
+    background-color: #C8C8C8;
+}
+
+h2.excerpt {
+	margin: 0;
+	padding: 0;
+	color: $color-lightblack;
+	font-size: 1em;
+}
