@@ -77,33 +77,33 @@ TiwiTalk.view = function(ctrl) {
           ])
         ])
   	  ]),
-      m.component(Search, {
-        socket: ctrl.socket,
-        searchResults: ctrl.searchResults,
-        startRoom: ctrl.startRoom.bind(ctrl),
-        contacts: ctrl.userInfo.contacts
-      }),
+      // m.component(Search, {
+      //   socket: ctrl.socket,
+      //   searchResults: ctrl.searchResults,
+      //   startRoom: ctrl.startRoom.bind(ctrl),
+      //   contacts: ctrl.userInfo.contacts
+      // }),
       // end tiwi
 
       //start chat
-      m("div.conversation-scr", [
-        m("div.header", [
-          m("div.identity", [
-            m("h1.friend-name", ctrl.userInfo.profile.name),
-            m("h2.status", ctrl.userInfo.id)
-          ])
-        ]),
-        m.component(Chat, {
-          userCache: ctrl.userCache, userInfo: ctrl.userInfo,
-          send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
-          currentRoom: ctrl.currentRoom,
-          getUserProfile: ctrl.getUserProfile.bind(ctrl)
-        })
-      ]),
+      // m("div.conversation-scr", [
+      //   m("div.header", [
+      //     m("div.identity", [
+      //       m("h1.friend-name", ctrl.userInfo.profile.name),
+      //       m("h2.status", ctrl.userInfo.id)
+      //     ])
+      //   ]),
+      //   m.component(Chat, {
+      //     userCache: ctrl.userCache, userInfo: ctrl.userInfo,
+      //     send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
+      //     currentRoom: ctrl.currentRoom,
+      //     getUserProfile: ctrl.getUserProfile.bind(ctrl)
+      //   })
+      // ]),
       //end chat
       
       //start preview
-      m("div.preview", [
+      m("section.conversations.sidebar", [
         m.component(RoomList, {
           currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
           userCache: ctrl.userCache, roomCache: ctrl.roomCache

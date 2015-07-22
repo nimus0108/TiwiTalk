@@ -12,7 +12,7 @@ RoomList.controller = function(args) {
 
 RoomList.view = function(ctrl, args) {
   var rooms = args.userInfo.rooms || [];
-  return m("div.roomlist", rooms.map(function(roomId) {
+  return m("ul.chat-list", rooms.map(function(roomId) {
     var isCurrent = roomId == args.currentRoom();
     var classOpt = isCurrent ? ".currentroom" : "";
 
@@ -23,31 +23,21 @@ RoomList.view = function(ctrl, args) {
       var userOpt = args.userCache[roomUsers[i]];
       userNames.push(userOpt ? userOpt.name : roomUsers[i]);
     }
-    var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
+    var labelOpt = userNames[0] + (isCurrent ? " (active)" : "");
     var styleOpt = {};
     if (room.moodColor) {
       styleOpt.background = args.roomCache[roomId].moodColor;
     }
-    return m("div.friend-preview" + classOpt, {
+    return m("li.chat-box" + classOpt, {
       onclick: ctrl.setActive(roomId),
       style: styleOpt
     }, [
-	    m("div.face-container", [
-	      m("div.vertical-container", [
-	        m("div.vertical-align", [
-	          m("img.face[src=/logo.png]")  
-	        ]),  
-	      ]),  
-	    ]),
-	    m("div.show", [
-	      m("div.vertical-container", [
-	        m("div.vertical-align", [
-	          m("h1.friend-name", labelOpt),
-            m("h2.excerpt", "placeholder-excerpt")  
-	        ]),  
-	      ])
+      m("img.buddy-face[src\=jay.jpg]"),
+      m("div.buddy", [
+        m("h1.buddy-name", "Jay Mo"),
+        m("h2.buddy-quote", "Come back we miss you so muc..")
       ])
-    ]);
+    ])
   }));
 };
 

@@ -6,11 +6,11 @@
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	background-color: rgba(0, 0, 0, 0.85);
+	color: $color-white;
 }
 
 .tiwi {
-	background-color: rgba(0, 0, 0, 0.75);
-	color: $color-white;
 	float: left;
 	
 	nav.settings {
@@ -103,6 +103,47 @@
 				font-size: 1.25em;
 				opacity: 0.85;
 			}
+		}
+	}
+}
+
+ul.chat-list {
+	list-style: none;
+	
+	li {
+		display: table;
+		height: 100px;
+	}
+	
+	img.buddy-face {
+		display: table-cell;
+		vertical-align: middle;
+		width: 4.5em;
+		height: 4.5em;
+		border-radius: 50%;
+		margin: 1em 0 0 0;
+	}
+	
+	.buddy {
+		display: table-cell;
+		vertical-align: middle;
+		width: calc(100% - 10em);
+		padding: 0 1.25em;
+		
+		h1.buddy-name {
+			display: inline-block;	
+			font-size: 1.75em;
+			margin: 0;
+			padding: 0;
+		}
+		
+		h2.buddy-quote {
+			max-width: calc(100% - 10em);
+			font-size: 1.25em;
+			text-overflow: clip ellipsis;
+			white-space: nowrap;
+			margin: 0;
+			padding: 0;
 		}
 	}
 }
