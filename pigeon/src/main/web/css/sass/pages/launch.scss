@@ -1,60 +1,76 @@
-.splash {
-    padding-top: 10vh;
-    height: 90vh;
-    text-align: center;
+// .splash {
+//     padding-top: 10vh;
+//     height: 90vh;
+//     text-align: center;
 
-    h1 {
-        margin: 0;
-        color: $color-white;
-        font-size: 108px;
-    }
+//     h1 {
+//         margin: 0;
+//         color: $color-white;
+//         font-size: 108px;
+//     }
 
-    h2 {
-        margin: 2px 0 45px 0;
-        color: #d0d0d0;
-        font-size: 36px;
-    }
+//     h2 {
+//         margin: 2px 0 45px 0;
+//         color: #d0d0d0;
+//         font-size: 36px;
+//     }
 
-    input {
-        width: 300px;
-        margin: 0;
-        margin-top: 10px;
-        background-color: $splash-color-red;
-        border: 3px solid #ddd;
-        padding: 7px 15px;
-        outline: none;
-    }
+//     input {
+//         width: 300px;
+//         margin: 0;
+//         margin-top: 10px;
+//         background-color: $splash-color-red;
+//         border: 3px solid #ddd;
+//         padding: 7px 15px;
+//         outline: none;
+//     }
 
-    button {
-        color: $splash-color-red;
-        border: 3px solid $splash-color-orange;
-        background-color: $splash-color-orange;
+//     button {
+//         color: $splash-color-red;
+//         border: 3px solid $splash-color-orange;
+//         background-color: $splash-color-orange;
 
-        outline: none;
-        margin: 10px 0 0 5px;
-        padding: 7px 15px;
+//         outline: none;
+//         margin: 10px 0 0 5px;
+//         padding: 7px 15px;
 
-        $trans: all 200ms ease;
+//         $trans: all 200ms ease;
 
-        -webkit-transition: $trans;
-           -moz-transition: $trans;
-            -ms-transition: $trans;
-             -o-transition: $trans;
-                transition: $trans;
-    }
+//         -webkit-transition: $trans;
+//            -moz-transition: $trans;
+//             -ms-transition: $trans;
+//              -o-transition: $trans;
+//                 transition: $trans;
+//     }
 
-    button:hover {
-        background-color: #FF4500;
-        border-color: #FF4500;
-    }
+//     button:hover {
+//         background-color: #FF4500;
+//         border-color: #FF4500;
+//     }
 
-    .register:focus {
-        border: 3px solid $splash-color-orange;
+//     .register:focus {
+//         border: 3px solid $splash-color-orange;
+//     }
+// }
+
+.launch {
+    @extend .layout-reset;
+    
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 25px 5px;
+        text-align: left;
+        
+        input.form-input {
+            display: block;
+            @include form-input(25em, 0.625em 1em, $color-white, $color-black, $color-darkwhite);
+            margin: 10px 0;
+        }
     }
 }
 
 /* Background colors */
-
 @mixin BackGradientFrames() {
     0%   { background-position: 0%   50% }
     50%  { background-position: 100% 50% }
@@ -74,13 +90,13 @@
     @include BackGradientFrames();
 }
 
-.splash {
+.launch {
     background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9, #32bf2a, #bcbf2a, #0fa9a8);
     background-size: 1600% 1600%;
 
-    $anim: BackGradient 45s ease infinite;
+    $anim: BackGradient 20s ease infinite;
     -webkit-animation: $anim;
-       -moz-animation: $anim;
-         -o-animation: $anim;
-            animation: $anim;
+    -moz-animation: $anim;
+    -o-animation: $anim;
+    animation: $anim;
 }

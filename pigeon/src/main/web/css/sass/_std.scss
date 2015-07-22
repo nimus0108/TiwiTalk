@@ -26,3 +26,15 @@
 	-moz-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
+
+@mixin form-input($width, $padding, $bg-color, $text-color, $border-color) {
+	width: $width;
+	height: auto;
+	margin: 0;
+	padding: $padding;
+	background-color: $bg-color;
+	color: $text-color;
+	border-radius: 3px;
+	border: 1px solid $border-color;
+	outline: none;
+}

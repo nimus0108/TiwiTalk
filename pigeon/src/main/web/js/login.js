@@ -22,9 +22,22 @@ Login.view = function(ctrl, args) {
     value: ctrl.loginField()
   });
     
-  var nameInput = m("input.register[placeholder=name]", {
+  var inputName = m("input.form-input[type=text]", {
+    placeholder: "Your Name",
     oninput: m.withAttr("value", ctrl.loginField),
     value: ctrl.loginField()
+  });
+  
+  var loginEmail = m("input.form-input[type=email]", {
+    placeholder: "Your Email",
+    oninput: m.withAttr("value", ctrl.loginField),
+    value: ctrl.loginField()
+  });
+  
+  var loginPassword = m("input.form-input[type=password]", {
+    placeholder: "Your Password"
+    // oninput: m.withAttr("value", ctrl.loginField),
+    // value: ctrl.loginField()
   });
 
   var loginFn = function() {
@@ -32,17 +45,23 @@ Login.view = function(ctrl, args) {
     return false;
   };
 
-  return m("div.splash", [
-    m("h1", "TiwiTalk"),
-    m("h2", "Demo v0.0.1-ALPHA"),
-    m("form", { onsubmit: ctrl.register }, [
-      m("button[type=submit]", "register"),
-      usernameInput
-    ]),
-    m("form", { onsubmit: loginFn }, [
-      m("button[type=submit]", "connect"),
-      nameInput
-    ])
+  return m("div.launch", [
+    m("div.container", [
+        m("h1", "TiwiTalk"),
+        m("h2", "Say more than just text"),
+        m("form", { onsubmit: ctrl.register }, [
+          inputEmail, inputPassword,
+          m("button[type=submit]", "Sign In"),
+        ])
+        // m("form", { onsubmit: ctrl.register }, [
+        //   m("button[type=submit]", "register"),
+        //   usernameInput
+        // ]),
+        // m("form", { onsubmit: loginFn }, [
+        //   m("button[type=submit]", "connect"),
+        //   nameInput
+        // ])
+      ])
   ]);
 };
 
