@@ -108,7 +108,11 @@ TiwiTalk.view = function(ctrl) {
         ]),
         m("div.messaging", [
           m("ul.container"),
-          m("form.send")
+          m("form.send", [
+            m(".form-container", [
+              m("input.form-input[type=text]")
+            ])
+          ])
         ])
       ]),
       //end chat

@@ -11,7 +11,7 @@
 	header {
 		width: 100%;
 		margin: 0;
-		padding: 0.25em 0;
+		padding: 0.5em 0;
 		background: rgba(255, 255, 255, 0.90);
 		text-align: center;
 		
@@ -21,16 +21,33 @@
 			font-size: 2.25em;
 		}
 		
-		h2.status {
+		h2.buddy-status {
 			margin: 0;
 			padding: 0;
 			font-size: 1.25em;
 		}
 	}
+	
+	ul.container {
+		min-height: calc(100% - 7.25em) 
+	}
 }
 
 .chat {
-	
+	form.send {
+		position: fixed;
+		left: 25%;
+		bottom: 0;
+		width: 50%;
+		
+		.form-container {
+			width: 100%;
+			input.form-input {
+				@include form-input(100%, 2.5em 4.2em, $color-white, $color-black);
+				font-size: 2.25em;
+			}
+		}
+	}
 }
 
 
