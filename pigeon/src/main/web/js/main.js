@@ -100,6 +100,17 @@ TiwiTalk.view = function(ctrl) {
       //     getUserProfile: ctrl.getUserProfile.bind(ctrl)
       //   })
       // ]),
+      
+      m("section.chat.screen", [
+        m("header", [
+          m("h1.buddy-name", "Jay Mo"),
+          m("h2.buddy-status", "Crying because Lily isn't here")
+        ]),
+        m("div.messaging", [
+          m("ul.container"),
+          m("form.send")
+        ])
+      ]),
       //end chat
       
       //start preview
