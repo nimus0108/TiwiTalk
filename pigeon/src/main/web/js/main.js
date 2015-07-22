@@ -73,7 +73,7 @@ TiwiTalk.view = function(ctrl) {
         m("section.availability", [
           m("div.wrap", [
             m("h1.current", "You're free right now"),
-            m("h2.notes", "Feel free to check in with your friend and say hello")
+            m("h2.notes", "Say hello to your friends!")
           ])
         ])
   	  ]),

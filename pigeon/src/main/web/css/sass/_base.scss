@@ -28,7 +28,8 @@ html, body, #app, #messenger{
     right: -100px;
     width: calc(100% + 200px);
     height: calc(100% + 200px);
-	background: url('/test-bg.jpg') no-repeat center center scroll;
+	background: no-repeat center center scroll;
+    background-color: #3498db;
     background-size: cover;
     filter: blur(20px);
 }
