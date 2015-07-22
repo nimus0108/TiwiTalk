@@ -58,11 +58,13 @@ TiwiTalk.view = function(ctrl) {
         m("nav.settings", [
           m("ul.options", [
             m("li.feedback", "F"),  // Add Feedback smiley icon here
-            m("li.feedback", "S")   // Add Settings gear icon here
+            m("li.account", "S")   // Add Settings gear icon here
           ])
         ]),
         m("section.personal", [
-          m("img.my-face[src=/lily.jpg]"),
+          m("div.container", [
+            m("img.my-face[src=/lily.jpg]"),
+          ]),
           m("h1.my-name", ctrl.userInfo.profile.name),
           m("h2.my-status", "Ipsum lorem status Lily is awesome Eddy isn't so awesome but Leangap is great Kira is great Qiuqiu is great.")
         ]),

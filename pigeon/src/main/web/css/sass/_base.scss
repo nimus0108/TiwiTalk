@@ -11,15 +11,25 @@
     font-weight: 300;
 }
 
-html, body, #app, #messenger {
+html, body, #app, #messenger, .background {
     @extend .layout-reset;
 }
 
 #messenger {
 	margin: 0 auto;
-	background-color: #fff;
 }
 
+.background {
+    position: fixed;
+    z-index: -999;
+    top: -100px;
+    left: -100px;
+    bottom: -100px;
+    right: -100px;
+	background: url('/test-bg.jpg') no-repeat center center scroll;
+    background-size: cover;
+    filter: blur(66px);
+}
 
 // Font Set
 h1 { font-size: 2.25em; }
