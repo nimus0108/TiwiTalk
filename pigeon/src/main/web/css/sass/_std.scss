@@ -27,7 +27,15 @@
 	transform-style: preserve-3d;
 }
 
-@mixin form-input($width, $padding, $bg-color, $text-color, $border-color) {
+@mixin transition($speed){
+	-webkit-transition: all $speed ease;
+	-moz-transition: all $speed ease;
+	-ms-transition: all $speed ease;
+	-o-transition: all $speed ease;
+	transition: all $speed ease;
+}
+
+@mixin form-input($width, $padding, $bg-color, $text-color) {
 	width: $width;
 	height: auto;
 	margin: 0;
@@ -35,6 +43,22 @@
 	background-color: $bg-color;
 	color: $text-color;
 	border-radius: 3px;
-	border: 1px solid $border-color;
+	border: none;
 	outline: none;
+}
+
+@mixin button($width, $padding, $bg-color, $text-color, $speed) {
+	width: $width;
+	height: auto;
+	margin: 0;
+	padding: $padding;
+	background-color: $bg-color;
+	color: $text-color;
+	border-radius: 3px;
+	border: none;
+	@include transition($speed);
+	
+	&:hover {
+		opacity: 0.8;
+	}
 }

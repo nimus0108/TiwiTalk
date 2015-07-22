@@ -28,8 +28,8 @@ Login.view = function(ctrl, args) {
     value: ctrl.loginField()
   });
   
-  var loginEmail = m("input.form-input[type=email]", {
-    placeholder: "Your Email",
+  var loginEmail = m("input.form-input[type=text]", {
+    placeholder: "Your ID",
     oninput: m.withAttr("value", ctrl.loginField),
     value: ctrl.loginField()
   });
@@ -49,9 +49,9 @@ Login.view = function(ctrl, args) {
     m("div.container", [
         m("h1", "TiwiTalk"),
         m("h2", "Say more than just text"),
-        m("form", { onsubmit: ctrl.register }, [
-          inputEmail, inputPassword,
-          m("button[type=submit]", "Sign In"),
+        m("form", { onsubmit: loginFn }, [
+          loginEmail, loginPassword,
+          m("button.form-click[type=submit]", "Sign In"),
         ])
         // m("form", { onsubmit: ctrl.register }, [
         //   m("button[type=submit]", "register"),

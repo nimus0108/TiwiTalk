@@ -55,17 +55,47 @@
 
 .launch {
     @extend .layout-reset;
+    @include vertical-parent;
     
     .container {
-        width: 80%;
+        width: 70%;
         margin: 0 auto;
         padding: 25px 5px;
         text-align: left;
+        color: $color-white;
+        @include vertical-align;
+        
+        h1 {
+            margin: 0;    
+            padding: 0;
+            font-size: 9em;
+            line-height: 1em;
+        }
+        
+        h2 {
+            margin: 0 0 0.75em 0;
+            padding: 0;
+            font-size: 3em;
+            line-height: 1em;
+            opacity: 0.9;
+        }
+        
+        form {
+            width: 100%;
+            max-width: 420px;
+        }
         
         input.form-input {
             display: block;
-            @include form-input(25em, 0.625em 1em, $color-white, $color-black, $color-darkwhite);
+            @include form-input(calc(100% - 2.08em), 0.625em 1em, $color-white, $color-black);
             margin: 10px 0;
+            font-size: 1.2em;
+        }
+        
+        button.form-click {
+            display: block;
+            @include button(100%, 0.625em 1em, $color-green, $color-white, 200ms);
+            font-size: 1.2em;
         }
     }
 }
