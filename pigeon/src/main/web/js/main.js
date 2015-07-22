@@ -35,30 +35,13 @@ TiwiTalk.view = function(ctrl) {
       ctrl: ctrl
     });
   } else {    
-    var availRadio = []; /* stupid and useless */
-    // for (var i = 1; i <= 5; i++) {
-    //   availRadio[i] = m("span", [
-    //     m("input.radioinput", {
-    //       name: "avail", id: "avail-" + i, type: "radio",
-    //       value: i, checked: i == ctrl.userInfo.profile.availability,
-    //       onclick: m.withAttr("value", ctrl.setAvailability.bind(ctrl))
-    //     }),
-    //     m("label", { "for": "avail-" + i }, i)
-    //   ]);
-    // }
-    
-    // m("div#profile", [
-    //   m("span", "Hi, " + ctrl.userInfo.profile.name),
-    //   m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
-    // ]),
-    
-    	          // m("h1.friend-name", ctrl.userInfo.profile.name),
     showOpt = m("div#messenger", [
+      // TODO: Refactor this to sidebar.js
       m("section.tiwi.sidebar", [
         m("nav.settings", [
           m("ul.options", [
-            m("li.feedback", "F"),  // Add Feedback smiley icon here
-            m("li.account", "S")   // Add Settings gear icon here
+            m("li.feedback", m("span.fa.fa-smile-o")),
+            m("li.account", m("span.fa.fa-cog"))
           ])
         ]),
         m("section.personal", [
@@ -67,7 +50,7 @@ TiwiTalk.view = function(ctrl) {
           ]),
           m("div.my-info", [
             m("h1.my-name", ctrl.userInfo.profile.name),
-            m("h2.my-status", "Mentoring at Leangap is so fun")
+            m("h2.my-status", "TODO: Status")
           ]),
         ]),
         m("section.availability", [
@@ -77,57 +60,28 @@ TiwiTalk.view = function(ctrl) {
           ])
         ])
   	  ]),
-      // m.component(Search, {
-      //   socket: ctrl.socket,
-      //   searchResults: ctrl.searchResults,
-      //   startRoom: ctrl.startRoom.bind(ctrl),
-      //   contacts: ctrl.userInfo.contacts
-      // }),
-      // end tiwi
-
-      //start chat
-      // m("div.conversation-scr", [
-      //   m("div.header", [
-      //     m("div.identity", [
-      //       m("h1.friend-name", ctrl.userInfo.profile.name),
-      //       m("h2.status", ctrl.userInfo.id)
-      //     ])
-      //   ]),
-      //   m.component(Chat, {
-      //     userCache: ctrl.userCache, userInfo: ctrl.userInfo,
-      //     send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
-      //     currentRoom: ctrl.currentRoom,
-      //     getUserProfile: ctrl.getUserProfile.bind(ctrl)
-      //   })
-      // ]),
-      
-      m("section.chat.screen", [
-        m("header", [
-          m("h1.buddy-name", "Jay Mo"),
-          m("h2.buddy-status", "Crying because Lily isn't here")
-        ]),
-        m("div.messaging", [
-          m("ul.container"),
-          m("form.send", [
-            m(".form-container", [
-              m("input.form-input[type=text]")
-            ])
-          ])
-        ])
-      ]),
-      //end chat
-      
-      //start preview
+      /* TODO: Reimplement and restyle this at some point
+       * m.component(Search, {
+       *   socket: ctrl.socket,
+       *   searchResults: ctrl.searchResults,
+       *   startRoom: ctrl.startRoom.bind(ctrl),
+       *   contacts: ctrl.userInfo.contacts
+       * }),
+       */
+      m.component(Chat, {
+        userCache: ctrl.userCache, userInfo: ctrl.userInfo,
+        send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
+        currentRoom: ctrl.currentRoom,
+        getUserProfile: ctrl.getUserProfile.bind(ctrl)
+      }),
       m("section.conversations.sidebar", [
         m.component(RoomList, {
           currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
           userCache: ctrl.userCache, roomCache: ctrl.roomCache
         })
       ])
-      //end preview
-      
-    ]); //showOpt
-  } //if
+    ]);
+  }
   return showOpt;
 };
 

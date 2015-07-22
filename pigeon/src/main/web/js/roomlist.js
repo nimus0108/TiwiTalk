@@ -20,10 +20,12 @@ RoomList.view = function(ctrl, args) {
     var roomUsers = room.users;
     var userNames = room.users.length == 0 ? [roomId]: [];
     for (var i = 0; i < roomUsers.length; i++) {
-      var userOpt = args.userCache[roomUsers[i]];
-      userNames.push(userOpt ? userOpt.name : roomUsers[i]);
+      if (roomUsers[i] != args.userInfo.id) {
+        var userOpt = args.userCache[roomUsers[i]];
+        userNames.push(userOpt ? userOpt.name : roomUsers[i]);
+      }
     }
-    var labelOpt = userNames[0] + (isCurrent ? " (active)" : "");
+    var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
     var styleOpt = {};
     if (room.moodColor) {
       styleOpt.background = args.roomCache[roomId].moodColor;
@@ -34,8 +36,8 @@ RoomList.view = function(ctrl, args) {
     }, [
       m("img.buddy-face[src\=jay.jpg]"),
       m("div.buddy", [
-        m("h1.buddy-name", "Jay Mo"),
-        m("h2.buddy-quote", "Come back we miss you so muc..")
+        m("h1.buddy-name", labelOpt),
+        m("h2.buddy-quote", "TODO: Implement")
       ])
     ])
   }));

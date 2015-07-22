@@ -9,29 +9,37 @@ Chat.controller = function() {
 
 Chat.view = function(ctrl, args) {
   var chatLog = args.chatLogs[args.currentRoom()] || [];
-  return m("div.chat", [
-    m("div.messageContainer", chatLog.map(function(msg) {
-      var text;
-      var otherStyle = "";
-      if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
-        var uid = msg.user;
-        var userOpt = args.userCache[uid];
-        var dispName = userOpt ? userOpt.name : uid;
-        if (!userOpt) {
-          args.getUserAccount(uid);
+  return m("section.chat.screen", [
+    m("header", [
+      m("h1.buddy-name", "TODO: Label (RoomList)"),
+      m("h2.buddy-status", "TODO: Status (or something)")
+    ]),
+    m("div.messaging", [
+      m("ul.container", chatLog.map(function(msg) {
+        var text;
+        var otherStyle = "";
+        if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
+          var uid = msg.user;
+          var userOpt = args.userCache[uid];
+          var dispName = userOpt ? userOpt.name : uid;
+          if (!userOpt) {
+            args.getUserAccount(uid);
+          }
+          otherStyle = "." + (uid == args.userInfo.id ? "me" : "friend");
+
+          // TODO: Temporary, remove the name part later
+          text = dispName + ": " + msg.message;
+        } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
+          return m("h2.announcement", msg.message)
         }
-        otherStyle = "." + (uid == args.userInfo.id ? "me" : "friend");
-        text = msg.message;
-      } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
-        return m("h2.announcement", msg.message)
-      }
-      return m("div" + otherStyle, [
-        m("div.wrap", [
-          m("span.message", text)
+        return m("div" + otherStyle, [
+          m("div.wrap", [
+            m("span.message", text)
+          ])
         ])
-      ])
-    })),
-    m("form.write-message", {
+      }))
+    ]),
+    m("form.send", {
       onsubmit: function() {
         var trimmed = ctrl.composeText().trim();
         if (trimmed.length > 0) {
@@ -41,13 +49,12 @@ Chat.view = function(ctrl, args) {
         return false;
       }
     }, [
-      m("div.messager", [
-        m("input.input-box[placeholder=Write Message Here]", {
+      m("div.form-container", [
+        m("input.form-input[type-text]", {
           type: "text", name: "compose",
           oninput: m.withAttr("value", ctrl.composeText),
           value: ctrl.composeText()
         })
-        // m("button[type=submit]", "Send")
       ])
     ])
   ]);
