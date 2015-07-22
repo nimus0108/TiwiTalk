@@ -52,38 +52,31 @@ TiwiTalk.view = function(ctrl) {
     //   m("button#logout", { onclick: ctrl.logout.bind(ctrl) }, "Logout")
     // ]),
     
+    	          // m("h1.friend-name", ctrl.userInfo.profile.name),
     showOpt = m("div#messenger", [
-      m("div.tiwi", [
-    	  m("div.friend-preview", [
-    	    m("div.face-container", [
-    	      m("div.vertical-container", [
-    	        m("div.vertical-align", [
-    	          m("img.face[src=/logo.png]")  
-    	        ]),  
-    	      ]),  
-    	    ]),
-    	    m("div.show", [
-    	      m("div.vertical-container", [
-    	        m("div.vertical-align", [
-    	          m("h1.friend-name", ctrl.userInfo.profile.name),
-    	          m("h2.excerpt", "")  
-    	        ]),  
-    	      ]),  
-    	    ]),  
-    	  ]),
-        /*
-    	  m("div.avail-status", [
-    	    m("h1.avail", "You are busy right now"),
-    	    m("h2.tip", "People won't bother you unless Lily's here")
-    	  ]),
-        */
-        m.component(Search, {
-          socket: ctrl.socket,
-          searchResults: ctrl.searchResults,
-          startRoom: ctrl.startRoom.bind(ctrl),
-          contacts: ctrl.userInfo.contacts
-        })
-    	]),
+      m("section.tiwi.sidebar", [
+        m("nav.settings", [
+          m("ul.options", [
+            m("li.feedback", "F"),  // Add Feedback smiley icon here
+            m("li.feedback", "S")   // Add Settings gear icon here
+          ])
+        ]),
+        m("section.personal", [
+          m("img.my-face[src=/lily.jpg]"),
+          m("h1.my-name", ctrl.userInfo.profile.name),
+          m("h2.my-status", "Ipsum lorem status Lily is awesome Eddy isn't so awesome but Leangap is great Kira is great Qiuqiu is great.")
+        ]),
+        m("section.availability", [
+          m("h1.current", "You're free right now"),
+          m("h2.notes", "Feel free to check in with your friend and say hello")
+        ])
+  	  ]),
+      m.component(Search, {
+        socket: ctrl.socket,
+        searchResults: ctrl.searchResults,
+        startRoom: ctrl.startRoom.bind(ctrl),
+        contacts: ctrl.userInfo.contacts
+      }),
       // end tiwi
 
       //start chat
