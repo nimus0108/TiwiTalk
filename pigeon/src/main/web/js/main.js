@@ -65,12 +65,16 @@ TiwiTalk.view = function(ctrl) {
           m("div.container", [
             m("img.my-face[src=/lily.jpg]"),
           ]),
-          m("h1.my-name", ctrl.userInfo.profile.name),
-          m("h2.my-status", "Ipsum lorem status Lily is awesome Eddy isn't so awesome but Leangap is great Kira is great Qiuqiu is great.")
+          m("div.my-info", [
+            m("h1.my-name", ctrl.userInfo.profile.name),
+            m("h2.my-status", "Mentoring at Leangap is so fun")
+          ]),
         ]),
         m("section.availability", [
-          m("h1.current", "You're free right now"),
-          m("h2.notes", "Feel free to check in with your friend and say hello")
+          m("div.wrap", [
+            m("h1.current", "You're free right now"),
+            m("h2.notes", "Feel free to check in with your friend and say hello")
+          ])
         ])
   	  ]),
       m.component(Search, {

@@ -56,7 +56,7 @@ Login.view = function(ctrl, args) {
         // m("form", { onsubmit: ctrl.register }, [
         //   m("button[type=submit]", "register"),
         //   usernameInput
-        // ]),
+        // ])
         // m("form", { onsubmit: loginFn }, [
         //   m("button[type=submit]", "connect"),
         //   nameInput

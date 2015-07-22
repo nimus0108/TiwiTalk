@@ -9,7 +9,7 @@
 }
 
 .tiwi {
-	background-color: rgba(50, 50, 50, 0.66);
+	background-color: rgba(0, 0, 0, 0.75);
 	color: $color-white;
 	float: left;
 	
@@ -46,6 +46,63 @@
 			width: 40%;
 			margin: 0 auto;
 			border-radius: 50%;
+		}
+		
+		.my-info {
+			width: 80%;
+			margin: 5px auto;
+			text-align: center;
+			
+			h1.my-name {
+				margin: 0.5em 0 0.25em 0;
+				padding: 0;
+				font-family: 'Lato', san-serif;
+				font-size: 2.25em;
+				font-weight: 300;
+			}
+			
+			h2.my-status {
+				margin: 0;
+				padding: 0;
+				font-family: "Lato", sans-serif;
+				font-size: 1.4em;
+				font-weight: 400;
+				opacity: 0.85;
+			}
+		}
+	}
+	
+	section.availability {
+		height: 6.85em;
+		margin: 0 auto;
+		padding: 0.75em 0.5em;
+		background: rgba(39, 174, 96, 0.5);
+		
+		.wrap {
+			width: 80%;
+		    position: relative;
+		    left: 50%;
+			float: left;
+			
+			h1.current {
+			    position: relative;
+			    left: -50%;
+				float: left;
+				margin: 0 0 0.05em 0;
+				padding: 0;
+				font-size: 2.05em;
+				font-weight: 300;
+			}
+			
+			h2.notes {
+				position: relative;
+			    left: -50%;
+				float: left;
+				margin: 0;
+				padding: 0;
+				font-size: 1.25em;
+				opacity: 0.85;
+			}
 		}
 	}
 }
