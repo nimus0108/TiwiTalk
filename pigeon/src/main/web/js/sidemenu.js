@@ -15,7 +15,7 @@ SideMenu.view = function(ctrl, userInfo) {
     ]),
     m("section.personal", [
       m("div.container", [
-        m("img.my-face[src=]") // Stop being obsessed with Lily in the code...
+        m("img.my-face[src=]") 
       ]),
       m("div.my-info", [
         m("h1.my-name", userInfo.profile.name),
