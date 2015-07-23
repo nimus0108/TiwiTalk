@@ -46,13 +46,14 @@ Login.view = function(ctrl, args) {
   };
 
   return m("div.launch", [
-    m("div.container", [
+    m("div.container.intro", [
         m("h1", "TiwiTalk"),
         m("h2", "Say more than just text"),
         m("form", { onsubmit: loginFn }, [
           loginEmail, loginPassword,
           m("button.form-click[type=submit]", "Sign In"),
-        ])
+        ]),
+        m("h3", "Register")
         // m("form", { onsubmit: ctrl.register }, [
         //   m("button[type=submit]", "register"),
         //   usernameInput
