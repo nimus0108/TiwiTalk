@@ -1,11 +1,11 @@
 var m = require("lhorie/mithril");
 
-var Sidebar = {};
+var SideMenu = {};
 
-Sidebar.controller = function() {
+SideMenu.controller = function() {
 };
 
-Sidebar.view = function(ctrl, userInfo) {
+SideMenu.view = function(ctrl, userInfo) {
   return m("section.tiwi.sidebar", [
     m("nav.settings", [
       m("ul.options", [
@@ -15,7 +15,7 @@ Sidebar.view = function(ctrl, userInfo) {
     ]),
     m("section.personal", [
       m("div.container", [
-        m("img.my-face[src=/lily.jpg]"),
+        m("img.my-face[src=]") // Stop being obsessed with Lily in the code...
       ]),
       m("div.my-info", [
         m("h1.my-name", userInfo.profile.name),
@@ -31,4 +31,4 @@ Sidebar.view = function(ctrl, userInfo) {
   ]);
 };
 
-module.exports = Sidebar;
+module.exports = SideMenu;

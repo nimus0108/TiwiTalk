@@ -6,7 +6,7 @@ var Message = require("./message.js");
 
 /* Components */
 var Login = require("./login.js");
-var Sidebar = require("./sidebar.js");
+var SideMenu = require("./sidemenu.js");
 var RoomList = require("./roomlist.js");
 var Chat = require("./chat.js");
 var Search = require("./search.js");
@@ -37,7 +37,7 @@ TiwiTalk.view = function(ctrl) {
     });
   } else {    
     showOpt = m("div#messenger", [
-      m.component(Sidebar, ctrl.userInfo),
+      m.component(SideMenu, ctrl.userInfo),
       /* TODO: Reimplement and restyle this at some point
        * m.component(Search, {
        *   socket: ctrl.socket,
