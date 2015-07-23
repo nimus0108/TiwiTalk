@@ -1,4 +1,5 @@
 var m = require("lhorie/mithril");
+var Search = require("./search.js");
 
 var SideMenu = {};
 
@@ -34,7 +35,15 @@ SideMenu.view = function(ctrl, args) {
         m("h1.current", "You're free right now"),
         m("h2.notes", "Say hello to your friends!")
       ])
-    ])
+    ]),
+    /*
+     * m.component(Search, {
+     *   socket: args.socket,
+     *   searchResults: args.searchResults,
+     *   startRoom: args.startRoom,
+     *   contacts: args.userInfo.contacts
+     * })
+     */
   ]);
 };
 

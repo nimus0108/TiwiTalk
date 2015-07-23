@@ -9,7 +9,6 @@ var Login = require("./login.js");
 var SideMenu = require("./sidemenu.js");
 var RoomList = require("./roomlist.js");
 var Chat = require("./chat.js");
-var Search = require("./search.js");
 
 /* Main app */
 var TiwiTalk = {};
@@ -40,16 +39,12 @@ TiwiTalk.view = function(ctrl) {
     var menuClass = ctrl.menuToggled() ? ".sidemenu-active" : "";
     showOpt = m("div#messenger" + menuClass, [
       m.component(SideMenu, {
-        userInfo: ctrl.userInfo, menuToggled: ctrl.menuToggled
+        userInfo: ctrl.userInfo,
+        menuToggled: ctrl.menuToggled,
+        startRoom: ctrl.startRoom.bind(ctrl),
+        searchResults: ctrl.searchResults,
+        socket: ctrl.socket
       }),
-      /* TODO: Reimplement and restyle this at some point
-       * m.component(Search, {
-       *   socket: ctrl.socket,
-       *   searchResults: ctrl.searchResults,
-       *   startRoom: ctrl.startRoom.bind(ctrl),
-       *   contacts: ctrl.userInfo.contacts
-       * }),
-       */
       m.component(Chat, {
         userCache: ctrl.userCache, userInfo: ctrl.userInfo,
         send: ctrl.send.bind(ctrl), chatLogs: ctrl.chatLogs,
