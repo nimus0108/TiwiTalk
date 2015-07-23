@@ -6,6 +6,7 @@ var Message = require("./message.js");
 
 /* Components */
 var Login = require("./login.js");
+var Sidebar = require("./sidebar.js");
 var RoomList = require("./roomlist.js");
 var Chat = require("./chat.js");
 var Search = require("./search.js");
@@ -36,30 +37,7 @@ TiwiTalk.view = function(ctrl) {
     });
   } else {    
     showOpt = m("div#messenger", [
-      // TODO: Refactor this to sidebar.js
-      m("section.tiwi.sidebar", [
-        m("nav.settings", [
-          m("ul.options", [
-            m("li.feedback", m("span.fa.fa-smile-o")),
-            m("li.account", m("span.fa.fa-cog"))
-          ])
-        ]),
-        m("section.personal", [
-          m("div.container", [
-            m("img.my-face[src=/lily.jpg]"),
-          ]),
-          m("div.my-info", [
-            m("h1.my-name", ctrl.userInfo.profile.name),
-            m("h2.my-status", "TODO: Status")
-          ]),
-        ]),
-        m("section.availability", [
-          m("div.wrap", [
-            m("h1.current", "You're free right now"),
-            m("h2.notes", "Say hello to your friends!")
-          ])
-        ])
-  	  ]),
+      m.component(Sidebar, ctrl.userInfo),
       /* TODO: Reimplement and restyle this at some point
        * m.component(Search, {
        *   socket: ctrl.socket,
