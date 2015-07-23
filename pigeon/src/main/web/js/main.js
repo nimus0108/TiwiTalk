@@ -51,7 +51,7 @@ TiwiTalk.view = function(ctrl) {
         currentRoom: ctrl.currentRoom,
         getUserProfile: ctrl.getUserProfile.bind(ctrl)
       }),
-      m("section.conversations.sidebar", [
+      m("section.roomlist.sidebar", [
         m.component(RoomList, {
           currentRoom: ctrl.currentRoom, userInfo: ctrl.userInfo,
           userCache: ctrl.userCache, roomCache: ctrl.roomCache

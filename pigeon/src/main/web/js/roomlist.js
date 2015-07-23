@@ -25,7 +25,7 @@ RoomList.view = function(ctrl, args) {
         userNames.push(userOpt ? userOpt.name : roomUsers[i]);
       }
     }
-    var labelOpt = userNames.join(", ") + (isCurrent ? " (active)" : "");
+    var labelOpt = userNames.join(", ");
     var styleOpt = {};
     if (room.moodColor) {
       styleOpt.background = args.roomCache[roomId].moodColor;

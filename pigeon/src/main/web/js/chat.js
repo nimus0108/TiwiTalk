@@ -49,13 +49,11 @@ Chat.view = function(ctrl, args) {
         return false;
       }
     }, [
-      m("div.form-container", [
-        m("input.form-input[type-text]", {
-          type: "text", name: "compose",
-          oninput: m.withAttr("value", ctrl.composeText),
-          value: ctrl.composeText()
-        })
-      ])
+      m("input.form-input[type-text]", {
+        type: "text", name: "compose",
+        oninput: m.withAttr("value", ctrl.composeText),
+        value: ctrl.composeText()
+      })
     ])
   ]);
 };

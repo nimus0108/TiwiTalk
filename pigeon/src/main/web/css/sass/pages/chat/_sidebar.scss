@@ -2,7 +2,6 @@
 
 .sidebar {
 	display: inline-block;
-	width: 25%;
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -12,7 +11,6 @@
 
 /* Responsive side menu styling */
 
-$sidemenu-width: 20em;
 $sidemenu-transition: 0.5s ease 0s;
 
 #messenger {
@@ -176,7 +174,15 @@ $sidemenu-transition: 0.5s ease 0s;
 	}
 }
 
+/* Room list styling */
+
+.roomlist {
+    width: $roomlist-width;
+    float: right;
+}
+
 ul.chat-list {
+    padding-left: 2em;
 	list-style: none;
 	
 	li {
