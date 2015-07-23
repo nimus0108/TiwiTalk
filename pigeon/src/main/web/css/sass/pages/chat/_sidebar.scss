@@ -6,13 +6,82 @@
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: $color-navyblue;
 	color: $color-white;
 }
 
-.tiwi {
-	float: left;
-	
+/* Responsive side menu styling */
+
+$sidemenu-width: 20em;
+$sidemenu-transition: 0.5s ease 0s;
+
+#messenger {
+    padding-left: $sidemenu-width;
+    transition: padding-left $sidemenu-transition;
+}
+
+.sidemenu {
+    position: fixed;
+    width: $sidemenu-width;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: $sidemenu-width;
+    margin-left: (-$sidemenu-width);
+    transition: left $sidemenu-transition;
+    z-index: 1000;
+}
+
+.sidemenu-show-btn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 1.5em;
+    width: 1.5em;
+    font-size: 1.5em;
+    padding: 0.25em;
+    text-align: center;
+	background-color: $color-navyblue;
+    transition: all $sidemenu-transition;
+    transition: opacity 0.2s ease 0.5s;
+
+    display: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 64em) {
+    .sidemenu {
+        left: 0; 
+    }
+
+    .sidemenu.sidemenu-active {
+        left: $sidemenu-width;
+    }
+
+    #messenger {
+        padding-left: 0;
+    }
+
+    #messenger.sidemenu-active {
+        padding-left: $sidemenu-width;
+    }
+
+    .sidemenu-show-btn {
+        display: block;
+        transition: left $sidemenu-transition;
+    }
+
+    .sidemenu-show-btn.sidemenu-active {
+        left: 13.25em;
+    }
+}
+
+/* Side menu content styling */
+
+.sidemenu {
 	nav.settings {
 		width: 90%;
 		margin: 0 auto;

@@ -25,6 +25,7 @@ TiwiTalk.controller = function() {
   this.composeText = m.prop("");
 
   this.inviteField = m.prop("");
+  this.menuToggled = m.prop(false);
 };
   
 TiwiTalk.view = function(ctrl) {
@@ -35,9 +36,12 @@ TiwiTalk.view = function(ctrl) {
       login: ctrl.login,
       ctrl: ctrl
     });
-  } else {    
-    showOpt = m("div#messenger", [
-      m.component(SideMenu, ctrl.userInfo),
+  } else {
+    var menuClass = ctrl.menuToggled() ? ".sidemenu-active" : "";
+    showOpt = m("div#messenger" + menuClass, [
+      m.component(SideMenu, {
+        userInfo: ctrl.userInfo, menuToggled: ctrl.menuToggled
+      }),
       /* TODO: Reimplement and restyle this at some point
        * m.component(Search, {
        *   socket: ctrl.socket,

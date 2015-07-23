@@ -2,11 +2,18 @@ var m = require("lhorie/mithril");
 
 var SideMenu = {};
 
-SideMenu.controller = function() {
+SideMenu.controller = function(args) {
+  this.toggleSidemenu = (function() {
+    args.menuToggled(!args.menuToggled());
+  }).bind(this);
 };
 
-SideMenu.view = function(ctrl, userInfo) {
-  return m("section.tiwi.sidebar", [
+SideMenu.view = function(ctrl, args) {
+  var toggledClass = args.menuToggled() ? ".sidemenu-active" : "";
+  return m("section.sidemenu.sidebar" + toggledClass, [
+    m("div.sidemenu-show-btn" + toggledClass, {
+      onclick: ctrl.toggleSidemenu
+    }, m("span.fa.fa-bars")),
     m("nav.settings", [
       m("ul.options", [
         m("li.feedback", m("span.fa.fa-smile-o")),
@@ -18,7 +25,7 @@ SideMenu.view = function(ctrl, userInfo) {
         m("img.my-face[src=]") // Stop being obsessed with Lily in the code...
       ]),
       m("div.my-info", [
-        m("h1.my-name", userInfo.profile.name),
+        m("h1.my-name", args.userInfo.profile.name),
         m("h2.my-status", "TODO: Status")
       ]),
     ]),
