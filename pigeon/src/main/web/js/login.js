@@ -8,12 +8,12 @@ Login.controller = function(args) {
   this.passwordField = m.prop("");
   var self = this;
   this.register = function() {
-    var url = "/register?email=" + self.emailField() + "?name=" + self.nameField();
+    var url = "/register?email=" + self.emailField() + "&name=" + self.nameField();
     var params = { method: "POST", url: url };
     m.request(params).then(function(response) {
       console.info(response);
       if (response.status === "ok") {
-        self.login(response.data[0].id);
+        args.login(response.data[0].id);
       } else if (response.status === "conflict") {
         alert("A user has already registered with that email.");
       } else {
@@ -25,7 +25,8 @@ Login.controller = function(args) {
 };
 
 Login.view = function(ctrl, args) {
-  var nameInput = m("input.register[placeholder=Username]", {
+  var nameInput = m("input.form-input[type=text]", {
+    placeholder: "Username",
     oninput: m.withAttr("value", ctrl.nameField),
     value: ctrl.nameField()
   });
@@ -37,7 +38,7 @@ Login.view = function(ctrl, args) {
   });
   
   var passwordInput = m("input.form-input[type=password]", {
-    placeholder: "Password",
+    placeholder: "Password (not required yet)",
     oninput: m.withAttr("value", ctrl.passwordField),
     value: ctrl.passwordField()
   });
@@ -47,21 +48,29 @@ Login.view = function(ctrl, args) {
     return false;
   };
 
+  var loginForm = m("form.login-form", { onsubmit: loginFn }, [
+    m("h3", "Login"),
+    emailInput,
+    passwordInput,
+    m("button.form-click[type=submit]", "Sign In"),
+  ]);
+
+  var registerForm = m("form.register-form", { onsubmit: ctrl.register }, [
+    m("h3", "Register"),
+    emailInput,
+    nameInput,
+    m("button.form-click[type=submit]", "Create account")
+  ]);
+
   return m("div.launch", [
     m("div.container.intro", [
-        m("h1", "TiwiTalk"),
-        m("h2", "Say more than just text"),
-        m("form", { onsubmit: loginFn }, [
-          emailInput,
-          passwordInput,
-          m("button.form-click[type=submit]", "Sign In"),
+        m("div", [
+          m("h1.title", "TiwiTalk"),
+          m("h3.version", "Alpha v0.0.8")
         ]),
-        m("h3", "Alpha v0.0.7")
-        /* m("form", { onsubmit: ctrl.register }, [
-         *   m("button[type=submit]", "register"),
-         *   usernameInput
-         * ])
-         */
+        m("h2.subtitle", "Say more than just text"),
+        loginForm,
+        registerForm
       ])
   ]);
 };
