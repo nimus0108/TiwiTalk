@@ -30,6 +30,36 @@
 
     ul.container {
         min-height: calc(100% - 7.25em);
+        list-style: none;
+        width: 90%;
+        margin: 0 auto;
+        padding: 0;
+        overflow-y: scroll;
+        
+        li {
+//            width: 100%;
+            padding: 0;
+            clear: both;
+            
+            &.me {
+                .wrap {
+                    float: right;
+                }
+            }
+            
+            &.friend {
+                .wrap {
+                    float: left;
+                }
+            }
+        }
+        
+        .wrap {
+            display: inline-block;
+            margin: 5px 0;
+            padding: 10px 15px;
+            background: rgba(39, 174, 96, 0.5);
+        }
     }
 
     form.send {

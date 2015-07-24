@@ -31,14 +31,16 @@ Chat.view = function(ctrl, args, session) {
           otherStyle = "." + (uid == session.userInfo.id ? "me" : "friend");
 
           // TODO: Temporary, remove the name part later
-          text = dispName + ": " + msg.message;
+//          text = dispName + ": " + msg.message;
+            text = msg.message;
         } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
           return m("h2.announcement", msg.message)
         }
-        return m("div" + otherStyle, [
+        return m("li" + otherStyle, [
           m("div.wrap", [
             m("span.message", text)
-          ])
+          ]),
+          m("br")
         ])
       }))
     ]),
