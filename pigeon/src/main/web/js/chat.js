@@ -9,9 +9,12 @@ Chat.controller = function() {
 
 Chat.view = function(ctrl, args, session) {
   var chatLog = session.chatLogs[session.currentRoom()] || [];
+  var roomOpt = args.roomCache[session.currentRoom()];
+  var label = roomOpt ? session.userStringFromIds(args.userCache,
+                                                  roomOpt.users, true) : "";
   return m("section.chat.screen", [
     m("header", [
-      m("h1.buddy-name", "TODO: Label (RoomList)"),
+      m("h1.buddy-name", label),
       m("h2.buddy-status", "TODO: Status (or something)")
     ]),
     m("div.messaging", [

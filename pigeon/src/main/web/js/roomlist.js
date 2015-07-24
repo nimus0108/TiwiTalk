@@ -11,14 +11,12 @@ RoomList.view = function(ctrl, args, session) {
 
     var room = args.roomCache[roomId] || { id: roomId, users: [] };
     var roomUsers = room.users;
-    var userNames = room.users.length == 0 ? [roomId]: [];
-    for (var i = 0; i < roomUsers.length; i++) {
-      if (roomUsers[i] != session.userInfo.id) {
-        var userOpt = args.userCache[roomUsers[i]];
-        userNames.push(userOpt ? userOpt.name : roomUsers[i]);
-      }
+    var labelOpt;
+    if (room.users.length == 0) {
+      labelOpt = roomId;
+    } else {
+      labelOpt = session.userStringFromIds(args.userCache, roomUsers, true);
     }
-    var labelOpt = userNames.join(", ");
     var styleOpt = {};
     if (room.moodColor) {
       styleOpt.background = args.roomCache[roomId].moodColor;

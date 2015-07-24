@@ -39,6 +39,7 @@ TiwiTalk.view = function(ctrl) {
         startRoom: ctrl.startRoom.bind(ctrl)
       }, ctrl.session),
       m.component(Chat, {
+        roomCache: ctrl.roomCache,
         userCache: ctrl.userCache,
         getUserProfile: ctrl.getUserProfile.bind(ctrl)
       }, ctrl.session),
@@ -66,7 +67,8 @@ TiwiTalk.controller.prototype.login = function(id) {
   console.log("connecting...");
   var self = this;
   var socket = new WebSocket("ws://" + location.host + "/chat?id=" + id);
-  var session = (this.session = new Session(socket));
+  var session = new Session(socket, this.userCache, this.roomCache);
+  this.session = session;
   socket.onopen = function(event) {
     console.log("connection established");
     self.getUserAccount();
