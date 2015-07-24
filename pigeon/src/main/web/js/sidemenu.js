@@ -9,7 +9,7 @@ SideMenu.controller = function(args) {
   }).bind(this);
 };
 
-SideMenu.view = function(ctrl, args) {
+SideMenu.view = function(ctrl, args, session) {
   var toggledClass = args.menuToggled() ? ".sidemenu-active" : "";
   return m("section.sidemenu.sidebar" + toggledClass, [
     m("div.sidemenu-show-btn" + toggledClass, {
@@ -26,7 +26,7 @@ SideMenu.view = function(ctrl, args) {
         m("img.my-face[src=]") 
       ]),
       m("div.my-info", [
-        m("h1.my-name", args.userInfo.profile.name),
+        m("h1.my-name", session.userInfo.profile.name),
         m("h2.my-status", "TODO: Status")
       ]),
     ]),
@@ -38,10 +38,10 @@ SideMenu.view = function(ctrl, args) {
     ]),
     /*
      * m.component(Search, {
-     *   socket: args.socket,
-     *   searchResults: args.searchResults,
+     *   socket: session.socket,
+     *   searchResults: session.searchResults,
      *   startRoom: args.startRoom,
-     *   contacts: args.userInfo.contacts
+     *   contacts: session.userInfo.contacts
      * })
      */
   ]);

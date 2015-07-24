@@ -4,6 +4,7 @@ var Login = {};
 
 Login.controller = function(args) {
   this.loginField = m.prop("");
+  this.passwordField = m.prop("");
   this.login = args.login.bind(args.ctrl);
   var self = this;
   this.register = function() {
@@ -29,15 +30,15 @@ Login.view = function(ctrl, args) {
   });
   
   var loginEmail = m("input.form-input[type=text]", {
-    placeholder: "Your ID",
+    placeholder: "User ID",
     oninput: m.withAttr("value", ctrl.loginField),
     value: ctrl.loginField()
   });
   
   var loginPassword = m("input.form-input[type=password]", {
-    placeholder: "Your Password"
-    // oninput: m.withAttr("value", ctrl.loginField),
-    // value: ctrl.loginField()
+    placeholder: "Password",
+    oninput: m.withAttr("value", ctrl.passwordField),
+    value: ctrl.passwordField()
   });
 
   var loginFn = function() {
@@ -50,18 +51,16 @@ Login.view = function(ctrl, args) {
         m("h1", "TiwiTalk"),
         m("h2", "Say more than just text"),
         m("form", { onsubmit: loginFn }, [
-          loginEmail, loginPassword,
+          loginEmail,
+          loginPassword,
           m("button.form-click[type=submit]", "Sign In"),
         ]),
         m("h3", "Register")
-        // m("form", { onsubmit: ctrl.register }, [
-        //   m("button[type=submit]", "register"),
-        //   usernameInput
-        // ])
-        // m("form", { onsubmit: loginFn }, [
-        //   m("button[type=submit]", "connect"),
-        //   nameInput
-        // ])
+        /* m("form", { onsubmit: ctrl.register }, [
+         *   m("button[type=submit]", "register"),
+         *   usernameInput
+         * ])
+         */
       ])
   ]);
 };

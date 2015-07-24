@@ -7,8 +7,8 @@ Chat.controller = function() {
   this.composeText = m.prop("");
 };
 
-Chat.view = function(ctrl, args) {
-  var chatLog = args.chatLogs[args.currentRoom()] || [];
+Chat.view = function(ctrl, args, session) {
+  var chatLog = session.chatLogs[session.currentRoom()] || [];
   return m("section.chat.screen", [
     m("header", [
       m("h1.buddy-name", "TODO: Label (RoomList)"),
@@ -25,7 +25,7 @@ Chat.view = function(ctrl, args) {
           if (!userOpt) {
             args.getUserAccount(uid);
           }
-          otherStyle = "." + (uid == args.userInfo.id ? "me" : "friend");
+          otherStyle = "." + (uid == session.userInfo.id ? "me" : "friend");
 
           // TODO: Temporary, remove the name part later
           text = dispName + ": " + msg.message;
@@ -43,7 +43,7 @@ Chat.view = function(ctrl, args) {
       onsubmit: function() {
         var trimmed = ctrl.composeText().trim();
         if (trimmed.length > 0) {
-          args.send(trimmed);
+          session.sendMessage(trimmed);
         }
         ctrl.composeText("");
         return false;
