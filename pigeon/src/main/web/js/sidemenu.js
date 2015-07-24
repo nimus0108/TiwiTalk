@@ -36,14 +36,9 @@ SideMenu.view = function(ctrl, args, session) {
         m("h2.notes", "Say hello to your friends!")
       ])
     ]),
-    /*
-     * m.component(Search, {
-     *   socket: session.socket,
-     *   searchResults: session.searchResults,
-     *   startRoom: args.startRoom,
-     *   contacts: session.userInfo.contacts
-     * })
-     */
+    m.component(Search, {
+      startRoom: args.startRoom,
+    }, session)
   ]);
 };
 

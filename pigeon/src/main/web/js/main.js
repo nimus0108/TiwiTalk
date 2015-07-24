@@ -121,7 +121,7 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
     console.log("Updated room info", data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.updateRoomInfo(data.room);
-    this.session.userInfo.rooms.push(this.currentRoom());
+    this.session.userInfo.rooms.push(this.session.currentRoom());
     console.log("Joined " + this.session.currentRoom());
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserSearchResult") {
     this.session.searchResults = data.results;

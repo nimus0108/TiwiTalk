@@ -19,29 +19,29 @@ Search.controller = function() {
   }).bind(this);
 };
 
-Search.view = function(ctrl, args) {
-  var contacts = args.contacts || [];
+Search.view = function(ctrl, args, session) {
+  var contacts = session.userInfo.contacts || [];
   var searchInputAttr = {
     type: "text",
     placeholder: "Search for friends...",
     oninput: m.withAttr("value", ctrl.searchField),
     value: ctrl.searchField()
   };
-  var searchFn = function(id) { return ctrl.search(args.socket, id) };
+  var searchFn = function(id) { return ctrl.search(session.socket, id) };
 
   return m("div.search-panel", [
     m("form.search-form.pure-form", { onsubmit: searchFn }, [
       m("input[type=text]", searchInputAttr),
     ]),
-    args.searchResults.length != 0 ? "" : m("p", "No users found."),
-    m("ul", args.searchResults.map(function(usr) {
+    session.searchResults.length != 0 ? "" : m("p", "No users found."),
+    m("ul", session.searchResults.map(function(usr) {
       var startRoomFn = function() { args.startRoom([usr.id]) };
       var addContactAttr;
       if (contacts.indexOf(usr.id) != -1) {
         addContactAttr = { disabled: true }
       } else {
         addContactAttr = {
-          onclick: function() { ctrl.addContact(args.socket, usr.id) }
+          onclick: function() { ctrl.addContact(session.socket, usr.id) }
         };
       }
       return m("li", [

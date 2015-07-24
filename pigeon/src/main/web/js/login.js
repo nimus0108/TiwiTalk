@@ -55,7 +55,7 @@ Login.view = function(ctrl, args) {
           loginPassword,
           m("button.form-click[type=submit]", "Sign In"),
         ]),
-        m("h3", "Register")
+        m("h3", "Alpha v0.0.7")
         /* m("form", { onsubmit: ctrl.register }, [
          *   m("button[type=submit]", "register"),
          *   usernameInput
