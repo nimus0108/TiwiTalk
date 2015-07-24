@@ -1,6 +1,10 @@
 .launch {
     @extend .layout-reset;
     @include vertical-parent;
+
+    .title { float: left; }
+    .version { float: right; }
+    .subtitle { clear: both; }
     
     .container {
         width: 70%;
