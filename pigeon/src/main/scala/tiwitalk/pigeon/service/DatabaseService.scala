@@ -34,9 +34,9 @@ class DatabaseService(config: Config) {
   def idQuery(id: UUID) = BSONDocument("_id" -> id)
 
   def init(): Future[Unit] = {
-    val nameSearch = userCol.indexesManager.ensure(
-      new Index(Seq("profile.name" -> IndexType.Text)))
-    nameSearch map (_ => ())
+    val emailUnique = userCol.indexesManager.ensure(
+      new Index(Seq("email" -> IndexType.Ascending), unique = true))
+    emailUnique map (_ => ())
   }
 
   def watchOplog() {
@@ -63,6 +63,10 @@ class DatabaseService(config: Config) {
 
   def findUserAccount(id: UUID): Future[Option[UserAccount]] = {
     userCol.find(BSONDocument("_id" -> id)).one[UserAccount]
+  }
+
+  def findUserAccountByEmail(email: String): Future[Option[UserAccount]] = {
+    userCol.find(BSONDocument("email" -> email)).one[UserAccount]
   }
 
   def findUserProfile(id: UUID): Future[Option[UserProfile]] = {

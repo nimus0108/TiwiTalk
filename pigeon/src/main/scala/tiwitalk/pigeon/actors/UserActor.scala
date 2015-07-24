@@ -59,7 +59,4 @@ class UserActor(initialData: UserAccount, userService: UserService)
 object UserActor {
   def props(account: UserAccount, userService: UserService): Props =
     Props(new UserActor(account, userService))
-
-  def props(id: UUID, name: String, userService: UserService): Props =
-    props(UserAccount(id, UserProfile.default(id, name)), userService)
 }

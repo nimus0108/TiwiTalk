@@ -12,6 +12,7 @@ import akka.stream.actor.{ ActorPublisher, ActorSubscriber }
 import akka.stream.scaladsl._
 import akka.util.Timeout
 import java.util.UUID
+import reactivemongo.api.commands.CommandError
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -28,46 +29,63 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
   val default =
     logRequestResult("pigeon") {
       encodeResponse {
-        (path("chat") & parameter('id)) { idStr =>
+        (path("chat") & parameter('email)) { email =>
           extractRequest { req =>
             complete {
               lazy val fail = Future.successful(
                 HttpResponse(400, entity = "Invalid websocket request"))
 
-              val wsOpt = for {
-                upgrade <- req.header[UpgradeToWebsocket]
-                id <- Try(UUID.fromString(idStr)).toOption
-              } yield {
+              val wsOpt = req.header[UpgradeToWebsocket] map { upgrade =>
+                val accFut = db.findUserAccountByEmail(email) collect {
+                  case Some(acc) => acc
+                } 
                 implicit val timeout: Timeout = 5.seconds
-                (chat ? Chat.Connect(id)).mapTo[Option[ActorRef]] map {
-                  case Some(ref) =>
-                    userService.subscribe(ref, id)
-                    upgrade.handleMessages(webSocketFlow(ref, id))
-                  case None =>
-                    HttpResponse(StatusCodes.NotFound)
+                for {
+                  acc <- accFut
+                  ref <- (chat ? Chat.Connect(acc.id))
+                           .collect { case Some(ref: ActorRef) => ref }
+                } yield {
+                  userService.subscribe(ref, acc.id)
+                  upgrade.handleMessages(webSocketFlow(ref))
                 }
               }
 
               wsOpt match {
-                case Some(f) => f
-                case None => fail
+                case Some(fut) =>
+                  fut recover { case _ => HttpResponse(StatusCodes.NotFound) }
+                case None =>
+                  fail
               }
             }
           }
         } ~
-        (path("register") & parameter('name)) { name =>
-          post {
-            complete {
-              val id = UUID.randomUUID()
-              val acc = Chat.UserAccount(id, Chat.UserProfile.default(id, name))
-              val msg = write(acc.profile)
-              db.updateUserAccount(acc) map { _ =>
-                HttpResponse(
-                  status = StatusCodes.OK,
-                  entity = HttpEntity(MediaTypes.`application/json`, msg)
-                )
+        (path("register") & parameter('name) & parameter('email)) {
+          (name, email) =>
+            post {
+              complete {
+                val id = UUID.randomUUID()
+                val prof = Chat.UserProfile.default(id, name)
+                val acc = Chat.UserAccount(id, email, prof)
+                db.updateUserAccount(acc) map { _ =>
+                  HttpResponse(
+                    status = StatusCodes.OK,
+                    entity = HttpEntity(
+                      MediaTypes.`application/json`,
+                      write(ApiResponse("ok", Some(acc.profile)))
+                    )
+                  )
+                } recover {
+                  case e: CommandError
+                    if e.code.isDefined && e.code.get == 11000 => 
+                      HttpResponse(
+                        status = StatusCodes.Conflict,
+                        entity = HttpEntity(
+                          MediaTypes.`application/json`, 
+                          write[ApiResponse[String]](ApiResponse("conflict"))
+                        )
+                      )
+                }
               }
-            }
           }
         } ~
         pathSingleSlash {
@@ -77,8 +95,7 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
       }
     }
 
-  def webSocketFlow(userActor: ActorRef,
-                    userId: UUID): Flow[Message, Message, Unit] = {
+  def webSocketFlow(userActor: ActorRef): Flow[Message, Message, Unit] = {
     val userIn = Sink(ActorSubscriber[Chat.InEvent](userActor))
     val userOut = Source(ActorPublisher[Chat.OutEvent](userActor))
 
@@ -102,4 +119,6 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
       (msgToChat.inlet, chatToMsg.outlet)
     }
   }
+
+  case class ApiResponse[T](status: String, data: Option[T] = None)
 }
