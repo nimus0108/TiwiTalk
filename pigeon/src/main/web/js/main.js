@@ -66,7 +66,9 @@ TiwiTalk.controller.prototype.login = function(email) {
   this.logout();
   console.log("connecting...");
   var self = this;
-  var socket = new WebSocket("ws://" + location.host + "/chat?email=" + email);
+  var protocol = location.protocol === "https:" ? "wss" : "ws";
+  var wsUrl = protocol + "://" + location.host + "/chat?email=" + email;
+  var socket = new WebSocket(wsUrl);
   var session = new Session(socket, this.userCache, this.roomCache);
   this.session(session);
   socket.onopen = function(event) {
