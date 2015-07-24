@@ -1,5 +1,6 @@
 div.search-panel {
     padding: 1em 2em 0 2em;
+    color: #000;
     ul {
         list-style: none;
         overflow-y: auto;
@@ -11,7 +12,12 @@ div.search-panel {
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             clear: both;
+            color: $color-white;
         }
+    }
+    
+    p {
+        color: $color-white;
     }
 }
 

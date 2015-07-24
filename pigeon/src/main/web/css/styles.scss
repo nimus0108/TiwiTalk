@@ -10,3 +10,10 @@
 // Screens
 @import "./sass/pages/launch"; // Launch / Splash Page
 @import "./sass/pages/chat"; // Chat / Messaging Page
+
+
+body {
+    -moz-transform: scale(0.75, 0.75); /* Moz-browsers */
+    zoom: 0.75; /* Other non-webkit browsers */
+    zoom: 75%; /* Webkit browsers */
+}
