@@ -1,6 +1,6 @@
 /*
  * Class to help handle messages sent and received from the server.
-*/
+ */
 var Message = function(typeOrData, dataToCopyOpt) {
   var dataToCopy = dataToCopyOpt || typeOrData;
   for (k in dataToCopy) this[k] = dataToCopy[k];
@@ -50,10 +50,17 @@ Message.SetAvailability = function(value) {
   return new Message("SetAvailability", { value: value });
 };
 
+/* Constructs a SetStatus message */
+Message.SetStatus = function(value) {
+  return new Message("SetStatus", { value: value });
+};
+
+/* Constructs a SearchForUser message */
 Message.SearchForUser = function(name) {
   return new Message("SearchForUser", { name: name });
 };
 
+/* Constructs a ModifyContacts message */
 Message.ModifyContacts = function(_add, _remove) {
   var add = _add || [];
   var remove = _remove || [];

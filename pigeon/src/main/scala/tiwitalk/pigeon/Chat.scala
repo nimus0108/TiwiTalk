@@ -16,6 +16,7 @@ object Chat {
   case class GetRoomInfo(id: UUID) extends InEvent
   case object GetAvailability extends InEvent with ServerEvent
   case class SetAvailability(value: Int) extends InEvent
+  case class SetStatus(value: String) extends InEvent
   case object GetUserAccount extends InEvent
   case class SearchForUser(name: String) extends InEvent
   case class ModifyContacts(add: Seq[UUID], remove: Seq[UUID]) extends InEvent
@@ -35,11 +36,17 @@ object Chat {
   case class UserProfile(
       id: UUID,
       name: String,
-      availability: Int) extends OutEvent
+      availability: Int,
+      status: String) extends OutEvent
   case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
   case class UserSearchResult(query: String, results: Seq[UserProfile])
       extends OutEvent
+
+  object UserProfile {
+    def default(id: UUID, name: String): UserProfile =
+      UserProfile(id, name, availability = 5, status = "")
+  }
 
   case class Connect(id: UUID) extends ServerEvent
   case class Disconnect(id: UUID) extends ServerEvent
@@ -52,4 +59,5 @@ object Chat {
   case class UpdateUserAccount(data: UserAccount) extends ServerEvent
   case class RoomStarted(id: UUID) extends ServerEvent
   case class StartRoomRef(room: Room) extends ServerEvent
+
 }

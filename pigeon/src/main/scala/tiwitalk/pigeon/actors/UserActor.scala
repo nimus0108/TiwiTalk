@@ -32,6 +32,10 @@ class UserActor(initialData: UserAccount, userService: UserService)
     case GetUserProfile(None) if totalDemand > 0 => sender() ! data.profile
     case OnNext(GetUserProfile(None)) if totalDemand > 0 => onNext(data.profile)
     case OnNext(GetUserAccount) if totalDemand > 0 => onNext(data)
+    case OnNext(SetStatus(value)) if totalDemand > 0 =>
+      if (!(value equals data.profile.status)) {
+        userService.updateUserStatus(data.id, value)
+      }
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       val trimmed = msg.trim
       if (trimmed.length > 0) {
@@ -57,5 +61,5 @@ object UserActor {
     Props(new UserActor(account, userService))
 
   def props(id: UUID, name: String, userService: UserService): Props =
-    props(UserAccount(id, UserProfile(id, name, 5)), userService)
+    props(UserAccount(id, UserProfile.default(id, name)), userService)
 }

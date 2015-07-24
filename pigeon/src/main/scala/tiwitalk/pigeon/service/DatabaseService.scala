@@ -31,6 +31,8 @@ class DatabaseService(config: Config) {
   val userCol = db.collection("users")
   val roomCol = db.collection("rooms")
 
+  def idQuery(id: UUID) = BSONDocument("_id" -> id)
+
   def init(): Future[Unit] = {
     val nameSearch = userCol.indexesManager.ensure(
       new Index(Seq("profile.name" -> IndexType.Text)))
@@ -64,9 +66,8 @@ class DatabaseService(config: Config) {
   }
 
   def findUserProfile(id: UUID): Future[Option[UserProfile]] = {
-    val query = BSONDocument("_id" -> id)
     val fields = BSONDocument("profile" -> 1)
-    userCol.find(query, fields).one[BSONDocument].map { docOpt =>
+    userCol.find(idQuery(id), fields).one[BSONDocument].map { docOpt =>
       docOpt map { doc =>
         doc.getAs[UserProfile]("profile").get
       }
@@ -75,28 +76,25 @@ class DatabaseService(config: Config) {
 
   import userCol.BatchCommands.FindAndModifyCommand.FindAndModifyResult
   def updateUserAccount(a: UserAccount): Future[FindAndModifyResult] = {
-    val query = BSONDocument("_id" -> a.id)
-    userCol.findAndUpdate(query, a, upsert = true)
+    userCol.findAndUpdate(idQuery(a.id), a, upsert = true)
   }
 
   def updateUserProfile(p: UserProfile): Future[Option[UserAccount]] = {
-    val query = BSONDocument("_id" -> p.id)
     val upd = BSONDocument("$set" -> BSONDocument("profile" -> p))
-    val f = userCol.findAndUpdate(query, upd, fetchNewObject = true)
+    val f = userCol.findAndUpdate(idQuery(p.id), upd, fetchNewObject = true)
     f.map(_.result[UserAccount])
   }
 
   def findRoom(id: UUID): Future[Option[Room]] = {
-    roomCol.find(BSONDocument("_id" -> id)).cursor[Room]().headOption
+    roomCol.find(idQuery(id)).cursor[Room]().headOption
   }
 
   def addUsersToRoom(id: UUID, users: Seq[UUID]): Future[Room] = {
-    val query = BSONDocument("_id" -> id)
     val upd =
       BSONDocument("$addToSet" ->
         BSONDocument("users" ->
           BSONDocument("$each" -> users)))
-    val res = roomCol.findAndUpdate(query, upd, fetchNewObject = true)
+    val res = roomCol.findAndUpdate(idQuery(id), upd, fetchNewObject = true)
 
     val usrQry = BSONDocument("_id" -> BSONDocument("$in" -> users))
     val usrUpd = BSONDocument("$addToSet" -> BSONDocument("rooms" -> id))
@@ -109,9 +107,8 @@ class DatabaseService(config: Config) {
   }
   
   def updateRoom(r: Room): Future[Room] = {
-    val query = BSONDocument("_id" -> r.id)
     roomCol
-      .findAndUpdate(query, r, fetchNewObject = true, upsert = true)
+      .findAndUpdate(idQuery(r.id), r, fetchNewObject = true, upsert = true)
       .map(_.result[Room])
       .collect { case Some(r) => r }
   }
@@ -128,7 +125,7 @@ class DatabaseService(config: Config) {
 
   def modifyContacts(id: UUID, add: Seq[UUID],
                      remove: Seq[UUID]): Future[Option[UserAccount]] = {
-    val query = BSONDocument("_id" -> id)
+    val query = idQuery(id)
     val addQuery =
       BSONDocument("$addToSet" ->
         BSONDocument("contacts" ->
@@ -139,6 +136,13 @@ class DatabaseService(config: Config) {
       res <- userCol.findAndUpdate(query, addQuery, fetchNewObject = true)
     } yield {
       res.result[UserAccount]
+    }
+  }
+
+  def setUserStatus(id: UUID, status: String): Future[Option[UserAccount]] = {
+    val upd = BSONDocument("$set" -> BSONDocument("profile.status" -> status))
+    userCol.findAndUpdate(idQuery(id), upd, fetchNewObject = true) map { r =>
+      r.result[UserAccount]
     }
   }
 }

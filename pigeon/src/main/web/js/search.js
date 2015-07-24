@@ -47,8 +47,8 @@ Search.view = function(ctrl, args, session) {
       return m("li", [
         m("span", usr.name),
         m("div.search-btn-toolbar", [
-          m("button", { onclick: startRoomFn }, m("span.fa.fa-plus")),
-          m("button", addContactAttr, m("span.fa.fa-user-plus"))
+          m("button.sidebar-btn", { onclick: startRoomFn }, m("span.fa.fa-plus")),
+          m("button.sidebar-btn", addContactAttr, m("span.fa.fa-user-plus"))
         ])
       ]);
     }))

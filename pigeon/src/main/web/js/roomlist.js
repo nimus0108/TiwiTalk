@@ -23,6 +23,15 @@ RoomList.view = function(ctrl, args, session) {
     if (room.moodColor) {
       styleOpt.background = args.roomCache[roomId].moodColor;
     }
+    var statusOpt = roomUsers.filter(function(x) {
+      return x !== session.userInfo.id;
+    });
+    if (statusOpt.length == 1) {
+      var userOpt = args.userCache[statusOpt[0]];
+      statusOpt = userOpt ? userOpt.status : "";
+    } else {
+      statusOpt = "";
+    }
     return m("li.chat-box" + classOpt, {
       onclick: function() { session.currentRoom(roomId) },
       style: styleOpt
@@ -30,7 +39,7 @@ RoomList.view = function(ctrl, args, session) {
       m("img.buddy-face[src\=person.png]"),
       m("div.buddy", [
         m("h1.buddy-name", labelOpt),
-        m("h2.buddy-quote", "TODO: Implement")
+        m("h2.buddy-quote", statusOpt)
       ])
     ])
   }));

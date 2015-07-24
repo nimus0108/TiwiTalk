@@ -1,6 +1,5 @@
 div.search-panel {
     padding: 1em 2em 0 2em;
-    color: #000;
     ul {
         list-style: none;
         overflow-y: auto;
@@ -24,17 +23,8 @@ div.search-panel {
 .search-btn-toolbar {
     float: right;
 
-    button {
-        color: $color-white;
-        background: $color-lightgreen;
-        border-radius: 3px;
-        border: none;
+    button.sidebar-btn {
         margin-right: 0.5em;
-
         &:last-child { margin-right: 0; }
-
-        &:disabled {
-            background: $color-gray;
-        }
     }
 }

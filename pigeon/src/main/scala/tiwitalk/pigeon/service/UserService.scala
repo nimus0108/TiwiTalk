@@ -62,6 +62,18 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
     } yield publish(UpdateUserAccount(account))
   }
 
+  def updateUserStatus(id: UUID,
+                       status: String): Future[Option[UserAccount]] = {
+    db.setUserStatus(id, status) flatMap {
+      case a @ Some(account) =>
+        put("USER-" + account.id)(account, ttl = Some(1.minute)) map { _ =>
+          publish(UpdateUserAccount(account))
+          a
+        }
+      case None => Future.successful(None)
+    }
+  }
+
   def modifyContacts(id: UUID, add: Seq[UUID],
                      rm: Seq[UUID]): Future[Option[UserAccount]] = {
     val optFut = db.modifyContacts(id, add, rm)

@@ -88,7 +88,19 @@ $sidemenu-transition: 0.5s ease 0s;
 
 /* Side menu content styling */
 
+.sidebar-btn {
+    color: $color-white;
+    background: $color-lightgreen;
+    border-radius: 3px;
+    border: none;
+
+    &:disabled {
+        background: $color-gray;
+    }
+}
+
 .sidemenu {
+    .pure-form { color: $color-black; }
 	nav.settings {
 		width: 90%;
 		margin: 0 auto;
@@ -125,28 +137,6 @@ $sidemenu-transition: 0.5s ease 0s;
             font-size: 80px;
 		}
 		
-		.my-info {
-			width: 80%;
-			margin: 5px auto;
-			text-align: center;
-			
-			h1.my-name {
-				margin: 0.5em 0 0.25em 0;
-				padding: 0;
-				font-family: 'Lato', san-serif;
-				font-size: 2.25em;
-				font-weight: 300;
-			}
-			
-			h2.my-status {
-				margin: 0;
-				padding: 0;
-				font-family: "Lato", sans-serif;
-				font-size: 1.4em;
-				font-weight: 400;
-				opacity: 0.85;
-			}
-		}
 	}
 	
 	section.availability {
@@ -182,6 +172,40 @@ $sidemenu-transition: 0.5s ease 0s;
 			}
 		}
 	}
+}
+
+.my-info {
+    width: 80%;
+    margin: 5px auto;
+    text-align: center;
+
+    h1.my-name {
+        margin: 0.5em 0 0.25em 0;
+        padding: 0;
+        font-family: 'Lato', san-serif;
+        font-size: 2.25em;
+        font-weight: 300;
+    }
+
+    h2.my-status {
+        margin: 0;
+        padding: 0;
+        font-family: "Lato", sans-serif;
+        font-size: 1.4em;
+        font-weight: 400;
+        color: rgb(215, 218, 221);
+        display: inline-block;
+    }
+
+    .my-status-container {
+        .status-edit, .sidebar-btn {
+            margin-left: 0.5em;
+        }
+
+        .status-edit, input {
+            display: inline-block;
+        }
+    }
 }
 
 /* Room list styling */
