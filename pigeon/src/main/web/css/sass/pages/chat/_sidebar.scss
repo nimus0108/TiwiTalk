@@ -100,7 +100,12 @@ $sidemenu-transition: 0.5s ease 0s;
 }
 
 .sidemenu {
-    .pure-form { color: $color-black; }
+    .pure-form { 
+        color: $color-black; 
+        input {
+            width: 9em;
+        }
+    }
 	nav.settings {
 		width: 90%;
 		margin: 0 auto;

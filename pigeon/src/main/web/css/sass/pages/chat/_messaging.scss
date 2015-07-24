@@ -59,17 +59,27 @@
             margin: 5px 0;
             padding: 10px 15px;
             background: rgba(39, 174, 96, 0.5);
+//            7c5f40f1-a7bd-45be-988f-4be515068e90
         }
     }
 
     form.send {
         position: absolute;
         bottom: 0;
-        width: inherit;
-
+        width: calc(100% - 44.5em);
+        
         input.form-input {
-            @include form-input(calc(100% - 11.5em), 0.5em 0.75em, $color-white, $color-black);
+            display: inline-block;
+            @include form-input(calc(100% - 5em), 0.5em 0.75em, $color-white, $color-black);
             font-size: 2em;
+        }
+        
+        button.messageSend {
+            display: inline-block;
+            @include button(2em, 0.5em 0, rgba(39, 174, 96, 0.5), $color-black, 200);
+            font-size: 2em;
+            padding: 1em 1.5em;
+            margin: 0 0 0.2em 0.2em;
         }
     }
 }
