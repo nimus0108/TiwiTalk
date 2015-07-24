@@ -3,46 +3,47 @@ var m = require("lhorie/mithril");
 var Login = {};
 
 Login.controller = function(args) {
-  this.loginField = m.prop("");
+  this.emailField = m.prop("");
+  this.nameField = m.prop("");
   this.passwordField = m.prop("");
-  this.login = args.login.bind(args.ctrl);
   var self = this;
   this.register = function() {
-    var params = { method: "POST", url: "/register?name=" + self.loginField() };
+    var url = "/register?email=" + self.emailField() + "?name=" + self.nameField();
+    var params = { method: "POST", url: url };
     m.request(params).then(function(response) {
       console.info(response);
-      self.login(response.id);
+      if (response.status === "ok") {
+        self.login(response.data[0].id);
+      } else if (response.status === "conflict") {
+        alert("A user has already registered with that email.");
+      } else {
+        alert("An error occurred");
+      }
     });
     return false;
   };
 };
 
 Login.view = function(ctrl, args) {
-  var usernameInput = m("input.register[placeholder=username]", {
-    oninput: m.withAttr("value", ctrl.loginField),
-    value: ctrl.loginField()
-  });
-    
-  var inputName = m("input.form-input[type=text]", {
-    placeholder: "Your Name",
-    oninput: m.withAttr("value", ctrl.loginField),
-    value: ctrl.loginField()
+  var nameInput = m("input.register[placeholder=Username]", {
+    oninput: m.withAttr("value", ctrl.nameField),
+    value: ctrl.nameField()
   });
   
-  var loginEmail = m("input.form-input[type=text]", {
-    placeholder: "User ID",
-    oninput: m.withAttr("value", ctrl.loginField),
-    value: ctrl.loginField()
+  var emailInput = m("input.form-input[type=email]", {
+    placeholder: "Email",
+    oninput: m.withAttr("value", ctrl.emailField),
+    value: ctrl.emailField()
   });
   
-  var loginPassword = m("input.form-input[type=password]", {
+  var passwordInput = m("input.form-input[type=password]", {
     placeholder: "Password",
     oninput: m.withAttr("value", ctrl.passwordField),
     value: ctrl.passwordField()
   });
 
   var loginFn = function() {
-    ctrl.login(ctrl.loginField());
+    args.login(ctrl.emailField());
     return false;
   };
 
@@ -51,8 +52,8 @@ Login.view = function(ctrl, args) {
         m("h1", "TiwiTalk"),
         m("h2", "Say more than just text"),
         m("form", { onsubmit: loginFn }, [
-          loginEmail,
-          loginPassword,
+          emailInput,
+          passwordInput,
           m("button.form-click[type=submit]", "Sign In"),
         ]),
         m("h3", "Alpha v0.0.7")

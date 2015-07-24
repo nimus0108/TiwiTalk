@@ -15,7 +15,7 @@ var Chat = require("./chat.js");
 var TiwiTalk = {};
 
 TiwiTalk.controller = function() {
-  this.session = null;
+  this.session = m.prop(null);
 
   this.userCache = {};
   this.roomCache = {};
@@ -25,11 +25,11 @@ TiwiTalk.controller = function() {
   
 TiwiTalk.view = function(ctrl) {
   var showOpt;
-  if (ctrl.session === null || ctrl.session.userInfo === null) {
+  if (ctrl.session() === null || ctrl.session().userInfo === null) {
     // TODO: encapsulate properly
     showOpt = m.component(Login, {
-      login: ctrl.login,
-      ctrl: ctrl
+      login: ctrl.login.bind(ctrl),
+      session: ctrl.session
     });
   } else {
     var menuClass = ctrl.menuToggled() ? ".sidemenu-active" : "";
@@ -37,16 +37,16 @@ TiwiTalk.view = function(ctrl) {
       m.component(SideMenu, {
         menuToggled: ctrl.menuToggled,
         startRoom: ctrl.startRoom.bind(ctrl)
-      }, ctrl.session),
+      }, ctrl.session()),
       m.component(Chat, {
         roomCache: ctrl.roomCache,
         userCache: ctrl.userCache,
         getUserProfile: ctrl.getUserProfile.bind(ctrl)
-      }, ctrl.session),
+      }, ctrl.session()),
       m("section.roomlist.sidebar", [
         m.component(RoomList, {
           userCache: ctrl.userCache, roomCache: ctrl.roomCache
-        }, ctrl.session)
+        }, ctrl.session())
       ])
     ]);
   }
@@ -55,20 +55,20 @@ TiwiTalk.view = function(ctrl) {
 
 TiwiTalk.controller.prototype.logout = function() {
   m.startComputation();
-  if (this.session !== null) {
-    this.session.socket.close();
+  if (this.session() !== null) {
+    this.session().socket.close();
   }
-  this.session = null;
+  this.session(null);
   m.endComputation();
 }
 
-TiwiTalk.controller.prototype.login = function(id) {
+TiwiTalk.controller.prototype.login = function(email) {
   this.logout();
   console.log("connecting...");
   var self = this;
-  var socket = new WebSocket("ws://" + location.host + "/chat?id=" + id);
+  var socket = new WebSocket("ws://" + location.host + "/chat?email=" + email);
   var session = new Session(socket, this.userCache, this.roomCache);
-  this.session = session;
+  this.session(session);
   socket.onopen = function(event) {
     console.log("connection established");
     self.getUserAccount();
@@ -109,24 +109,25 @@ TiwiTalk.controller.prototype.login = function(id) {
 };
 
 TiwiTalk.controller.prototype.handleMessages = function(data) {
+  var session = this.session();
   if (data.$type == "tiwitalk.pigeon.Chat.UserProfile") {
-    if (this.session.userInfo.id == data.id) {
-      this.session.userInfo.profile = data;
+    if (session.userInfo.id == data.id) {
+      session.userInfo.profile = data;
     }
     this.userCache[data.id] = data;
   } else if (data.$type == "tiwitalk.pigeon.Chat.Broadcast") {
-    this.session.chatLogs[data.room].push(data);
+    session.chatLogs[data.room].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserMessage") {
-    this.session.chatLogs[data.cid].push(data);
+    session.chatLogs[data.cid].push(data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.Room") {
     this.updateRoomInfo(data);
     console.log("Updated room info", data);
   } else if (data.$type == "tiwitalk.pigeon.Chat.RoomJoined") {
     this.updateRoomInfo(data.room);
-    this.session.userInfo.rooms.push(this.session.currentRoom());
-    console.log("Joined " + this.session.currentRoom());
+    session.userInfo.rooms.push(session.currentRoom());
+    console.log("Joined " + session.currentRoom());
   } else if (data.$type == "tiwitalk.pigeon.Chat.UserSearchResult") {
-    this.session.searchResults = data.results;
+    session.searchResults = data.results;
   } else if (data.$type == "tiwitalk.pigeon.Chat.MoodColor") {
     this.roomCache[data.room].moodColor = data.color;
     console.log("%c Received color " + data.color, "background: " + data.color + ";");
@@ -137,30 +138,30 @@ TiwiTalk.controller.prototype.handleMessages = function(data) {
 
 TiwiTalk.controller.prototype.updateRoomInfo = function(room) {
   this.roomCache[room.id] = room;
-  this.session.currentRoom(room.id);
+  this.session().currentRoom(room.id);
   this.fetchUserProfileNeeded(room.users);
-  if (!this.session.userInfo.rooms) this.session.userInfo.rooms = [];
-  if (!this.session.chatLogs[room.id]) this.session.chatLogs[room.id] = [];
+  if (!this.session().userInfo.rooms) this.session().userInfo.rooms = [];
+  if (!this.session().chatLogs[room.id]) this.session().chatLogs[room.id] = [];
 };
 
 TiwiTalk.controller.prototype.startRoom = function(_ids) {
   var ids = _ids.slice()
   this.fetchUserProfileNeeded(ids);
-  Message.StartRoom(ids).send(this.session.socket);
+  Message.StartRoom(ids).send(this.session().socket);
 };
 
 TiwiTalk.controller.prototype.inviteToRoom = function(users, convIdOpt) {
-  var convId = convIdOpt || this.session.currentRoom();
+  var convId = convIdOpt || this.session().currentRoom();
   this.fetchUserProfileNeeded(users);
-  Message.InviteToRoom(convId, users).send(this.session.socket);
+  Message.InviteToRoom(convId, users).send(this.session().socket);
 };
 
 TiwiTalk.controller.prototype.getUserProfile = function(id) {
-  Message.GetUserProfile(id).send(this.session.socket);
+  Message.GetUserProfile(id).send(this.session().socket);
 };
 
 TiwiTalk.controller.prototype.getUserAccount = function() {
-  Message.GetUserAccount().send(this.session.socket);
+  Message.GetUserAccount().send(this.session().socket);
 };
 
 TiwiTalk.controller.prototype.fetchUserProfileNeeded = function(ids) {

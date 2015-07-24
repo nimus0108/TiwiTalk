@@ -30,6 +30,7 @@ object Chat {
   case class RoomJoined(room: Room) extends OutEvent with ServerEvent
   case class UserAccount(
       @Key("_id") id: UUID,
+      email: String,
       profile: UserProfile,
       rooms: Seq[UUID] = Seq.empty,
       contacts: Seq[UUID] = Seq.empty) extends OutEvent
