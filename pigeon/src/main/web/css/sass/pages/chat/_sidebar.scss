@@ -7,6 +7,7 @@
 	padding: 0;
 	background-color: $color-navyblue;
 	color: $color-white;
+    width: 20em;
 }
 
 /* Responsive side menu styling */
@@ -75,6 +76,14 @@ $sidemenu-transition: 0.5s ease 0s;
     .sidemenu-show-btn.sidemenu-active {
         left: 13.25em;
     }
+    .chat {
+        form.send {
+            input.form-input {
+                @include form-input(calc(100% - 1.5em), 0.5em 0.75em, $color-white, $color-black);
+            }
+        }
+    }
+    
 }
 
 /* Side menu content styling */
@@ -109,10 +118,11 @@ $sidemenu-transition: 0.5s ease 0s;
 			text-align: center;
 		}
 		
-		img.my-face {
+		.my-face {
 			width: 40%;
 			margin: 0 auto;
 			border-radius: 50%;
+            font-size: 80px;
 		}
 		
 		.my-info {

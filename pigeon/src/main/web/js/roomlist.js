@@ -27,7 +27,7 @@ RoomList.view = function(ctrl, args, session) {
       onclick: function() { session.currentRoom(roomId) },
       style: styleOpt
     }, [
-      m("img.buddy-face[src\=jay.jpg]"),
+      m("img.buddy-face[src\=person.png]"),
       m("div.buddy", [
         m("h1.buddy-name", labelOpt),
         m("h2.buddy-quote", "TODO: Implement")

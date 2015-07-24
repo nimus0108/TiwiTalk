@@ -38,8 +38,18 @@
         width: inherit;
 
         input.form-input {
-            @include form-input(calc(100% - 1.5em), 0.5em 0.75em, $color-white, $color-black);
+            @include form-input(calc(100% - 11.5em), 0.5em 0.75em, $color-white, $color-black);
             font-size: 2em;
+        }
+    }
+}
+
+@media screen and (max-width: 64em) {
+    .chat {
+        form.send {
+            input.form-input {
+                @include form-input(calc(100% - 1.5em), 0.5em 0.75em, $color-white, $color-black);
+            }
         }
     }
 }

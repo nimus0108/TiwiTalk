@@ -23,7 +23,7 @@ SideMenu.view = function(ctrl, args, session) {
     ]),
     m("section.personal", [
       m("div.container", [
-        m("img.my-face[src=]") 
+        m("span.fa.fa-user.my-face") 
       ]),
       m("div.my-info", [
         m("h1.my-name", session.userInfo.profile.name),
@@ -33,7 +33,7 @@ SideMenu.view = function(ctrl, args, session) {
     m("section.availability", [
       m("div.wrap", [
         m("h1.current", "You're free right now"),
-        m("h2.notes", "Say hello to your friends!")
+    //  m("h2.notes", "Say hello to your friends!")
       ])
     ]),
     m.component(Search, {
