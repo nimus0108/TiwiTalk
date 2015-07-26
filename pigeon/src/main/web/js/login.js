@@ -8,12 +8,13 @@ Login.controller = function(args) {
   this.passwordField = m.prop("");
   var self = this;
   this.register = function() {
-    var url = "/register?email=" + self.emailField() + "&name=" + self.nameField();
+    var email = self.emailField();
+    var url = "/register?email=" + email + "&name=" + self.nameField();
     var params = { method: "POST", url: url };
     m.request(params).then(function(response) {
       console.info(response);
       if (response.status === "ok") {
-        args.login(response.data[0].id);
+        args.login(email);
       } else if (response.status === "conflict") {
         alert("A user has already registered with that email.");
       } else {
