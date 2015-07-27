@@ -205,6 +205,10 @@ $sidemenu-transition: 0.5s ease 0s;
         .status-edit, input {
             display: inline-block;
         }
+
+        .status-edit {
+            cursor: pointer;
+        }
     }
 }
 

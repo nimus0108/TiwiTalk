@@ -28,13 +28,16 @@ Search.view = function(ctrl, args, session) {
     value: ctrl.searchField()
   };
   var searchFn = function(id) { return ctrl.search(session.socket, id) };
+  var results = session.searchResults.filter(function(x) {
+    return x.id !== session.userInfo.id;
+  });
 
   return m("div.search-panel", [
     m("form.search-form.pure-form", { onsubmit: searchFn }, [
       m("input[type=text]", searchInputAttr),
     ]),
-    session.searchResults.length != 0 ? "" : m("p", "No users found."),
-    m("ul", session.searchResults.map(function(usr) {
+    results.length != 0 ? "" : m("p", "No users found."),
+    m("ul", results.map(function(usr) {
       var startRoomFn = function() { args.startRoom([usr.id]) };
       var addContactAttr;
       if (contacts.indexOf(usr.id) != -1) {
