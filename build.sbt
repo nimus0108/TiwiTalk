@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion in Global := "2.11.7"
 
+autoAPIMappings in Global := true
+
 lazy val root = Project("root", file(".")).aggregate(empath, pigeon)
 
 lazy val empath = Project("empath", file("empath")).settings(
