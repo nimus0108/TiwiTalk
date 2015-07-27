@@ -62,9 +62,9 @@ class DatabaseService(config: Config) {
   // watchOplog()
 
   /**
-   * @param id The [[UUID]] of the user.
-   * @return An [[Option]] of the [[tiwitalk.pigeon.UserAccount]] associated
-   * with the given ID.
+   * @param id The id of the user.
+   * @return An [[scala.Option]] of the [[tiwitalk.pigeon.Chat.UserAccount]]
+   * associated with the given ID.
    */
   def findUserAccount(id: UUID): Future[Option[UserAccount]] = {
     userCol.find(BSONDocument("_id" -> id)).one[UserAccount]
@@ -72,8 +72,8 @@ class DatabaseService(config: Config) {
 
   /**
    * @param email The email address of the user.
-   * @return An [[Option]] of the [[tiwitalk.pigeon.UserAccount]] associated
-   * with the given email address.
+   * @return An [[scala.Option]] of the [[tiwitalk.pigeon.Chat.UserAccount]]
+   * associated with the given email address.
    */
   def findUserAccountByEmail(email: String): Future[Option[UserAccount]] = {
     userCol.find(BSONDocument("email" -> email)).one[UserAccount]

@@ -15,9 +15,9 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
 
   /**
    * Uses the cache.
-   * @return An [[Option]] of the [[tiwitalk.pigeon.UserAccount]] associated
-   * with the ID.
-   * @see [[tiwitalk.pigeon.service.DatabaseService#findUserAccount]]
+   * @return An [[scala.Option]] of the [[tiwitalk.pigeon.Chat.UserAccount]]
+   * associated with the ID.
+   * @see [[tiwitalk.pigeon.service.DatabaseService.findUserAccount]]
    */
   def fetchUserAccount(id: UUID): Future[Option[UserAccount]] = {
     get[UserAccount]("USER-" + id) flatMap {

@@ -50,7 +50,7 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
   }
 
   /**
-   * @return A [[scala.concurrent.Future]] of an [[Either]] of the
+   * @return A [[scala.concurrent.Future]] of an [[scala.Either]] of the
    * session token (right) or error message (left).
    */
   def login(username: String,
