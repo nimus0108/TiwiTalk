@@ -30,10 +30,12 @@ object PigeonServer extends App {
     config.getString("pigeon.sentiment.apiKey"))
   val userService = new UserService(databaseService)
   val roomService = new RoomService(databaseService)
+  val authService = new AuthService(config.getString("pigeon.parse.apiKey"),
+    config.getString("pigeon.parse.appId"))
 
   val chatSystem = system.actorOf(
     ChatSystem.props(sentiment, userService, roomService), "chat")
-  val routes = new Routes(chatSystem, userService, databaseService)
+  val routes = new Routes(chatSystem, userService, databaseService, authService)
 
   // Intentionally not parallel
   val startFuture = for {

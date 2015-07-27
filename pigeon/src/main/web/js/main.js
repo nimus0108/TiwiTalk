@@ -62,12 +62,13 @@ TiwiTalk.controller.prototype.logout = function() {
   m.endComputation();
 }
 
-TiwiTalk.controller.prototype.login = function(email) {
+TiwiTalk.controller.prototype.login = function(token) {
   this.logout();
   console.log("connecting...");
   var self = this;
   var protocol = location.protocol === "https:" ? "wss" : "ws";
-  var wsUrl = protocol + "://" + location.host + "/chat?email=" + email;
+  var tokenEnc = encodeURIComponent(token);
+  var wsUrl = protocol + "://" + location.host + "/chat?token=" + tokenEnc;
   var socket = new WebSocket(wsUrl);
   var session = new Session(socket, this.userCache, this.roomCache);
   this.session(session);

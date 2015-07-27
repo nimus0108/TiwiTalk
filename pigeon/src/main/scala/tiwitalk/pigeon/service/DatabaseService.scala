@@ -78,6 +78,10 @@ class DatabaseService(config: Config) {
     }
   }
 
+  def createUserAccount(a: UserAccount): Future[Unit] = {
+    userCol.insert(a) map (_ => ())
+  }
+
   import userCol.BatchCommands.FindAndModifyCommand.FindAndModifyResult
   def updateUserAccount(a: UserAccount): Future[FindAndModifyResult] = {
     userCol.findAndUpdate(idQuery(a.id), a, upsert = true)
