@@ -62,25 +62,32 @@ Login.view = function(ctrl, args) {
   };
 
   var loginForm = m("form.login-form", { onsubmit: loginFn }, [
-    m("h3", "Login"),
     emailInput,
     passwordInput,
-    m("button.form-click[type=submit]", "Sign In"),
+    m("button.form-click[type=submit]", "Login"),
+    m("a", {
+      id: "showRegister",
+      href: "#"
+    }, "Not on TiwiTalk yet?")
   ]);
 
-  var registerForm = m("form.register-form", { onsubmit: ctrl.register }, [
-    m("h3", "Register"),
+  var registerForm = m("form.register-form[style='display: none;']", { onsubmit: ctrl.register }, [
     emailInput,
     nameInput,
     passwordInput,
-    m("button.form-click[type=submit]", "Create account")
+    m("button.form-click[type=submit]", "Register"),
+    m("a", {
+      id: "showLogin",
+      href: "#"
+    }, "Already on TiwiTalk?")
   ]);
 
   return m("div.launch", [
+    m("div.launch-bg", ""),
     m("div.container.intro", [
         m("div", [
           m("h1.title", "TiwiTalk"),
-          m("h3.version", "Alpha v0.0.8")
+          m("h3.version", "Alpha v0.1.2")
         ]),
         m("h2.subtitle", "Say more than just text"),
         loginForm,
