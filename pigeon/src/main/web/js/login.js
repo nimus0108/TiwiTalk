@@ -8,13 +8,15 @@ Login.controller = function(args) {
   this.passwordField = m.prop("");
   var self = this;
   this.register = function() {
-    var email = self.emailField();
-    var url = "/register?email=" + email + "&name=" + self.nameField();
+    var email = encodeURIComponent(self.emailField());
+    var name = encodeURIComponent(self.nameField());
+    var pw = encodeURIComponent(self.passwordField());
+    var url = "/register?email=" + email + "&name=" + name + "&password=" + pw;
     var params = { method: "POST", url: url };
     m.request(params).then(function(response) {
       console.info(response);
       if (response.status === "ok") {
-        args.login(email);
+        args.login(response.data);
       } else if (response.status === "conflict") {
         alert("A user has already registered with that email.");
       } else {
@@ -39,13 +41,23 @@ Login.view = function(ctrl, args) {
   });
   
   var passwordInput = m("input.form-input[type=password]", {
-    placeholder: "Password (not required yet)",
+    placeholder: "Password",
     oninput: m.withAttr("value", ctrl.passwordField),
     value: ctrl.passwordField()
   });
 
   var loginFn = function() {
-    args.login(ctrl.emailField());
+    var email = encodeURIComponent(ctrl.emailField());
+    var pw = encodeURIComponent(ctrl.passwordField());
+    var params = {
+      method: "POST",
+      url: "/login?email=" + email + "&password=" + pw
+    };
+    m.request(params).then(function(response) {
+      args.login(response.data);
+    }, function(error) {
+      window.alert("Failed to log in: " + error.data[0]);
+    });
     return false;
   };
 
@@ -60,6 +72,7 @@ Login.view = function(ctrl, args) {
     m("h3", "Register"),
     emailInput,
     nameInput,
+    passwordInput,
     m("button.form-click[type=submit]", "Create account")
   ]);
 

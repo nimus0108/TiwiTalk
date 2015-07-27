@@ -13,14 +13,19 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
 
   import system.dispatcher
 
+  /**
+   * Uses the cache.
+   * @return An [[Option]] of the [[tiwitalk.pigeon.UserAccount]] associated
+   * with the ID.
+   * @see [[tiwitalk.pigeon.service.DatabaseService#findUserAccount]]
+   */
   def fetchUserAccount(id: UUID): Future[Option[UserAccount]] = {
     get[UserAccount]("USER-" + id) flatMap {
       case Some(u) => Future.successful(Some(u))
       case None =>
         db.findUserAccount(id) flatMap {
           case o @ Some(p) =>
-            publish(UpdateUserAccount(p))
-            put("USER-" + p.id)(p, ttl = Some(1.minute)) map (_ => o)
+            cacheAndPub(p) map (_ => o)
           case None => Future.successful(None)
         }
     }
@@ -48,7 +53,7 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
 
   def updateUserAccount(newData: UserAccount): Future[Unit] = {
     val dbFut = db.updateUserAccount(newData)
-    val cacheFut = put("USER-" + newData.id)(newData, ttl = Some(1.minute))
+    val cacheFut = cacheUserAccount(newData)
     for {
       _ <- dbFut
       _ <- cacheFut
@@ -58,18 +63,15 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
   def updateUserProfile(newData: UserProfile): Future[Unit] = {
     for {
       account <- db.updateUserProfile(newData).collect { case Some(a) => a }
-      _ <- put("USER-" + account.id)(account, ttl = Some(1.minute))
-    } yield publish(UpdateUserAccount(account))
+      _ <- cacheAndPub(account)
+    } yield ()
   }
 
   def updateUserStatus(id: UUID,
                        status: String): Future[Option[UserAccount]] = {
     db.setUserStatus(id, status) flatMap {
       case a @ Some(account) =>
-        put("USER-" + account.id)(account, ttl = Some(1.minute)) map { _ =>
-          publish(UpdateUserAccount(account))
-          a
-        }
+        cacheAndPub(account) map (_ => a)
       case None => Future.successful(None)
     }
   }
@@ -79,13 +81,26 @@ class UserService(db: DatabaseService)(implicit cache: ScalaCache,
     val optFut = db.modifyContacts(id, add, rm)
     optFut flatMap {
       case opt @ Some(account) =>
-        put("USER-" + account.id)(account, ttl = Some(1.minute)) map { _ =>
+        cacheUserAccount(account) map { _ =>
           publish(UpdateUserAccount(account))
           opt
         }
       case None =>
         println("nope")
         Future.successful(None)
+    }
+  }
+
+  def cacheUserAccount(account: UserAccount): Future[Unit] = {
+    put("USER-" + account.id)(account, ttl = Some(1.minute))
+  }
+
+  private[this] def cacheAndPub(account: UserAccount): Future[UserAccount] = {
+    for {
+      cacheFut <- cacheUserAccount(account)
+    } yield {
+      publish(UpdateUserAccount(account))
+      account
     }
   }
 

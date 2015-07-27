@@ -20,78 +20,124 @@ import scala.util.{ Success, Try }
 import upickle.default.{ read, write }
 
 import actors.{ ChatSystem, UserActor }
-import service.{ DatabaseService, UserService }
+import service.{ AuthService, DatabaseService, UserService }
 
-class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
-    (implicit system: ActorSystem, mat: ActorMaterializer,
-              logging: LoggingAdapter) {
+class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
+    auth: AuthService)(implicit system: ActorSystem, mat: ActorMaterializer,
+    logging: LoggingAdapter) {
 
   val default =
     logRequestResult("pigeon") {
       encodeResponse {
-        (path("chat") & parameter('email)) { email =>
-          extractRequest { req =>
-            complete {
-              lazy val fail = Future.successful(
-                HttpResponse(400, entity = "Invalid websocket request"))
-
-              val wsOpt = req.header[UpgradeToWebsocket] map { upgrade =>
-                val accFut = db.findUserAccountByEmail(email) collect {
-                  case Some(acc) => acc
-                } 
-                implicit val timeout: Timeout = 5.seconds
-                for {
-                  acc <- accFut
-                  ref <- (chat ? Chat.Connect(acc.id))
-                           .collect { case Some(ref: ActorRef) => ref }
-                } yield {
-                  userService.subscribe(ref, acc.id)
-                  upgrade.handleMessages(webSocketFlow(ref))
-                }
-              }
-
-              wsOpt match {
-                case Some(fut) =>
-                  fut recover { case _ => HttpResponse(StatusCodes.NotFound) }
-                case None =>
-                  fail
-              }
-            }
-          }
-        } ~
-        (path("register") & parameter('name) & parameter('email)) {
-          (name, email) =>
-            post {
-              complete {
-                val id = UUID.randomUUID()
-                val prof = Chat.UserProfile.default(id, name)
-                val acc = Chat.UserAccount(id, email, prof)
-                db.updateUserAccount(acc) map { _ =>
-                  HttpResponse(
-                    status = StatusCodes.OK,
-                    entity = HttpEntity(
-                      MediaTypes.`application/json`,
-                      write(ApiResponse("ok", Some(acc.profile)))
-                    )
-                  )
-                } recover {
-                  case e: CommandError
-                    if e.code.isDefined && e.code.get == 11000 => 
-                      HttpResponse(
-                        status = StatusCodes.Conflict,
-                        entity = HttpEntity(
-                          MediaTypes.`application/json`, 
-                          write[ApiResponse[String]](ApiResponse("conflict"))
-                        )
-                      )
-                }
-              }
-          }
-        } ~
+        chatRoute ~
+        loginRoute ~
+        registerRoute ~
         pathSingleSlash {
           getFromResource("public/index.html")
         } ~
         getFromResourceDirectory("public")
+      }
+    }
+
+  val registerRoute =
+    path("register") {
+      parameters('name, 'email, 'password) { (name, email, password) =>
+        post {
+          complete {
+            val id = UUID.randomUUID()
+            val prof = Chat.UserProfile.default(id, name)
+            val acc = Chat.UserAccount(id, email, prof)
+            val fut = for {
+              sessionToken <- auth.signup(email, password, id)
+              _ <- db.createUserAccount(acc)
+            } yield {
+              HttpResponse(
+                status = StatusCodes.OK,
+                entity = HttpEntity(
+                  MediaTypes.`application/json`,
+                  write(ApiResponse("ok", Some(sessionToken)))
+                )
+              )
+            }
+ 
+            fut recover {
+              case e: CommandError
+                if e.code.isDefined && e.code.get == 11000 =>
+                  HttpResponse(
+                    status = StatusCodes.Conflict,
+                    entity = HttpEntity(
+                      MediaTypes.`application/json`,
+                      write[ApiResponse[String]](ApiResponse("conflict"))
+                    )
+                  )
+            }
+          }
+        }
+      }
+    }
+
+  val loginRoute =
+    path("login") {
+      post {
+        parameters('email, 'password) { (email, password) =>
+          complete {
+            auth.login(email, password) map {
+              case Right(token) =>
+                HttpResponse(
+                  status = StatusCodes.OK,
+                  entity = HttpEntity(
+                    MediaTypes.`application/json`,
+                    write[ApiResponse[String]](ApiResponse("ok", Some(token)))
+                  )
+                )
+              case Left(error) =>
+                val resp = ApiResponse("error", Some(error))
+                HttpResponse(
+                  status = StatusCodes.BadRequest,
+                  entity = HttpEntity(
+                    MediaTypes.`application/json`,
+                    write[ApiResponse[String]](resp)
+                  )
+                )
+            }
+          }
+        }
+      }
+    }
+
+  val chatRoute =
+    (path("chat") & parameter('token)) { token =>
+      extractRequest { req =>
+        complete {
+          lazy val fail = Future.successful(
+            HttpResponse(400, entity = "Invalid websocket request"))
+
+          val wsOpt = req.header[UpgradeToWebsocket] map { upgrade =>
+
+            val verifyFut = auth.verify(token)
+
+            implicit val timeout: Timeout = 5.seconds
+            def connectFut(id: UUID) = (chat ? Chat.Connect(id)).collect {
+              case Some(ref: ActorRef) => ref
+            }
+
+            for {
+              (email, id) <- verifyFut
+              ref <- connectFut(id)
+            } yield {
+              upgrade.handleMessages(webSocketFlow(ref))
+            }
+          }
+
+          wsOpt match {
+            case Some(fut) =>
+              fut recover { case e =>
+                HttpResponse(StatusCodes.NotFound)
+              }
+            case None =>
+              fail
+          }
+        }
       }
     }
 
@@ -121,4 +167,5 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService)
   }
 
   case class ApiResponse[T](status: String, data: Option[T] = None)
+  case class LoginRequest(name: String, email: String, password: String)
 }
