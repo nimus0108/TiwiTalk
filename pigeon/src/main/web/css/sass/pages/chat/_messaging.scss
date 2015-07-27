@@ -5,7 +5,7 @@
     height: 100%;
     background: rgba(255, 255, 255, 0.85);
     padding: 0;
-    margin: 0;
+    margin: 0 0 10px 0;
     width: calc(100% - #{$roomlist-width});
 
     header {
@@ -66,29 +66,40 @@
         position: absolute;
         bottom: 0;
         width: calc(100% - 44.5em);
+        margin: 0 0 10px 10px;
         
         input.form-input {
             display: inline-block;
-            @include form-input(calc(100% - 5em), 0.5em 0.75em, $color-white, $color-black);
-            font-size: 2em;
+            float: left;
+            @include form-input(calc(100% - 6.5em), 0 0, $color-white, $color-black);
+            height: 2.5em;
+            //font-size: 2em;
+            margin-left: 10px;
+            padding: 0 10px;
         }
         
         button.messageSend {
             display: inline-block;
-            @include button(2em, 0.5em 0, rgba(39, 174, 96, 0.5), $color-black, 200);
-            font-size: 2em;
-            padding: 1em 1.5em;
-            margin: 0 0 0.2em 0.2em;
+            float: left;
+            @include button(2em, 0 0, rgba(39, 174, 96, 0.5), $color-black, 200);
+            height: 2.5em;
+            width: 4em;
+            margin-left: 0.5em;
+            //font-size: 2em;
+            //padding: 1em 1.5em;
+            //margin: 0 0 0.2em 0.2em;
         }
     }
 }
 
+/*
 @media screen and (max-width: 64em) {
     .chat {
         form.send {
             input.form-input {
-                @include form-input(calc(100% - 1.5em), 0.5em 0.75em, $color-white, $color-black);
+                @include form-input(calc(100% - 1.5em), 0 0, $color-white, $color-black);
             }
         }
     }
 }
+*/
