@@ -19,7 +19,7 @@ RoomList.view = function(ctrl, args, session) {
     }
     var styleOpt = {};
     if (room.moodColor) {
-      styleOpt.background = args.roomCache[roomId].moodColor;
+      styleOpt.borderColor = args.roomCache[roomId].moodColor;
     }
     var statusOpt = roomUsers.filter(function(x) {
       return x !== session.userInfo.id;
@@ -31,10 +31,9 @@ RoomList.view = function(ctrl, args, session) {
       statusOpt = "";
     }
     return m("li.chat-box" + classOpt, {
-      onclick: function() { session.currentRoom(roomId) },
-      style: styleOpt
+      onclick: function() { session.currentRoom(roomId) }
     }, [
-      m("img.buddy-face[src\=person.png]"),
+      m("img.buddy-face[src\=person.png]", { style: styleOpt }),
       m("div.buddy", [
         m("h1.buddy-name", labelOpt),
         m("h2.buddy-quote", statusOpt)
