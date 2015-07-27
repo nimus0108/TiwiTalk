@@ -9,6 +9,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.http.scaladsl.model.ContentTypes
 import akka.stream._
 import java.net.URLEncoder.{ encode => urlEncode }
+import java.util.UUID
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success, Try }
 import upickle.default._
@@ -28,8 +29,8 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
    * @return A [[scala.concurrent.Future]] of the session token.
    * @todo Implement username system
    */
-  def signup(email: String, password: String): Future[String] = {
-    val data = Signup(email, email, password)
+  def signup(email: String, password: String, id: UUID): Future[String] = {
+    val data = Signup(email, email, password, id.toString)
     val req = 
       HttpRequest(POST, uri = s"$baseUrl/users")
         .withParse(apiKey, appId)
@@ -39,7 +40,6 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
       response <- http.singleRequest(req)
       str <- Unmarshal(response).to[String]
     } yield {
-      println(str)
       Try(read[LoginResponse](str).sessionToken)
     }
 
@@ -76,9 +76,10 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
 
   /**
    * @param token The session token to verify.
-   * @return A [[scala.concurrent.Future]] of the email of the token bearer.
+   * @return A [[scala.concurrent.Future]] of the email and id of the token
+   * bearer.
    */
-  def verify(token: String): Future[String] = {
+  def verify(token: String): Future[(String, UUID)] = {
     val req =
       HttpRequest(GET, uri = s"$baseUrl/users/me")
         .withParse(apiKey, appId)
@@ -88,14 +89,19 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
       response <- http.singleRequest(req) if response.status == StatusCodes.OK
       str <- Unmarshal(response).to[String]
     } yield {
-      read[VerifyResponse](str).email
+      val r = read[VerifyResponse](str)
+      (r.email, r.pigeonId)
     }
   }
 }
 
 object AuthService {
-  case class Signup(username: String, email: String, password: String)
-  case class VerifyResponse(username: String, email: String)
+  case class Signup(
+      username: String,
+      email: String,
+      password: String,
+      pigeonId: String)
+  case class VerifyResponse(username: String, email: String, pigeonId: UUID)
   case class LoginResponse(sessionToken: String)
   case class ErrorResponse(code: Int, error: String)
 

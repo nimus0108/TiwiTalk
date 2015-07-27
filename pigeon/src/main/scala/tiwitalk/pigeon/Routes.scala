@@ -48,7 +48,7 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
             val prof = Chat.UserProfile.default(id, name)
             val acc = Chat.UserAccount(id, email, prof)
             val fut = for {
-              sessionToken <- auth.signup(email, password)
+              sessionToken <- auth.signup(email, password, id)
               _ <- db.createUserAccount(acc)
             } yield {
               HttpResponse(
@@ -116,22 +116,15 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
 
             val verifyFut = auth.verify(token)
 
-            def accFut(email: String) =
-              db.findUserAccountByEmail(email) collect {
-                case Some(acc) => acc
-              }
-
             implicit val timeout: Timeout = 5.seconds
             def connectFut(id: UUID) = (chat ? Chat.Connect(id)).collect {
               case Some(ref: ActorRef) => ref
             }
 
             for {
-              email <- verifyFut
-              acc <- accFut(email)
-              ref <- connectFut(acc.id) // TODO: Use email as param
+              (email, id) <- verifyFut
+              ref <- connectFut(id)
             } yield {
-              userService.subscribe(ref, acc.id)
               upgrade.handleMessages(webSocketFlow(ref))
             }
           }

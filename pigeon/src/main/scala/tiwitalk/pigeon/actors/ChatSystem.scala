@@ -26,6 +26,7 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
         case Some(user) =>
           val ref = context.actorOf(UserActor.props(user, userService))
           userService.updateRef(id, ref)
+          userService.subscribe(ref, id)
           Some(ref)
         case None => None
       } pipeTo s
