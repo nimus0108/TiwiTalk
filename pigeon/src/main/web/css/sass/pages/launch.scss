@@ -22,7 +22,7 @@
         }
         
         h2 {
-            margin: 0 0 0.75em 0;
+            margin: 0 0 1.25em 0;
             padding: 0;
             font-size: 3em;
             line-height: 1em;
@@ -73,10 +73,27 @@
 }
 
 .launch {
-    background: linear-gradient(140deg, #0c4cec, #587ef3, #13c6d9, #32bf2a, #bcbf2a, #0fa9a8);
-    background-size: 1600% 1600%;
+    a {
+        line-height: 3em;
+        text-decoration: none;
+        color: #f7f7f7;
+    }
+}
 
-    $anim: BackGradient 20s ease infinite;
+.launch-bg {
+    position: fixed;
+    z-index: -999;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(140deg, #05c6d1, #194fb8, #8217b7, #e02d6f, #fc963f, #44cd9e);
+    background-size: 1000% 500%;
+    // -webkit-filter: blur(50px);
+    // -moz-filter: blur(50px);
+    // -o-filter: blur(50px);
+    // -ms-filter: blur(50px);
+    // filter: blur(50px);
+    $anim: BackGradient 40s ease infinite;
     -webkit-animation: $anim;
     -moz-animation: $anim;
     -o-animation: $anim;
