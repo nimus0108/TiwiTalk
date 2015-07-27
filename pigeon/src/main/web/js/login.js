@@ -6,6 +6,7 @@ Login.controller = function(args) {
   this.emailField = m.prop("");
   this.nameField = m.prop("");
   this.passwordField = m.prop("");
+  this.showLoginForm = m.prop(true);
   var self = this;
   this.register = function() {
     var email = encodeURIComponent(self.emailField());
@@ -61,24 +62,28 @@ Login.view = function(ctrl, args) {
     return false;
   };
 
-  var loginForm = m("form.login-form", { onsubmit: loginFn }, [
+  var loginForm = m("form", {
+      onsubmit: loginFn,
+      style: !ctrl.showLoginForm() ? { display: "none" } : {}
+    }, [
     emailInput,
     passwordInput,
     m("button.form-click[type=submit]", "Login"),
-    m("a", {
-      id: "showRegister",
-      href: "#"
+    m("a.login-form-toggle", {
+      onclick: function() { ctrl.showLoginForm(false); }
     }, "Not on TiwiTalk yet?")
   ]);
 
-  var registerForm = m("form.register-form[style='display: none;']", { onsubmit: ctrl.register }, [
+  var registerForm = m("form", {
+      onsubmit: ctrl.register,
+      style: ctrl.showLoginForm() ? { display: "none" } : {}
+    }, [
     emailInput,
     nameInput,
     passwordInput,
     m("button.form-click[type=submit]", "Register"),
-    m("a", {
-      id: "showLogin",
-      href: "#"
+    m("a.login-form-toggle", {
+      onclick: function() { ctrl.showLoginForm(true); }
     }, "Already on TiwiTalk?")
   ]);
 
