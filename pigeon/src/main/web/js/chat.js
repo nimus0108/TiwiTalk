@@ -13,7 +13,7 @@ Chat.view = function(ctrl, args, session) {
   var label = "";
   if (roomOpt) {
     label = session.userStringFromIds(args.userCache, roomOpt.users, true);
-    chatLog = roomOpt.chatHistory.concat(chatLog);
+    chatLog = (roomOpt.chatHistory || []).concat(chatLog);
   }
 
   return m("section.chat.screen", [

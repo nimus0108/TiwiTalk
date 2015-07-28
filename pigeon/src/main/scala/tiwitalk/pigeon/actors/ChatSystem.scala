@@ -52,14 +52,12 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
       }
     case GetUserProfile(Some(id)) =>
       val originalSender = sender()
-      userService.fetchUserProfile(id) foreach { infoOpt =>
-        infoOpt foreach (originalSender ! _)
-      }
+      val fut = userService.fetchUserProfile(id) collect { case Some(x) => x }
+      fut pipeTo originalSender
     case GetRoomInfo(id) =>
       val originalSender = sender()
-      roomService.findRoom(id) foreach { roomOpt =>
-        roomOpt foreach (originalSender ! _)
-      }
+      val fut = roomService.findRoom(id) collect { case Some(x) => x }
+      fut pipeTo originalSender
     case SearchForUser(name) if !name.trim.isEmpty =>
       userService.searchUsersByName(name.trim) map { accs =>
         UserSearchResult(name, accs map (_.profile))

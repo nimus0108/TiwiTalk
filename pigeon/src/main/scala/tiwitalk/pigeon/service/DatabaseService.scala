@@ -105,7 +105,7 @@ class DatabaseService(config: Config) {
   }
 
   def findRoom(id: UUID): Future[Option[Room]] = {
-    roomCol.find(idQuery(id)).cursor[Room]().headOption
+    roomCol.find(idQuery(id)).one[Room]
   }
 
   def addUsersToRoom(id: UUID, users: Seq[UUID]): Future[Room] = {
@@ -150,7 +150,7 @@ class DatabaseService(config: Config) {
           BSONDocument(
             // "$sort" -> BSONDocument("timestamp" -> 1),
             "$each" -> messages,
-            "$slice" -> -10)))
+            "$slice" -> -10))) // TODO: configurable
 
     roomCol
       .findAndUpdate(query, upd, fetchNewObject = true)
