@@ -7,7 +7,7 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scalacache._
-import tiwitalk.pigeon.Chat.{ Room, StartRoomRef }
+import tiwitalk.pigeon.Chat.{ Room, StartRoomRef, UserMessage }
 
 class RoomService(db: DatabaseService)(implicit cache: ScalaCache,
     system: ActorSystem) {
@@ -41,4 +41,7 @@ class RoomService(db: DatabaseService)(implicit cache: ScalaCache,
 
   def addUsers(id: UUID, user: Seq[UUID]): Future[Room] =
     db.addUsersToRoom(id, user)
+
+  def appendChatLog(id: UUID, messages: Seq[UserMessage]): Future[Room] =
+    db.appendChatLog(id, messages)
 }

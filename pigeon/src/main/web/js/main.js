@@ -101,6 +101,7 @@ TiwiTalk.controller.prototype.login = function(token) {
         console.info("User data initialized", data);
         var rooms = data.rooms || [];
         rooms.map(function(r) {
+          console.info("Sent GetRoomInfo for ", r);
           Message.GetRoomInfo(r).send(socket);
         });
       }

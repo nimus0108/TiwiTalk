@@ -25,7 +25,8 @@ object Chat {
   case class UserMessage(
     user: UUID,
     message: String,
-    cid: UUID) extends OutEvent
+    cid: UUID,
+    timestamp: Long) extends OutEvent
   case class RoomInvite(id: UUID) extends OutEvent
   case class RoomJoined(room: Room) extends OutEvent with ServerEvent
   case class UserAccount(
@@ -39,7 +40,10 @@ object Chat {
       name: String,
       availability: Int,
       status: String) extends OutEvent
-  case class Room(@Key("_id") id: UUID, users: Seq[UUID]) extends OutEvent
+  case class Room(
+      @Key("_id") id: UUID,
+      users: Seq[UUID],
+      chatHistory: Seq[UserMessage] = Seq.empty) extends OutEvent
   case class MoodColor(room: UUID, color: String) extends OutEvent
   case class UserSearchResult(query: String, results: Seq[UserProfile])
       extends OutEvent

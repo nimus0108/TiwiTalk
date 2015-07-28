@@ -18,9 +18,10 @@ class DatabaseService(config: Config) {
     def write(id: UUID): BSONString = BSONString(id.toString)
   }
 
-  implicit val roomHandler = Macros.handler[Room]
+  implicit val userMessageHandler = Macros.handler[UserMessage]
   implicit val userProfileHandler = Macros.handler[UserProfile]
   implicit val userAccountHandler = Macros.handler[UserAccount]
+  implicit val roomHandler = Macros.handler[Room]
 
   val driver = new MongoDriver
   val uri = MongoConnection.parseURI(config.getString("mongodbUri")).get
@@ -139,6 +140,22 @@ class DatabaseService(config: Config) {
   def searchUsersByName(name: String): Future[Seq[UserAccount]] = {
     val query = BSONDocument("profile.name" -> BSONRegex(name, "i"))
     userCol.find(query).cursor[UserAccount]().collect[Seq]()
+  }
+
+  def appendChatLog(id: UUID, messages: Seq[UserMessage]): Future[Room] = {
+    val query = idQuery(id)
+    val upd =
+      BSONDocument("$push" ->
+        BSONDocument("chatHistory" ->
+          BSONDocument(
+            // "$sort" -> BSONDocument("timestamp" -> 1),
+            "$each" -> messages,
+            "$slice" -> -10)))
+
+    roomCol
+      .findAndUpdate(query, upd, fetchNewObject = true)
+      .map(_.result[Room])
+      .collect { case Some(r) => r }
   }
 
   def modifyContacts(id: UUID, add: Seq[UUID],

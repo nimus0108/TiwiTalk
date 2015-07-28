@@ -57,6 +57,7 @@ class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
             chatLog.clear()
           }
         }
+        roomService.appendChatLog(id, Seq(msg)) foreach stateChange
         sendMessage(room.users, msg)
       }
     case Disconnect(id) if room.users contains id =>

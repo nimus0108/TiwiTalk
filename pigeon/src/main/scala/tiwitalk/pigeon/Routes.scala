@@ -46,10 +46,10 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
           complete {
             val id = UUID.randomUUID()
 
-            def conflict(data: Option[String]) = 
+            def conflict(data: Option[String]) =
               jsonResponse(StatusCodes.Conflict,
                 write[ApiResponse[String]](ApiResponse("conflict", data)))
-            
+
             val fut = auth.signup(email, password, id) flatMap {
               case Right(sessionToken) =>
                 val prof = Chat.UserProfile.default(id, name)

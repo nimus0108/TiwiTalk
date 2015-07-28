@@ -10,8 +10,12 @@ Chat.controller = function() {
 Chat.view = function(ctrl, args, session) {
   var chatLog = session.chatLogs[session.currentRoom()] || [];
   var roomOpt = args.roomCache[session.currentRoom()];
-  var label = roomOpt ? session.userStringFromIds(args.userCache,
-                                                  roomOpt.users, true) : "";
+  var label = "";
+  if (roomOpt) {
+    label = session.userStringFromIds(args.userCache, roomOpt.users, true);
+    chatLog = roomOpt.chatHistory.concat(chatLog);
+  }
+
   return m("section.chat.screen", [
     m("header", [
       m("h1.buddy-name", label),
@@ -26,7 +30,7 @@ Chat.view = function(ctrl, args, session) {
           var userOpt = args.userCache[uid];
           var dispName = userOpt ? userOpt.name : uid;
           if (!userOpt) {
-            args.getUserAccount(uid);
+            args.getUserProfile(uid);
           }
           otherStyle = "." + (uid == session.userInfo.id ? "me" : "friend");
 

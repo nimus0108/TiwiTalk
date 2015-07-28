@@ -2,6 +2,7 @@ package tiwitalk.pigeon.actors
 
 import akka.actor._
 import akka.stream.actor._
+import java.time.Clock
 import java.util.UUID
 import tiwitalk.pigeon.Chat._
 import tiwitalk.pigeon.service.UserService
@@ -39,7 +40,8 @@ class UserActor(initialData: UserAccount, userService: UserService)
     case OnNext(m @ Message(msg, cid)) if data.rooms.contains(cid) =>
       val trimmed = msg.trim
       if (trimmed.length > 0) {
-        context.parent ! UserMessage(data.id, trimmed, cid)
+        val ts = Clock.systemUTC.millis
+        context.parent ! UserMessage(data.id, trimmed, cid, ts)
       }
     case OnNext(StartRoom(ids)) =>
       context.parent ! StartRoom((ids :+ data.id).distinct)
