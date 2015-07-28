@@ -63,9 +63,7 @@ Chat.view = function(ctrl, args, session) {
         oninput: m.withAttr("value", ctrl.composeText),
         value: ctrl.composeText()
       }),
-      m("button.messageSend", {
-        value: "Send"
-      })
+      m("button.messageSend", "Send")
     ])
   ]);
 };
