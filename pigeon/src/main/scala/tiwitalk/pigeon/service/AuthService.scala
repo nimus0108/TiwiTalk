@@ -26,27 +26,19 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
   val baseUrl = "https://api.parse.com/1"
 
   /**
-   * @return A [[scala.concurrent.Future]] of the session token.
+   * @return A [[scala.concurrent.Future]] an [[scala.Either]] of the
+   * session token (right) or error message (left).
    * @todo Implement username system
    */
-  def signup(email: String, password: String, id: UUID): Future[String] = {
+  def signup(email: String, password: String,
+                            id: UUID): Future[Either[String, String]] = {
     val data = Signup(email, email, password, id.toString)
     val req = 
       HttpRequest(POST, uri = s"$baseUrl/users")
         .withParse(apiKey, appId)
         .withEntity(ContentTypes.`application/json`, write(data))
 
-    val fut = for {
-      response <- http.singleRequest(req)
-      str <- Unmarshal(response).to[String]
-    } yield {
-      Try(read[LoginResponse](str).sessionToken)
-    }
-
-    fut flatMap {
-      case Success(x) => Future.successful(x)
-      case Failure(x) => Future.failed(x)
-    }
+    loginFut(req)
   }
 
   /**
@@ -62,15 +54,17 @@ class AuthService(apiKey: String, appId: String)(implicit system: ActorSystem,
       HttpRequest(GET, uri = s"$baseUrl/login?$params")
         .withParse(apiKey, appId)
 
+    loginFut(req)
+  }
+
+  private[this] def loginFut(req: HttpRequest) = {
     for {
       response <- http.singleRequest(req)
       str <- Unmarshal(response).to[String]
     } yield {
-      if (response.status == StatusCodes.OK) {
-        Right(read[LoginResponse](str).sessionToken)
-      } else {
-        Left(read[ErrorResponse](str).error)
-      }
+      Try(read[LoginResponse](str))
+        .map(r => Right(r.sessionToken))
+        .getOrElse(Left(read[ErrorResponse](str).error))
     }
   }
 

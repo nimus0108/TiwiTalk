@@ -18,10 +18,14 @@ Login.controller = function(args) {
       console.info(response);
       if (response.status === "ok") {
         args.login(response.data);
-      } else if (response.status === "conflict") {
+      } else {
+        alert("An error occurred: " + response.status);
+      }
+    }, function(error) {
+      if (error.status == "conflict") {
         alert("A user has already registered with that email.");
       } else {
-        alert("An error occurred");
+        alert("Error: " + error.data[0]);
       }
     });
     return false;

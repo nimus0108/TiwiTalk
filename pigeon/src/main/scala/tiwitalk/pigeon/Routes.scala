@@ -11,7 +11,7 @@ import akka.stream.ActorMaterializer
 import akka.stream.actor.{ ActorPublisher, ActorSubscriber }
 import akka.stream.scaladsl._
 import akka.util.Timeout
-import java.util.UUID
+import java.util.{ NoSuchElementException, UUID }
 import reactivemongo.api.commands.CommandError
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,31 +45,32 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
         post {
           complete {
             val id = UUID.randomUUID()
-            val prof = Chat.UserProfile.default(id, name)
-            val acc = Chat.UserAccount(id, email, prof)
-            val fut = for {
-              sessionToken <- auth.signup(email, password, id)
-              _ <- db.createUserAccount(acc)
-            } yield {
-              HttpResponse(
-                status = StatusCodes.OK,
-                entity = HttpEntity(
-                  MediaTypes.`application/json`,
-                  write(ApiResponse("ok", Some(sessionToken)))
-                )
-              )
+
+            def conflict(data: Option[String]) = 
+              jsonResponse(StatusCodes.Conflict,
+                write[ApiResponse[String]](ApiResponse("conflict", data)))
+            
+            val fut = auth.signup(email, password, id) flatMap {
+              case Right(sessionToken) =>
+                val prof = Chat.UserProfile.default(id, name)
+                val acc = Chat.UserAccount(id, email, prof)
+                db.createUserAccount(acc) map { _ =>
+                  jsonResponse(
+                    StatusCodes.OK,
+                    write(ApiResponse("ok", Some(sessionToken)))
+                  )
+                }
+              case Left(error) => Future.successful(conflict(Some(error)))
             }
  
             fut recover {
               case e: CommandError
-                if e.code.isDefined && e.code.get == 11000 =>
-                  HttpResponse(
-                    status = StatusCodes.Conflict,
-                    entity = HttpEntity(
-                      MediaTypes.`application/json`,
-                      write[ApiResponse[String]](ApiResponse("conflict"))
-                    )
-                  )
+                if e.code.isDefined && e.code.get == 11000 => conflict(None)
+              case x =>
+                x.printStackTrace()
+                val resp = write[ApiResponse[String]](
+                  ApiResponse("error", Some(x.getMessage)))
+                jsonResponse(StatusCodes.InternalServerError, resp)
             }
           }
         }
@@ -83,22 +84,13 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
           complete {
             auth.login(email, password) map {
               case Right(token) =>
-                HttpResponse(
-                  status = StatusCodes.OK,
-                  entity = HttpEntity(
-                    MediaTypes.`application/json`,
-                    write[ApiResponse[String]](ApiResponse("ok", Some(token)))
-                  )
+                jsonResponse(
+                  StatusCodes.OK,
+                  write[ApiResponse[String]](ApiResponse("ok", Some(token)))
                 )
               case Left(error) =>
-                val resp = ApiResponse("error", Some(error))
-                HttpResponse(
-                  status = StatusCodes.BadRequest,
-                  entity = HttpEntity(
-                    MediaTypes.`application/json`,
-                    write[ApiResponse[String]](resp)
-                  )
-                )
+                val resp = write(ApiResponse[String]("error", Some(error)))
+                jsonResponse(StatusCodes.BadRequest, resp)
             }
           }
         }
@@ -132,6 +124,7 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
           wsOpt match {
             case Some(fut) =>
               fut recover { case e =>
+                e.printStackTrace()
                 HttpResponse(StatusCodes.NotFound)
               }
             case None =>
@@ -164,6 +157,14 @@ class Routes(chat: ActorRef, userService: UserService, db: DatabaseService,
 
       (msgToChat.inlet, chatToMsg.outlet)
     }
+  }
+
+  @inline
+  private[this] def jsonResponse(code: StatusCode, data: String) = {
+    HttpResponse(
+      status = code,
+      entity = HttpEntity(MediaTypes.`application/json`, data)
+    )
   }
 
   case class ApiResponse[T](status: String, data: Option[T] = None)

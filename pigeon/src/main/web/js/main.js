@@ -83,6 +83,7 @@ TiwiTalk.controller.prototype.login = function(token) {
       self.logout();
     }
   };
+  socket.onerror = function(error) { console.log(error) };
   socket.onmessage = function(event) {
     m.startComputation();
     var data = new Message(JSON.parse(event.data));
