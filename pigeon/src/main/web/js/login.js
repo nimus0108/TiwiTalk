@@ -7,6 +7,7 @@ Login.controller = function(args) {
   this.nameField = m.prop("");
   this.passwordField = m.prop("");
   this.showLoginForm = m.prop(true);
+  this.rememberMe = m.prop(true);
   var self = this;
   this.register = function() {
     var email = encodeURIComponent(self.emailField());
@@ -51,7 +52,15 @@ Login.view = function(ctrl, args) {
     value: ctrl.passwordField()
   });
 
+  var rememberMeBox = m("label.remember-me", "Remember Me",
+    m("input.remember-me[type=checkbox]", {
+      onchange: m.withAttr("checked", ctrl.rememberMe),
+      checked: ctrl.rememberMe()
+    })
+  );
+
   var loginFn = function() {
+    var remember = ctrl.rememberMe();
     var email = encodeURIComponent(ctrl.emailField());
     var pw = encodeURIComponent(ctrl.passwordField());
     var params = {
@@ -59,7 +68,7 @@ Login.view = function(ctrl, args) {
       url: "/login?email=" + email + "&password=" + pw
     };
     m.request(params).then(function(response) {
-      args.login(response.data);
+      args.login(response.data, remember);
     }, function(error) {
       window.alert("Failed to log in: " + error.data[0]);
     });
@@ -72,6 +81,7 @@ Login.view = function(ctrl, args) {
     }, [
     emailInput,
     passwordInput,
+    rememberMeBox,
     m("button.form-click[type=submit]", "Login"),
     m("a.login-form-toggle", {
       onclick: function() { ctrl.showLoginForm(false); }
@@ -85,6 +95,7 @@ Login.view = function(ctrl, args) {
     emailInput,
     nameInput,
     passwordInput,
+    rememberMeBox,
     m("button.form-click[type=submit]", "Register"),
     m("a.login-form-toggle", {
       onclick: function() { ctrl.showLoginForm(true); }

@@ -40,8 +40,11 @@
             margin: 10px 0;
             font-size: 1.2em;
         }
+
+        input.remember-me { float: left; }
         
         button.form-click {
+            clear: both;
             display: block;
             @include button(100%, 0.625em 1em, $color-green, $color-white, 200ms);
             font-size: 1.2em;
