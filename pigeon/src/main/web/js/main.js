@@ -21,6 +21,11 @@ TiwiTalk.controller = function() {
   this.roomCache = {};
 
   this.menuToggled = m.prop(false);
+
+  var token = sessionStorage.getItem("sessionToken");
+  if (token) {
+    this.login(token);
+  }
 };
   
 TiwiTalk.view = function(ctrl) {
@@ -59,6 +64,7 @@ TiwiTalk.controller.prototype.logout = function() {
     this.session().socket.close();
   }
   this.session(null);
+  sessionStorage.removeItem("sessionToken");
   m.endComputation();
 }
 
@@ -72,6 +78,7 @@ TiwiTalk.controller.prototype.login = function(token) {
   var socket = new WebSocket(wsUrl);
   var session = new Session(socket, this.userCache, this.roomCache);
   this.session(session);
+  sessionStorage.setItem("sessionToken", token);
   socket.onopen = function(event) {
     console.log("connection established");
     self.getUserAccount();
