@@ -22,7 +22,8 @@ TiwiTalk.controller = function() {
 
   this.menuToggled = m.prop(false);
 
-  var token = sessionStorage.getItem("sessionToken");
+  var token = sessionStorage.getItem("sessionToken") ||
+    localStorage.getItem("sessionToken");
   if (token) {
     this.login(token);
   }
@@ -41,7 +42,8 @@ TiwiTalk.view = function(ctrl) {
     showOpt = m("div#messenger" + menuClass, [
       m.component(SideMenu, {
         menuToggled: ctrl.menuToggled,
-        startRoom: ctrl.startRoom.bind(ctrl)
+        startRoom: ctrl.startRoom.bind(ctrl),
+        logout: ctrl.logout.bind(ctrl)
       }, ctrl.session()),
       m.component(Chat, {
         roomCache: ctrl.roomCache,
@@ -58,17 +60,20 @@ TiwiTalk.view = function(ctrl) {
   return showOpt;
 };
 
-TiwiTalk.controller.prototype.logout = function() {
+TiwiTalk.controller.prototype.logout = function(clearLocal) {
   m.startComputation();
   if (this.session() !== null) {
     this.session().socket.close();
   }
   this.session(null);
   sessionStorage.removeItem("sessionToken");
+  if (clearLocal) {
+    localStorage.removeItem("sessionToken");
+  }
   m.endComputation();
 }
 
-TiwiTalk.controller.prototype.login = function(token) {
+TiwiTalk.controller.prototype.login = function(token, rememberLogin) {
   this.logout();
   console.log("connecting...");
   var self = this;
@@ -79,6 +84,9 @@ TiwiTalk.controller.prototype.login = function(token) {
   var session = new Session(socket, this.userCache, this.roomCache);
   this.session(session);
   sessionStorage.setItem("sessionToken", token);
+  if (rememberLogin) {
+    localStorage.setItem("sessionToken", token);
+  }
   socket.onopen = function(event) {
     console.log("connection established");
     self.getUserAccount();

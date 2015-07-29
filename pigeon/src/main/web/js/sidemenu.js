@@ -22,9 +22,15 @@ SideMenu.view = function(ctrl, args, session) {
       onclick: ctrl.toggleSidemenu
     }, m("span.fa.fa-bars")),
     m("nav.settings", [
-      m("ul.options", [
-        m("li.feedback", m("span.fa.fa-smile-o")),
-        m("li.account", m("span.fa.fa-cog"))
+      m("ul.options.options-left", [
+        m("li", m("span.fa.fa-smile-o"))
+      ]),
+      m("ul.options.options-right", [
+        m("li", m("span.fa.fa-cog")),
+        m("li", {
+          title: "Log Out",
+          onclick: function() { args.logout(true) }
+        }, m("span.fa.fa-sign-out"))
       ])
     ]),
     m("section.personal", [

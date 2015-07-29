@@ -114,15 +114,23 @@ $sidemenu-transition: 0.5s ease 0s;
 			list-style: none;
 			margin: 0;
 			padding: 1em 0;
-			
-			li.feedback {
-				float: left;
-			}
-			
-			li.account {
-				float: right;
-			}
 		}
+
+        ul.options > li {
+            display: inline-block;
+            padding-right: 1em;
+            cursor: pointer;
+
+            &:last-child { padding-right: 0; }
+        }
+
+        ul.options-left {
+            float: left;
+        }
+
+        ul.options-right {
+            float: right;
+        }
 	}
 	
 	section.personal {
