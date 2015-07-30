@@ -9,19 +9,12 @@ import play.api.libs.iteratee.Iteratee
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import tiwitalk.pigeon.Chat._
+import tiwitalk.pigeon.service.db._
+
+import MongoModels._
 
 
-class DatabaseService(config: Config) {
-  implicit object UUIDReader extends BSONHandler[BSONString, UUID] {
-    def read(bson: BSONString): UUID =
-      UUID.fromString(bson.as[String].toString)
-    def write(id: UUID): BSONString = BSONString(id.toString)
-  }
-
-  implicit val userMessageHandler = Macros.handler[UserMessage]
-  implicit val userProfileHandler = Macros.handler[UserProfile]
-  implicit val userAccountHandler = Macros.handler[UserAccount]
-  implicit val roomHandler = Macros.handler[Room]
+class DatabaseService(config: Config) extends Metrics {
 
   val driver = new MongoDriver
   val uri = MongoConnection.parseURI(config.getString("mongodbUri")).get
@@ -31,6 +24,7 @@ class DatabaseService(config: Config) {
   
   val userCol = db.collection("users")
   val roomCol = db.collection("rooms")
+  override val metricsCol = db.collection("metrics")
 
   def idQuery(id: UUID) = BSONDocument("_id" -> id)
 

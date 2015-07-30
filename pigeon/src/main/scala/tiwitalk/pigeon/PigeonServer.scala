@@ -33,8 +33,8 @@ object PigeonServer extends App {
   val authService = new AuthService(config.getString("pigeon.parse.apiKey"),
     config.getString("pigeon.parse.appId"))
 
-  val chatSystem = system.actorOf(
-    ChatSystem.props(sentiment, userService, roomService), "chat")
+  val chatSystem = system.actorOf(ChatSystem.props(
+    sentiment, userService, roomService, databaseService), "chat")
   val routes = new Routes(chatSystem, userService, databaseService, authService)
 
   // Intentionally not parallel

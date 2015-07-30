@@ -8,11 +8,12 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
 import tiwitalk.pigeon.service.{ RoomService, Sentiment, UserService }
+import tiwitalk.pigeon.service.db.Metrics
 
 import ChatHelpers._
 
 class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
-                roomService: RoomService)
+                roomService: RoomService, metrics: Metrics)
     extends Actor {
   import context.dispatcher
   implicit val timeout = Timeout(5.seconds)
@@ -58,6 +59,7 @@ class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
           }
         }
         roomService.appendChatLog(id, Seq(msg)) foreach stateChange
+        metrics.storeMetric(msg) onFailure { case x => x.printStackTrace() }
         sendMessage(room.users, msg)
       }
     case Disconnect(id) if room.users contains id =>
@@ -121,6 +123,6 @@ class RoomActor(data: Room, userService: UserService, sentiment: Sentiment,
 
 object RoomActor {
   def props(data: Room, userService: UserService, sentiment: Sentiment, 
-            roomService: RoomService) =
-    Props(new RoomActor(data, userService, sentiment, roomService))
+            roomService: RoomService, metrics: Metrics) =
+    Props(new RoomActor(data, userService, sentiment, roomService, metrics))
 }

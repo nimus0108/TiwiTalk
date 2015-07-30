@@ -8,11 +8,12 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import tiwitalk.pigeon.Chat._
 import tiwitalk.pigeon.service.{ RoomService, Sentiment, UserService }
+import tiwitalk.pigeon.service.db.Metrics
 
 import ChatHelpers._
 
 class ChatSystem(sentiment: Sentiment, userService: UserService,
-                 roomService: RoomService) extends Actor {
+                 roomService: RoomService, metrics: Metrics) extends Actor {
 
   import context.dispatcher
   implicit val timeout = Timeout(1.second)
@@ -39,14 +40,14 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
       sendToRoom(i.id)(_ forward i)
     case StartRoomRef(room) =>
       sender ! context.actorOf(
-        RoomActor.props(room, userService, sentiment, roomService))
+        RoomActor.props(room, userService, sentiment, roomService, metrics))
     case StartRoom(ids) =>
       val sendr = sender()
       val roomId = UUID.randomUUID()
       val room = Room(roomId, Seq.empty)
       roomService.updateRoom(room) foreach { _ =>
         val roomActor = context.actorOf(
-          RoomActor.props(room, userService, sentiment, roomService))
+          RoomActor.props(room, userService, sentiment, roomService, metrics))
         roomActor ! JoinRoom(ids)
         sendr ! RoomStarted(roomId)
       }
@@ -74,6 +75,6 @@ class ChatSystem(sentiment: Sentiment, userService: UserService,
 
 object ChatSystem {
   def props(sentiment: Sentiment, userService: UserService,
-            roomService: RoomService) =
-    Props(new ChatSystem(sentiment, userService, roomService))
+            roomService: RoomService, metrics: Metrics) =
+    Props(new ChatSystem(sentiment, userService, roomService, metrics))
 }
