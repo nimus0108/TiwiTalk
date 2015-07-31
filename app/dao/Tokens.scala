@@ -14,7 +14,7 @@ trait TokensComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   class Tokens(tag: Tag) extends Table[Token](tag, "tokens") {
     def email = column[String]("email", O.PrimaryKey)
-    def token = column[UUID]("token", O.PrimaryKey)
+    def token = column[UUID]("token")
     def created = column[Long]("created")
     def * = (email, token, created) <> (Token.tupled, Token.unapply _)
   }

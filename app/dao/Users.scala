@@ -1,5 +1,6 @@
 package dao
 
+import java.util.UUID
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.driver.JdbcProfile
@@ -14,8 +15,9 @@ trait UsersComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
   class Users(tag: Tag) extends Table[User](tag, "users") {
     def email = column[String]("email", O.PrimaryKey)
     def name = column[String]("name")
+    def accessCode = column[UUID]("access_code")
     def referredBy = column[Option[String]]("referred_by")
-    def * = (email, name, referredBy) <> (User.tupled, User.unapply _)
+    def * = (email, name, accessCode, referredBy) <> (User.tupled, User.unapply _)
   }
 }
 
@@ -39,6 +41,11 @@ class UsersDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   def find(email: String): Future[Option[User]] = {
     val query = for (user <- users if user.email === email) yield user
+    db.run(query.result).map(_.headOption)
+  }
+
+  def findByCode(accessCode: UUID): Future[Option[User]] = {
+    val query = for (user <- users if user.accessCode === accessCode) yield user
     db.run(query.result).map(_.headOption)
   }
 

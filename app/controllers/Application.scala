@@ -99,13 +99,14 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
         Try(UUID.fromString(ur.token)) map { uuid =>
           val fut = for {
             token <- tokens.find(uuid).collect { case Some(t) => t }
-            user = User(token.email, ur.name, ur.referredBy)
+            accessCode = UUID.randomUUID()
+            user = User(token.email, ur.name, accessCode, ur.referredBy)
             insertFut = users.insert(user)
             tokenFut = tokens.delete(uuid)
             _ <- insertFut
             _ <- tokenFut
           } yield {
-            Ok(Json.obj("status" -> "created"))
+            Redirect("/dashboard?user=" + accessCode)
           }
           fut recover { case _: NoSuchElementException => invalid }
         } getOrElse Future.successful(invalid)

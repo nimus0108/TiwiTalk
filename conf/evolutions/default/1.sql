@@ -1,6 +1,6 @@
 # --- !Ups
 
-create table "users" ("email" text PRIMARY KEY NOT NULL, "name" text NOT NULL, "referred_by" text);
+create table "users" ("email" text PRIMARY KEY, "name" text NOT NULL, "referred_by" text, "access_code" uuid UNIQUE NOT NULL);
 
 # --- !Downs
 
