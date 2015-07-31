@@ -12,7 +12,11 @@ import models._
 import models.Models._
 
 class Dashboard @Inject()(users: UsersDAO) extends Controller {
-
+    
+  def index = Action {
+    Ok(views.html.dashboard())
+  }
+    
   def referrals(email: String) = Action.async {
     users.referredBy(email) map { r =>
       Ok(Json.obj("referrals" -> r.map(_.email)))

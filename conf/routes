@@ -14,6 +14,7 @@ GET     /register                   controllers.Application.registerPage
 POST    /register                   controllers.Application.register
 
 # Dashboard
+GET     /dashboard                  controllers.Dashboard.index
 GET     /dashboard/referrals        controllers.Dashboard.referrals(email: String)
 GET     /dashboard/rankings         controllers.Dashboard.rankings
 
