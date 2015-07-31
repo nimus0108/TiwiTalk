@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   ws,
   "com.typesafe.play" %% "play-slick" % "1.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0",
-  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+  "com.typesafe.play" %% "play-mailer" % "3.0.1"
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the
