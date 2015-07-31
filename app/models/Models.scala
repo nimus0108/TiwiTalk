@@ -5,7 +5,7 @@ import play.api.libs.json._
 
 case class User(email: String, name: String, referredBy: Option[String])
 
-case class Token(token: UUID, created: Long)
+case class Token(email: String, token: UUID, created: Long)
 
 object Models {
   implicit val userFormat = Json.format[User]

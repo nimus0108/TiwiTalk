@@ -10,7 +10,7 @@ GET     /users                      controllers.Application.all
 POST    /users                      controllers.Application.insert
 
 # Email verification
-GET     /generate                   controllers.Application.generateToken
+POST    /generate                   controllers.Application.sendVerificationEmail(email: String)
 GET     /verify                     controllers.Application.verifyToken(token: String)
 
 # Map static resources from the /public folder to the /assets URL path
