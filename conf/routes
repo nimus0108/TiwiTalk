@@ -9,8 +9,8 @@ GET     /                           controllers.Application.index
 GET     /users                      controllers.Application.all
 
 # Email verification
-POST    /sendVerification           controllers.Application.sendVerificationEmail(email: String)
-GET     /register                   controllers.Application.registerPage(token: String)
+POST    /sendVerification           controllers.Application.sendVerificationEmail
+GET     /register                   controllers.Application.registerPage
 POST    /register                   controllers.Application.register
 
 # Map static resources from the /public folder to the /assets URL path

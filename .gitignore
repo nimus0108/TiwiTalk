@@ -8,3 +8,4 @@ target
 /RUNNING_PID
 *.swp
 .DS_Store
+**/.sass_cache
