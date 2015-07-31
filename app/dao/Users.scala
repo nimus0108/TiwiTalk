@@ -41,4 +41,23 @@ class UsersDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     val query = for (user <- users if user.email === email) yield user
     db.run(query.result).map(_.headOption)
   }
+
+  def referredBy(email: String): Future[Seq[User]] = {
+    val query = users.filter(_.referredBy === email)
+    db.run(query.result)
+  }
+
+  def referralCount: Future[Seq[(String, Int)]] = {
+    val query =
+      users
+        .groupBy(_.referredBy)
+        .map {
+          case (email, u) => email -> u.map(_.referredBy).length
+        }
+        .sortBy(_._2.desc)
+
+    db.run(query.result) map { res =>
+      res.collect { case (Some(a), b) => (a, b) }
+    }
+  }
 }
