@@ -37,7 +37,7 @@ class UsersDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(query.result)
   }
 
-  def findByEmail(email: String): Future[Option[User]] = {
+  def find(email: String): Future[Option[User]] = {
     val query = for (user <- users if user.email === email) yield user
     db.run(query.result).map(_.headOption)
   }

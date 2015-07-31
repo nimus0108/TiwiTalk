@@ -1,9 +1,8 @@
 package controllers
 
-import java.util.UUID
+import java.util.{ NoSuchElementException, UUID }
 import java.time.Clock
 import javax.inject.Inject
-import org.postgresql.util.PSQLException
 import play.api._
 import play.api.data.Form
 import play.api.data.Forms.{ mapping, nonEmptyText, optional, text }
@@ -23,12 +22,12 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
     mailer: MailerClient, val messagesApi: MessagesApi) extends Controller
     with I18nSupport {
 
-  val userForm = Form(
+  val verifyForm = Form(
     mapping(
-      "email" -> nonEmptyText,
+      "token" -> nonEmptyText,
       "name" -> nonEmptyText,
       "referredBy" -> optional(text)
-    )(User.apply)(User.unapply)
+    )(UserRegistration.apply)(UserRegistration.unapply)
   )
 
   def index = Action {
@@ -42,29 +41,11 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
     }
   }
 
-  def insert = Action.async { implicit request =>
-    val fut = userForm.bindFromRequest.fold(
-      errorForm => {
-        val reply = Json.obj(
-          "status" -> "error",
-          "errors" -> errorForm.errorsAsJson)
-        Future.successful(BadRequest(reply))
-      },
-      user => {
-        users.insert(user) map (_ => Ok(Json.obj("status" -> "created")))
-      }
-    )
-
-    fut recover {
-      case e: PSQLException if e.getSQLState == "23505" =>
-        Conflict(Json.obj("status" -> "conflict"))
-    }
-  }
-
   def sendVerificationEmail(email: String) = Action.async {
     val token = UUID.randomUUID
     val time = Clock.systemUTC.millis
-    for {
+    val fut = for {
+      user <- users.find(email) if !user.isDefined
       _ <- tokens.deleteEmailToken(email)
       _ <- tokens.insert(Token(email, token, time))
     } yield {
@@ -77,9 +58,14 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
       mailer.send(mailToSend)
       Ok(Json.obj())
     }
+
+    fut recover {
+      case _: NoSuchElementException => Ok(Json.obj())
+    }
   }
 
-  def verifyToken(token: String) = Action.async { implicit request =>
+  def registerPage(token: String) = Action.async { implicit request =>
+    // TODO: Do this properly
     @inline def invalid = NotFound(Json.obj("valid" -> false))
     Try(UUID.fromString(token)) map { uuid =>
       tokens.find(uuid) map {
@@ -89,4 +75,32 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
     } getOrElse Future.successful(invalid)
   }
 
+  def register = Action.async { implicit request =>
+    @inline def invalid = Unauthorized(Json.obj("status" -> "rejected"))
+    verifyForm.bindFromRequest.fold(
+      errors => {
+        val reply = Json.obj(
+          "status" -> "error",
+          "errors" -> errors.errorsAsJson)
+        Future.successful(BadRequest(reply))
+      },
+      ur => {
+        Try(UUID.fromString(ur.token)) map { uuid =>
+          val fut = for {
+            token <- tokens.find(uuid).collect { case Some(t) => t }
+            user = User(token.email, ur.name, ur.referredBy)
+            insertFut = users.insert(user)
+            tokenFut = tokens.delete(uuid)
+            _ <- insertFut
+            _ <- tokenFut
+          } yield {
+            Ok(Json.obj("status" -> "created"))
+          }
+          fut recover { case _: NoSuchElementException => invalid }
+        } getOrElse Future.successful(invalid)
+      }
+    )
+  }
+
+  case class UserRegistration(token: String, name: String, referredBy: Option[String])
 }
