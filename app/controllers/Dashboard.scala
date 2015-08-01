@@ -17,11 +17,13 @@ class Dashboard @Inject()(val users: UsersDAO) extends Controller
   def index = Secured.async { request =>
     val email = request.user.email
     users.referralCount map { refs =>
-      val rankOpt = refs.zipWithIndex collectFirst {
+      val indexZip = refs.zipWithIndex
+      val rankOpt = indexZip.collectFirst {
         case ((e, _), r) if e equals email => r + 1
       }
-      val rank = rankOpt getOrElse (refs.length + 1)
-      Ok(views.html.dashboard(rank, refs.length + 1))
+      val lastRank = indexZip.map(_._1._2).sum + 1
+      val rank = rankOpt getOrElse lastRank
+      Ok(views.html.dashboard(rank, lastRank))
     }
   }
  
