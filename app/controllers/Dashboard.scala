@@ -12,7 +12,7 @@ import models._
 import models.Models._
 
 class Dashboard @Inject()(val users: UsersDAO) extends Controller
-    with DashboardSecurity{
+    with DashboardSecurity {
     
   def index = Secured.async { request =>
     val email = request.user.email
