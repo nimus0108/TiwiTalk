@@ -95,6 +95,17 @@
 
 			}
 
+      $('form#sendEmail').submit(function(event) {
+        $.ajax({
+          type: 'POST',
+          url: '/sendVerification',
+          data: { email: $('input[name=email]').val() }
+        }).done(function() {
+          alert("Please check your email to finish registration!");
+        });
+        event.preventDefault();
+      });
+
 	});
 
 })(jQuery);
