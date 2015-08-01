@@ -13,18 +13,18 @@ import models.Models._
 
 class Dashboard @Inject()(val users: UsersDAO) extends Controller
     with DashboardSecurity {
-    
+ 
   def index = Secured.async { request =>
     val email = request.user.email
     users.referralCount map { refs =>
       val rankOpt = refs.zipWithIndex collectFirst {
-        case ((e, _), r) if e equals email => r
+        case ((e, _), r) if e equals email => r + 1
       }
       val rank = rankOpt getOrElse (refs.length + 1)
       Ok(views.html.dashboard(rank, refs.length + 1))
     }
   }
-    
+ 
   def referrals(email: String) = Action.async {
     users.referredBy(email) map { r =>
       Ok(Json.obj("referrals" -> r.map(_.email)))
