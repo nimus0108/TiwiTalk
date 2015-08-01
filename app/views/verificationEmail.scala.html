@@ -1,11 +1,11 @@
-@(emailAddr: String, token: String)
+@(emailAddr: String, token: String, hostname: String)
 <!DOCTYPE HTML>
 <html>
   <body>
     <h1>Thanks for signing up!</h1>
     <p>
       Hello @emailAddr, you can finish your registration by clicking
-      <a href="/verify?token=@token">here</a>.
+      <a href="@hostname/register?token=@token">here</a>.
       </p>
   </body>
 </html>

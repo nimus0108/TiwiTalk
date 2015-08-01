@@ -32,6 +32,8 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
     )(UserRegistration.apply)(UserRegistration.unapply)
   )
 
+  val hostname = Play.current.configuration.getString("launch.hostname").get
+
   def index = Action {
     Ok(views.html.index())
   }
@@ -54,7 +56,8 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
           _ <- tokens.deleteEmailToken(email)
           _ <- tokens.insert(Token(email, token, time))
         } yield {
-          val bodyText = views.html.verificationEmail(email, token.toString).body
+          val bodyText = views.html.verificationEmail(
+            email, token.toString, hostname).body
           val mailToSend = Email(
             "Complete Your Registration For TiwiTalk!",
             "No-reply <noreply@tiwitalk.com>",
