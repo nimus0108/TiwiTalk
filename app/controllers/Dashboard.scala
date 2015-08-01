@@ -21,7 +21,7 @@ class Dashboard @Inject()(val users: UsersDAO) extends Controller
         case ((e, _), r) if e equals email => r
       }
       val rank = rankOpt getOrElse (refs.length + 1)
-      Ok(views.html.dashboard(rank))
+      Ok(views.html.dashboard(rank, refs.length + 1))
     }
   }
     
