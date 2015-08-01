@@ -1,11 +1,17 @@
 @(emailAddr: String, token: String, hostname: String)
 <!DOCTYPE HTML>
 <html>
+  <head>
+  </head>
   <body>
     <h1>Thanks for signing up!</h1>
     <p>
       Hello @emailAddr, you can finish your registration by clicking
       <a href="@hostname/register?token=@token">here</a>.
-      </p>
+    </p>
+    <div style="font-size:0.7em">
+      <a href="https://tiwitalk.com/"><p>TiwiTalk</p></a>
+      <p>support@tiwitalk.com</p>
+    </div>
   </body>
 </html>
