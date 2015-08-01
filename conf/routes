@@ -5,8 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 
-# Users
-GET     /users                      controllers.Application.all
+# Users (development)
+# GET     /users                      controllers.Application.all
 
 # Email verification
 POST    /sendVerification           controllers.Application.sendVerificationEmail
