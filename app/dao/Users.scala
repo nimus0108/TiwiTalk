@@ -49,6 +49,11 @@ class UsersDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(query.result).map(_.headOption)
   }
 
+  def updateCode(email: String, accessCode: UUID): Future[Int] = {
+    val q = for (u <- users if u.email === email) yield u.accessCode
+    db.run(q.update(accessCode))
+  }
+
   def referredBy(email: String): Future[Seq[User]] = {
     val query = users.filter(_.referredBy === email)
     db.run(query.result)

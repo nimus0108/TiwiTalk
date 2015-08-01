@@ -67,8 +67,13 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
           Ok(Json.obj())
         }
 
-        fut recover {
-          case _: NoSuchElementException => Ok(Json.obj())
+        fut recoverWith {
+          case _: NoSuchElementException =>
+            val newCode = UUID.randomUUID()
+            users.updateCode(email, newCode) map { _ =>
+              sendSuccessEmail(email, newCode.toString)
+              Ok(Json.obj())
+            }
         }
       }
     )
@@ -109,12 +114,23 @@ class Application @Inject()(users: UsersDAO, tokens: TokensDAO,
             _ <- insertFut
             _ <- tokenFut
           } yield {
+            sendSuccessEmail(token.email, accessCode.toString)
             Redirect("/dashboard?user=" + accessCode)
           }
           fut recover { case _: NoSuchElementException => invalid }
         } getOrElse Future.successful(invalid)
       }
     )
+  }
+
+  def sendSuccessEmail(email: String, token: String): Unit = {
+    val bodyText = views.html.successEmail(token.toString, hostname).body
+    val mailToSend = Email(
+      "View your TiwiTalk ranking!",
+      "No-reply <noreply@tiwitalk.com>",
+      Seq("<" + email + ">"),
+      bodyHtml = Some(bodyText))
+    mailer.send(mailToSend)
   }
 
   case class UserRegistration(token: String, name: String, referredBy: Option[String])
