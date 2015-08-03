@@ -29,12 +29,12 @@
     }
 
     ul.container {
-        min-height: calc(100% - 7.25em);
+        max-height: calc(100vh - 9.25em);
         list-style: none;
         width: 90%;
         margin: 0 auto;
         padding: 0;
-        overflow-y: scroll;
+        overflow-y: auto;
         
         li {
             padding: 0;
@@ -58,7 +58,6 @@
             margin: 5px 0;
             padding: 10px 15px;
             background: rgba(39, 174, 96, 0.5);
-//            7c5f40f1-a7bd-45be-988f-4be515068e90
         }
     }
 
