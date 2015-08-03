@@ -5,6 +5,26 @@ var Chat = {};
 
 Chat.controller = function() {
   this.composeText = m.prop("");
+  this.lastLogLength = 0;
+
+  this.scrollCheck = false;
+  this.autoScroll = (function(elem, init, ctx) {
+    if (this.scrollCheck) {
+      var last = ctx.last;
+      var lastScrollMax = last.scrollHeight - last.clientHeight
+      if (last.scrollTop === lastScrollMax) {
+        console.warn("before", elem.scrollTop);
+        elem.scrollTop = elem.scrollHeight - elem.clientHeight;
+        console.warn("after", elem.scrollTop);
+      }
+      this.scrollCheck = false;
+    }
+    ctx.last = {
+      scrollTop: elem.scrollTop,
+      scrollHeight: elem.scrollHeight,
+      clientHeight: elem.clientHeight
+    };
+  }).bind(this);
 };
 
 Chat.view = function(ctrl, args, session) {
@@ -16,13 +36,18 @@ Chat.view = function(ctrl, args, session) {
     chatLog = (roomOpt.chatHistory || []).concat(chatLog);
   }
 
+  if (chatLog.length !== ctrl.lastLogLength) {
+    ctrl.scrollCheck = true;
+  }
+  ctrl.lastLogLength = chatLog.length;
+
   return m("section.chat.screen", [
     m("header", [
       m("h1.buddy-name", label),
       m("h2.buddy-status", "TODO: Status (or something)")
     ]),
     m("div.messaging", [
-      m("ul.container", chatLog.map(function(msg) {
+      m("ul.container", { config: ctrl.autoScroll }, chatLog.map(function(msg) {
         var text;
         var otherStyle = "";
         if (msg.$type == "tiwitalk.pigeon.Chat.UserMessage") {
@@ -40,12 +65,13 @@ Chat.view = function(ctrl, args, session) {
         } else if (msg.$type == "tiwitalk.pigeon.Chat.Broadcast") {
           return m("h2.announcement", msg.message)
         }
+
         return m("li" + otherStyle, [
           m("div.wrap", [
             m("span.message", text)
           ]),
           m("br")
-        ])
+        ]);
       }))
     ]),
     m("form.send", {
