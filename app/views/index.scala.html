@@ -68,16 +68,14 @@
                     <!-- CTA -->
                     <section id="cta" class="wrapper style4">
                     <div class="inner">
-                        <header>
                         <form id="sendEmail" method="POST" action="/sendVerification">
                           <h2>Join Us NOW</h2>
-                          <ul class="actions vertical">
-                            <li><input type="email" name="email" style="width:20em" placeholder="Email"></li>
+                          <ul id="signup-form-fields" class="actions vertical">
+                            <li><input id="signup-email" type="email" name="email" style="width:20em" placeholder="Email"></li>
                           </ul>
-                        </header>
-                          <ul class="actions vertical">
+                          <ul id="signup-form-controls" class="actions vertical">
                             <li><a href="#three" class="button fit">Learn More</a></li>
-                            <li><button type="submit" class="button fit special">Sign up</button></li>
+                            <li><button id="signup-btn" type="submit" class="button fit special">Sign up</button></li>
                           </ul>
                         </form>
                     </div>

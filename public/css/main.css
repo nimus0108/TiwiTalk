@@ -3815,3 +3815,15 @@
 #prizes{
     background-color: rgba(0,0,0,0);
 }
+
+#sendEmail {
+    width: 100%;
+}
+
+#signup-form-fields {
+   float: left;
+}
+
+#signup-form-controls {
+   float: right;
+}
