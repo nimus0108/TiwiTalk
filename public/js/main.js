@@ -95,15 +95,26 @@
 
 			}
 
+      var submittingForm = false;
       $('form#sendEmail').submit(function(event) {
+        event.preventDefault();
+        if (submittingForm) {
+          return false;
+        }
+
+        submittingForm = true;
+        $('#signup-btn').prop('disabled', true);
+        $('#signup-email').prop('disabled', true);
         $.ajax({
           type: 'POST',
           url: '/sendVerification',
           data: { email: $('input[name=email]').val() }
         }).done(function() {
           alert("Please check your email to finish registration!");
+          submittingForm = false;
+          $('#signup-btn').prop('disabled', false);
+          $('#signup-email').prop('disabled', false);
         });
-        event.preventDefault();
       });
 
 	});
