@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-mailer" % "3.0.1"
 )
 
+pipelineStages := Seq(uglify, digest, gzip)
+
 packageName in Docker := "launch"
 
 maintainer in Docker := "Bryan Tan <admin@tiwitalk.com>"
