@@ -1,5 +1,5 @@
 /* Libraries */
-var m = require("lhorie/mithril");
+var m = require("mithril");
 
 /* Scripts */
 var Message = require("./message.js");

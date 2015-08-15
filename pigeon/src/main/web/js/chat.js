@@ -1,4 +1,4 @@
-var m = require("lhorie/mithril");
+var m = require("mithril");
 var Message = require("./message.js");
 
 var Chat = {};

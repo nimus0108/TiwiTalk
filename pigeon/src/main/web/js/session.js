@@ -1,4 +1,4 @@
-var m = require("lhorie/mithril");
+var m = require("mithril");
 var Message = require("./message");
 
 var Session = function(socket, userCache, roomCache) {

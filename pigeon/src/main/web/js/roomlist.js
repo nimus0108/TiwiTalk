@@ -1,4 +1,4 @@
-var m = require("lhorie/mithril");
+var m = require("mithril");
 var RoomList = {};
 
 RoomList.controller = function() {};
