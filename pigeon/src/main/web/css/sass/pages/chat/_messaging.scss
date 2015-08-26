@@ -1,0 +1,104 @@
+/* Chat panel */
+
+.chat {
+    display: inline-block;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0;
+    margin: 0 0 10px 0;
+    width: calc(100% - #{$roomlist-width});
+
+    header {
+        width: 100%;
+        margin: 0;
+        padding: 0.5em 0;
+        background: rgba(255, 255, 255, 0.90);
+        text-align: center;
+
+        h1.buddy-name {
+            margin: 0;
+            padding: 0;
+            font-size: 2.25em;
+        }
+
+        h2.buddy-status {
+            margin: 0;
+            padding: 0;
+            font-size: 1.25em;
+        }
+    }
+
+    ul.container {
+        max-height: calc(100vh - 9.25em);
+        list-style: none;
+        width: 90%;
+        margin: 0 auto;
+        padding: 0;
+        overflow-y: auto;
+        
+        li {
+            padding: 0;
+            clear: both;
+            
+            &.me {
+                .wrap {
+                    float: right;
+                }
+            }
+            
+            &.friend {
+                .wrap {
+                    float: left;
+                }
+            }
+        }
+        
+        .wrap {
+            display: inline-block;
+            margin: 5px 0;
+            padding: 10px 15px;
+            background: rgba(39, 174, 96, 0.5);
+        }
+    }
+
+    form.send {
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 44.5em);
+        margin: 0 0 10px 10px;
+        
+        input.form-input {
+            display: inline-block;
+            float: left;
+            @include form-input(calc(100% - 6.5em), 0 0, $color-white, $color-black);
+            height: 2.5em;
+            //font-size: 2em;
+            margin-left: 10px;
+            padding: 0 10px;
+        }
+        
+        button.messageSend {
+            display: inline-block;
+            float: left;
+            @include button(2em, 0 0, rgba(39, 174, 96, 0.5), $color-black, 200);
+            height: 2.5em;
+            width: 4em;
+            margin-left: 0.5em;
+            //font-size: 2em;
+            //padding: 1em 1.5em;
+            //margin: 0 0 0.2em 0.2em;
+        }
+    }
+}
+
+/*
+@media screen and (max-width: 64em) {
+    .chat {
+        form.send {
+            input.form-input {
+                @include form-input(calc(100% - 1.5em), 0 0, $color-white, $color-black);
+            }
+        }
+    }
+}
+*/

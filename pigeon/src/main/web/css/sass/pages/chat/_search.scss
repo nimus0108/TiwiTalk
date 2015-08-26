@@ -1,0 +1,30 @@
+div.search-panel {
+    padding: 1em 2em 0 2em;
+    ul {
+        list-style: none;
+        overflow-y: auto;
+        padding: 0;
+        padding-right: 0.5em;
+        max-height: calc(100vh - 89px - 5em);
+
+        li {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            clear: both;
+            color: $color-white;
+        }
+    }
+    
+    p {
+        color: $color-white;
+    }
+}
+
+.search-btn-toolbar {
+    float: right;
+
+    button.sidebar-btn {
+        margin-right: 0.5em;
+        &:last-child { margin-right: 0; }
+    }
+}

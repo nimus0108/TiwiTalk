@@ -1,0 +1,287 @@
+// Chat : Sidebar
+
+.sidebar {
+	display: inline-block;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: $color-navyblue;
+	color: $color-white;
+    width: 20em;
+}
+
+/* Responsive side menu styling */
+
+$sidemenu-transition: 0.5s ease 0s;
+
+#messenger {
+    padding-left: $sidemenu-width;
+    transition: padding-left $sidemenu-transition;
+}
+
+.sidemenu {
+    position: fixed;
+    width: $sidemenu-width;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: $sidemenu-width;
+    margin-left: (-$sidemenu-width);
+    transition: left $sidemenu-transition;
+    z-index: 1000;
+}
+
+.sidemenu-show-btn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 1.5em;
+    width: 1.5em;
+    font-size: 1.5em;
+    padding: 0.25em;
+    text-align: center;
+	background-color: $color-navyblue;
+    transition: all $sidemenu-transition;
+    transition: opacity 0.2s ease 0.5s;
+
+    display: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 64em) {
+    .sidemenu {
+        left: 0; 
+    }
+
+    .sidemenu.sidemenu-active {
+        left: $sidemenu-width;
+    }
+
+    #messenger {
+        padding-left: 0;
+    }
+
+    #messenger.sidemenu-active {
+        padding-left: $sidemenu-width;
+    }
+
+    .sidemenu-show-btn {
+        display: block;
+        transition: left $sidemenu-transition;
+    }
+
+    .sidemenu-show-btn.sidemenu-active {
+        left: 13.25em;
+    }
+    .chat {
+        form.send {
+            input.form-input {
+                @include form-input(calc(100% - 1.5em), 0.5em 0.75em, $color-white, $color-black);
+            }
+        }
+    }
+    
+}
+
+/* Side menu content styling */
+
+.sidebar-btn {
+    color: $color-white;
+    background: $color-lightgreen;
+    border-radius: 3px;
+    border: none;
+
+    &:disabled {
+        background: $color-gray;
+    }
+}
+
+.sidemenu {
+    .pure-form { 
+        color: $color-black; 
+        input {
+            width: 9em;
+        }
+    }
+	nav.settings {
+		width: 90%;
+		margin: 0 auto;
+		
+		ul.options {
+			list-style: none;
+			margin: 0;
+			padding: 1em 0;
+		}
+
+        ul.options > li {
+            display: inline-block;
+            padding-right: 1em;
+            cursor: pointer;
+
+            &:last-child { padding-right: 0; }
+        }
+
+        ul.options-left {
+            float: left;
+        }
+
+        ul.options-right {
+            float: right;
+        }
+	}
+	
+	section.personal {
+		width: calc(100%);
+		margin: 0;
+		padding: 2em 0;
+		
+		.container {
+			width: 100%;
+			text-align: center;
+		}
+		
+		.my-face {
+			width: 40%;
+			margin: 0 auto;
+			border-radius: 50%;
+            font-size: 80px;
+		}
+		
+	}
+	
+	section.availability {
+		height: 2em;
+		margin: 0 auto;
+		padding: 0.75em 0.5em;
+		background: rgba(39, 174, 96, 0.5);
+		
+		.wrap {
+			width: 80%;
+		    position: relative;
+		    left: 50%;
+			float: left;
+			
+			h1.current {
+			    position: relative;
+			    left: -50%;
+				float: left;
+				margin: 0 0 0.05em 0;
+				padding: 0;
+				font-size: 1.55em;
+				font-weight: 300;
+			}
+			
+			h2.notes {
+				position: relative;
+			    left: -50%;
+				float: left;
+				margin: 0;
+				padding: 0;
+				font-size: 1.25em;
+				opacity: 0.85;
+			}
+		}
+	}
+}
+
+.my-info {
+    width: 80%;
+    margin: 5px auto;
+    text-align: center;
+
+    h1.my-name {
+        margin: 0.5em 0 0.25em 0;
+        padding: 0;
+        font-family: 'Lato', san-serif;
+        font-size: 2.25em;
+        font-weight: 300;
+    }
+
+    h2.my-status {
+        margin: 0;
+        padding: 0;
+        font-family: "Lato", sans-serif;
+        font-size: 1.4em;
+        font-weight: 400;
+        color: rgb(215, 218, 221);
+        display: inline-block;
+    }
+
+    .my-status-container {
+        .status-edit, .sidebar-btn {
+            margin-left: 0.5em;
+        }
+
+        .status-edit, input {
+            display: inline-block;
+        }
+
+        .status-edit {
+            cursor: pointer;
+        }
+    }
+}
+
+/* Room list styling */
+
+.roomlist {
+    width: $roomlist-width;
+    float: right;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+ul.chat-list {
+    padding-left: 2em;
+	list-style: none;
+	
+	li {
+		display: table;
+		height: 100px;
+        padding-left: 1em;
+	}
+	
+	img.buddy-face {
+		display: table-cell;
+		vertical-align: middle;
+		width: 4em;
+		height: 4em;
+		border-radius: 50%;
+		border: 0.25em solid $color-green;
+		margin: 1em 0 0 0;
+	}
+	
+	.buddy {
+		display: table-cell;
+		vertical-align: middle;
+		width: calc(100% - 10em);
+		padding: 0 1.25em;
+		
+		h1.buddy-name {
+			display: inline-block;	
+			font-size: 1.75em;
+			margin: 0;
+			padding: 0;
+		}
+		
+		h2.buddy-quote {
+			max-width: calc(100% - 10em);
+			font-size: 1.25em;
+			text-overflow: clip ellipsis;
+			white-space: nowrap;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+.chat-box {
+    width: 100%;
+}
+
+.currentroom {
+    background-color: rgba(27, 83, 60, 0.7);
+}

@@ -1,0 +1,230 @@
+@import url(necolas/normalize.css);
+* {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400; }
+
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0; }
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; }
+
+#messenger {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #fff;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); }
+
+.tiwi {
+  display: inline-block;
+  width: 420px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  float: left;
+  border-right: 1px solid #f0f0f0;
+  background-color: #fafafa; }
+  .tiwi .friend-preview {
+    display: table;
+    width: 100%;
+    height: 89px;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0; }
+    .tiwi .friend-preview .face-container {
+      display: inline-block;
+      width: 25%;
+      height: 100%;
+      text-align: center; }
+      .tiwi .friend-preview .face-container .face {
+        width: 60px;
+        height: 60px;
+        margin: 0 15px 0 0;
+        border-radius: 50%; }
+    .tiwi .friend-preview .vertical-container {
+      display: table;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .tiwi .friend-preview .vertical-container .vertical-align {
+        display: table-cell;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0; }
+    .tiwi .friend-preview .show {
+      display: inline-block;
+      width: 75%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .tiwi .friend-preview .show h1.friend-name {
+        margin: 0;
+        padding: 0;
+        color: #1d1d1d;
+        font-size: 20px; }
+      .tiwi .friend-preview .show h2.exerpt {
+        margin: 0;
+        padding: 0;
+        color: #313131;
+        font-size: 16px; }
+  .tiwi .avail-status {
+    width: calc(100% - 20px);
+    margin: 0;
+    padding: 25px 0 25px 20px;
+    background-color: rgba(255, 0, 0, 0.3); }
+    .tiwi .avail-status .avail {
+      font-size: 24px;
+      margin: 0; }
+    .tiwi .avail-status .tip {
+      font-size: 18px;
+      margin: 0;
+      margin-top: 5px;
+      color: #777; }
+
+.preview {
+  display: inline-block;
+  width: 420px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  float: left;
+  border-left: 1px solid #f0f0f0;
+  background-color: #f2f2f2; }
+  .preview .search {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #f2f2f2; }
+    .preview .search input.search-friend {
+      width: calc(100% - 50px);
+      height: 75px;
+      border: none;
+      color: #1d1d1d;
+      margin: 0;
+      padding: 7px 25px;
+      font-size: 18px;
+      outline: none; }
+  .preview .friend-preview {
+    display: table;
+    width: 100%;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0; }
+    .preview .friend-preview .face-container {
+      display: inline-block;
+      width: 25%;
+      height: 100%;
+      text-align: center; }
+      .preview .friend-preview .face-container .face {
+        width: 60px;
+        height: 60px;
+        margin: 0 15px 0 0;
+        border-radius: 50%; }
+    .preview .friend-preview .vertical-container {
+      display: table;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .preview .friend-preview .vertical-container .vertical-align {
+        display: table-cell;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0; }
+    .preview .friend-preview .show {
+      display: inline-block;
+      width: 75%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+      .preview .friend-preview .show h1.friend-name {
+        margin: 0;
+        padding: 0;
+        color: #1d1d1d;
+        font-size: 20px; }
+      .preview .friend-preview .show h2.exerpt {
+        margin: 0;
+        padding: 0;
+        color: #313131;
+        font-size: 16px; }
+
+.conversation-scr {
+  display: inline-block;
+  width: calc(100% - 846px);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  float: left; }
+  .conversation-scr .face {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%; }
+  .conversation-scr .header {
+    width: 100%;
+    height: 74px;
+    border-bottom: 1px solid #f0f0f0; }
+    .conversation-scr .header .identity {
+      width: 100%;
+      text-align: center;
+      margin: 15px auto 0 auto; }
+      .conversation-scr .header .identity .friend-name {
+        margin: 0;
+        padding: 0;
+        font-size: 28px;
+        color: #1d1d1d; }
+      .conversation-scr .header .identity .status {
+        margin: 0;
+        padding: 0;
+        color: #313131;
+        font-size: 18px; }
+  .conversation-scr .chat {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0; }
+    .conversation-scr .chat h2.announcement {
+      margin: 15px auto;
+      padding: 0;
+      font-size: 18px;
+      color: #777;
+      text-align: center; }
+    .conversation-scr .chat .wrap {
+      margin: 22px 0;
+      padding: 0 125px; }
+      .conversation-scr .chat .wrap .message {
+        width: auto !important;
+        margin: 0;
+        padding: 7px 15px;
+        color: #fafafa;
+        font-size: 18px;
+        border-radius: 3px; }
+  .conversation-scr .friend .wrap .message {
+    background-color: #27ae60; }
+  .conversation-scr .friend .wrap:nth-child(1) .message {
+    border-top-left-radius: 12px; }
+  .conversation-scr .friend .wrap:nth-last-child(1) .message {
+    border-bottom-left-radius: 12px; }
+  .conversation-scr .me {
+    text-align: right; }
+    .conversation-scr .me .wrap .message {
+      background-color: #47ce80;
+      margin-left: auto;
+      margin-right: auto; }
+    .conversation-scr .me .wrap:nth-child(1) .message {
+      border-top-right-radius: 12px; }
+    .conversation-scr .me .wrap:nth-last-child(1) .message {
+      border-bottom-right-radius: 12px; }
+
+/*# sourceMappingURL=styles.css.map */

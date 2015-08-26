@@ -1,0 +1,12 @@
+// Main Styles
+
+// Essentials
+@import 'normalize.css'; // Reset
+@import "./sass/_variables"; // Variables (Colors & ETC)
+@import "./sass/_std"; // Standard Mixins and Templates
+@import "./sass/_typography"; // Fonts
+@import "./sass/_base"; // Initial Setup
+
+// Screens
+@import "./sass/pages/launch"; // Launch / Splash Page
+@import "./sass/pages/chat"; // Chat / Messaging Page

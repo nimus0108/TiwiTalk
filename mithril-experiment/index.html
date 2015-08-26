@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mithril Experiment</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        
+        <!-- Normalize -->
+        <link href="css/normalize.css" rel="stylesheet">
+
+        <!-- Styles -->
+        <link href="css/styles.css" rel="stylesheet">
+		<style>
+			.friend {
+				color: #1d1d1d;
+			}
+			
+			.me {
+				color: red;
+			}
+		</style>
+	</head>
+	<body>          
+		<div id="message-container"></div>
+		<input type="text" id="messageText" placeholder="me">
+		<button onclick="sendMsg(document.getElementById('messageText'), 1)">Submit</button>
+		<input type="text" id="messageTextFriend" placeholder="friend">
+		<button onclick="sendMsg(document.getElementById('messageTextFriend'), 2)">Submit</button>
+		<script src="mithril.min.js"></script>
+		<script src="script.js"></script>
+		<scrip src="socket.js"t></script>
+	</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "main": "main.js",
+  "dependencies": {
+    "lhorie/mithril": "0.2.0"
+  }
+}

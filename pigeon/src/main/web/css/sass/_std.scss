@@ -1,0 +1,64 @@
+// STD : Standard
+// Include MIXINS, BASE classes to extend
+
+// Reset full-width container
+.layout-reset {
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+// Vertically Align to middle
+@mixin vertical-align {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+// Parent of vertical alignment to prevent half-pixels
+@mixin vertical-parent {
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+@mixin transition($speed){
+	-webkit-transition: all $speed ease;
+	-moz-transition: all $speed ease;
+	-ms-transition: all $speed ease;
+	-o-transition: all $speed ease;
+	transition: all $speed ease;
+}
+
+@mixin form-input($width, $padding, $bg-color, $text-color) {
+	width: $width;
+	height: auto;
+	margin: 0;
+	padding: $padding;
+	background-color: $bg-color;
+	color: $text-color;
+	border-radius: 3px;
+	border: none;
+	outline: none;
+}
+
+@mixin button($width, $padding, $bg-color, $text-color, $speed) {
+	width: $width;
+	height: auto;
+	margin: 0;
+	padding: $padding;
+	background-color: $bg-color;
+	color: $text-color;
+	border-radius: 3px;
+	border: none;
+	@include transition($speed);
+	
+	&:hover {
+		opacity: 0.8;
+	}
+}
